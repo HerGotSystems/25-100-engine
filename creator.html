@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skill Creator — 25/100</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0c0c0c;--surface:#141414;--surface2:#1c1c1c;--border:#2a2a2a;--border2:#363636;
+  --text:#e0e0e0;--muted:#666;--dim:#2a2a2a;
+  --gold:#c8960a;--gold-dim:#1a1200;--gold-lt:#e0aa10;
+  --cat1:#b87200;--cat2:#1a55bb;--cat3:#128550;--cat4:#a84000;--cat5:#888;
+  --accent:#ffaa22;--accent-dim:#1a0e00;
+  --ok:#128550;--ok-dim:#031508;
+  --err:#992020;--err-dim:#1a0000;
+  --font:'Space Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:12px;line-height:1.5;display:flex;flex-direction:column;}
+
+/* HEADER */
+header{background:var(--surface);border-bottom:1px solid var(--border);height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0;}
+.logo{display:flex;align-items:baseline;gap:8px;}
+.logo-mark{font-size:17px;font-weight:700;color:var(--accent);letter-spacing:-1px;}
+.logo-div{color:var(--dim);}
+.logo-tag{font-size:9px;color:var(--muted);letter-spacing:3px;text-transform:uppercase;}
+.header-right{display:flex;gap:8px;align-items:center;}
+.link-btn{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:4px 10px;border:1px solid var(--border);background:none;cursor:pointer;font-family:var(--font);}
+.link-btn:hover{color:var(--gold);border-color:var(--gold);}
+
+/* LAYOUT */
+.workspace{flex:1;overflow:hidden;display:flex;}
+.panel-left{width:420px;border-right:1px solid var(--border);display:flex;flex-direction:column;background:var(--surface);flex-shrink:0;}
+.panel-right{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.scroll{overflow-y:auto;}
+.scroll::-webkit-scrollbar{width:3px;}
+.scroll::-webkit-scrollbar-thumb{background:var(--border2);}
+
+/* INPUTS PANEL */
+.section{padding:16px 18px;border-bottom:1px solid var(--border);}
+.sec-label{font-size:9px;text-transform:uppercase;letter-spacing:3px;color:var(--muted);margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;}
+.mode-tabs{display:flex;gap:0;margin-bottom:14px;border:1px solid var(--border);}
+.mode-tab{flex:1;background:none;border:none;color:var(--muted);font-family:var(--font);font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:7px;cursor:pointer;transition:all .12s;border-right:1px solid var(--border);}
+.mode-tab:last-child{border-right:none;}
+.mode-tab:hover{color:var(--text);}
+.mode-tab.active{background:var(--accent-dim);color:var(--accent);}
+.field-label{font-size:9px;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-bottom:5px;display:block;}
+.t-input{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:var(--font);font-size:12px;padding:8px 10px;margin-bottom:12px;transition:border-color .12s;}
+.t-input:focus{outline:none;border-color:var(--accent);}
+.t-ta{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:var(--font);font-size:11px;padding:10px;resize:none;line-height:1.7;transition:border-color .12s;}
+.t-ta:focus{outline:none;border-color:var(--accent);}
+.t-ta::placeholder{color:#333;}
+.config-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+.config-item{}
+.t-select{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:var(--font);font-size:11px;padding:7px 10px;margin-bottom:0;}
+.t-select:focus{outline:none;border-color:var(--accent);}
+.num-row{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.num-row label{font-size:9px;text-transform:uppercase;letter-spacing:2px;color:var(--muted);flex:1;}
+.num-stepper{display:flex;align-items:center;gap:4px;}
+.num-btn{width:26px;height:26px;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:var(--font);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .12s;}
+.num-btn:hover{border-color:var(--accent);color:var(--accent);}
+.num-val{width:32px;text-align:center;font-size:12px;font-weight:700;}
+
+/* GENERATE BUTTON */
+.gen-wrap{padding:14px 18px;border-top:1px solid var(--border);background:var(--surface);}
+.btn-generate{width:100%;background:var(--accent-dim);border:1px solid var(--accent);color:var(--accent);font-family:var(--font);font-size:10px;letter-spacing:3px;text-transform:uppercase;padding:12px;cursor:pointer;transition:all .15s;}
+.btn-generate:hover:not(:disabled){background:var(--accent);color:#000;}
+.btn-generate:disabled{opacity:.4;cursor:not-allowed;}
+.gen-status{font-size:9px;color:var(--muted);text-align:center;margin-top:8px;height:14px;}
+.gen-status.running{color:var(--accent);}
+.gen-status.ok{color:var(--ok);}
+.gen-status.err{color:#c44;}
+
+/* PREVIEW PANEL */
+.preview-header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:44px;flex-shrink:0;}
+.preview-title{font-size:10px;text-transform:uppercase;letter-spacing:3px;color:var(--muted);}
+.preview-actions{display:flex;gap:8px;}
+.btn{background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:var(--font);font-size:9px;letter-spacing:1px;padding:4px 10px;cursor:pointer;transition:all .12s;text-transform:uppercase;}
+.btn:hover{border-color:var(--gold);color:var(--gold);}
+.btn:disabled{opacity:.3;cursor:not-allowed;}
+.btn-ok{background:var(--ok-dim);border-color:var(--ok);color:var(--ok);}
+.btn-ok:hover{background:var(--ok);color:#000;}
+.preview-body{flex:1;overflow:hidden;display:flex;}
+
+/* SKILL PREVIEW */
+.skill-preview{flex:1;overflow-y:auto;padding:20px;}
+.sp-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--muted);text-align:center;gap:14px;}
+.sp-empty-icon{font-size:48px;opacity:.2;}
+.sp-empty-text{font-size:10px;letter-spacing:2px;text-transform:uppercase;}
+.sp-empty-hint{font-size:11px;max-width:340px;line-height:1.7;}
+
+.skill-card-preview{background:var(--surface);border:1px solid var(--border);padding:20px;margin-bottom:14px;}
+.scp-cat{font-size:8px;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;}
+.scp-name{font-size:20px;font-weight:700;margin-bottom:6px;}
+.scp-desc{font-size:11px;color:var(--muted);line-height:1.6;}
+
+.preview-section{background:var(--surface);border:1px solid var(--border);margin-bottom:10px;}
+.ps-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--border);cursor:pointer;}
+.ps-header:hover{background:var(--surface2);}
+.ps-title{font-size:9px;text-transform:uppercase;letter-spacing:3px;color:var(--muted);}
+.ps-count{font-size:9px;font-weight:700;}
+.ps-chevron{font-size:10px;color:var(--muted);transition:transform .15s;}
+.ps-chevron.open{transform:rotate(180deg);}
+.ps-body{padding:14px;}
+.ps-item{margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border);}
+.ps-item:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none;}
+.ps-item-title{font-size:11px;font-weight:700;color:var(--gold);margin-bottom:8px;}
+.ps-item-body{font-size:11px;line-height:1.8;white-space:pre-wrap;color:var(--text);}
+.quiz-badge{font-size:8px;letter-spacing:1px;text-transform:uppercase;padding:2px 6px;border:1px solid;display:inline-block;margin-bottom:6px;}
+.badge-mc{color:var(--cat2);border-color:var(--cat2);}
+.badge-tf{color:var(--cat3);border-color:var(--cat3);}
+.badge-open{color:var(--muted);border-color:var(--muted);}
+.quiz-q-text{font-size:12px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+.quiz-opts{display:flex;flex-direction:column;gap:4px;}
+.quiz-opt{font-size:10px;padding:5px 10px;background:var(--surface2);border:1px solid var(--border);}
+.quiz-opt.correct-ans{border-color:var(--ok);color:var(--ok);background:var(--ok-dim);}
+
+/* BATCH TAB */
+.batch-panel{flex:1;overflow-y:auto;padding:20px;}
+.batch-item{background:var(--surface);border:1px solid var(--border);padding:14px;margin-bottom:10px;display:flex;align-items:center;gap:12px;}
+.bi-num{font-size:9px;color:var(--muted);width:24px;text-align:right;flex-shrink:0;}
+.bi-name{font-size:12px;font-weight:700;flex:1;}
+.bi-cat{font-size:8px;letter-spacing:1px;text-transform:uppercase;}
+.bi-status{font-size:9px;letter-spacing:1px;}
+.bi-status.done{color:var(--ok);}
+.bi-status.pending{color:var(--muted);}
+.bi-status.running{color:var(--accent);}
+.bi-status.err{color:#c44;}
+.bi-rm{background:none;border:none;color:#c44;font-family:var(--font);font-size:10px;cursor:pointer;padding:2px 6px;}
+.bi-rm:hover{background:var(--err-dim);}
+
+/* RAW JSON */
+.raw-panel{flex:1;overflow-y:auto;}
+.raw-json{font-size:10px;line-height:1.6;padding:20px;color:#8dbcff;white-space:pre-wrap;word-break:break-all;}
+
+/* VIEW TABS */
+.view-tabs{display:flex;border-bottom:1px solid var(--border);background:var(--surface);padding:0 20px;}
+.view-tab{background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);font-family:var(--font);font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:8px 12px;cursor:pointer;transition:all .12s;}
+.view-tab:hover{color:var(--text);}
+.view-tab.active{color:var(--gold);border-bottom-color:var(--gold);}
+
+/* SPINNER */
+@keyframes spin{to{transform:rotate(360deg);}}
+.spinner{width:16px;height:16px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .6s linear infinite;display:inline-block;vertical-align:middle;margin-right:6px;}
+
+/* STACK (batch generation queue left panel) */
+.stack-empty{padding:20px;text-align:center;color:var(--muted);font-size:10px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <span class="logo-mark">SKILL CREATOR</span>
+    <span class="logo-div">/</span>
+    <span class="logo-tag">25/100 Learning Engine</span>
+  </div>
+  <div class="header-right">
+    <a href="index.html" class="link-btn">← Back to Engine</a>
+    <button class="btn btn-ok" id="btn-export-all" disabled>Export All Skills →</button>
+  </div>
+</header>
+
+<div class="workspace">
+
+  <!-- LEFT: INPUT PANEL -->
+  <div class="panel-left">
+    <div class="section" style="padding-bottom:0;">
+      <div class="mode-tabs">
+        <button class="mode-tab active" id="tab-topic" onclick="setMode('topic')">Topic</button>
+        <button class="mode-tab" id="tab-curriculum" onclick="setMode('curriculum')">Curriculum</button>
+        <button class="mode-tab" id="tab-batch" onclick="setMode('batch')">Batch</button>
+      </div>
+    </div>
+
+    <!-- TOPIC MODE -->
+    <div id="panel-topic" class="scroll" style="flex:1;padding:16px 18px;">
+      <label class="field-label">Skill topic or title</label>
+      <input type="text" class="t-input" id="topic-input" placeholder="e.g. Negotiation Skills, Public Speaking, Stoic Philosophy…">
+      <label class="field-label">Additional context (optional)</label>
+      <textarea class="t-ta" id="topic-context" style="height:100px" placeholder="Level of learner, specific angle, what aspects to focus on, real-world applications to include…"></textarea>
+    </div>
+
+    <!-- CURRICULUM MODE -->
+    <div id="panel-curriculum" class="scroll" style="flex:1;padding:16px 18px;display:none;">
+      <label class="field-label">Paste your curriculum content</label>
+      <textarea class="t-ta" id="curriculum-input" style="height:200px" placeholder="Paste notes, a document chapter, an outline, a textbook excerpt, your own writing on the topic — anything you want to turn into a structured skill."></textarea>
+      <label class="field-label" style="margin-top:12px">Skill name (optional — AI will infer if blank)</label>
+      <input type="text" class="t-input" id="curriculum-name" placeholder="e.g. Critical Thinking">
+    </div>
+
+    <!-- BATCH MODE -->
+    <div id="panel-batch" style="flex:1;display:none;flex-direction:column;overflow:hidden;">
+      <div class="section">
+        <label class="field-label">Add skills to batch queue</label>
+        <div style="display:flex;gap:6px;">
+          <input type="text" class="t-input" id="batch-input" style="flex:1;margin-bottom:0" placeholder="Skill topic…">
+          <button class="btn" id="btn-batch-add" style="white-space:nowrap;">Add</button>
+        </div>
+        <div style="margin-top:10px;font-size:9px;color:var(--muted)">Or paste a list (one skill per line):</div>
+        <textarea class="t-ta" id="batch-list" style="height:80px;margin-top:6px" placeholder="Negotiation Skills&#10;Public Speaking&#10;Stoic Philosophy&#10;Goal Setting&#10;Memory Techniques"></textarea>
+        <button class="btn btn-full" id="btn-batch-import" style="margin-top:8px;width:100%">Import List</button>
+      </div>
+      <div style="padding:10px 18px;border-bottom:1px solid var(--border);font-size:9px;color:var(--muted)">QUEUE (<span id="queue-count">0</span> skills)</div>
+      <div id="batch-queue" class="scroll" style="flex:1;overflow-y:auto;"></div>
+    </div>
+
+    <!-- CONFIG (shared across modes) -->
+    <div class="section">
+      <div class="sec-label">Output Configuration</div>
+      <div class="config-grid">
+        <div class="config-item">
+          <label class="field-label">Category</label>
+          <select class="t-select" id="cfg-cat">
+            <option value="1">Cognitive</option>
+            <option value="2">Communication</option>
+            <option value="3">Emotional</option>
+            <option value="4" selected>Practical</option>
+            <option value="0">Auto-detect</option>
+          </select>
+        </div>
+        <div class="config-item">
+          <label class="field-label">Audience</label>
+          <select class="t-select" id="cfg-level">
+            <option value="general">General</option>
+            <option value="beginner">Beginner</option>
+            <option value="intermediate">Intermediate</option>
+            <option value="advanced">Advanced</option>
+          </select>
+        </div>
+      </div>
+      <div class="num-row">
+        <label>Lessons</label>
+        <div class="num-stepper">
+          <button class="num-btn" onclick="step('lessons',-1)">−</button>
+          <div class="num-val" id="val-lessons">3</div>
+          <button class="num-btn" onclick="step('lessons',1)">+</button>
+        </div>
+      </div>
+      <div class="num-row">
+        <label>Exercises</label>
+        <div class="num-stepper">
+          <button class="num-btn" onclick="step('exercises',-1)">−</button>
+          <div class="num-val" id="val-exercises">2</div>
+          <button class="num-btn" onclick="step('exercises',1)">+</button>
+        </div>
+      </div>
+      <div class="num-row">
+        <label>Quiz Questions</label>
+        <div class="num-stepper">
+          <button class="num-btn" onclick="step('quiz',-1)">−</button>
+          <div class="num-val" id="val-quiz">6</div>
+          <button class="num-btn" onclick="step('quiz',1)">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="gen-wrap">
+      <button class="btn-generate" id="btn-generate" onclick="generate()">Generate Skill</button>
+      <div class="gen-status" id="gen-status"></div>
+    </div>
+  </div>
+
+  <!-- RIGHT: PREVIEW PANEL -->
+  <div class="panel-right">
+    <div class="preview-header">
+      <div class="preview-title" id="preview-label">Preview</div>
+      <div class="preview-actions">
+        <button class="btn" id="btn-add-to-stack" disabled onclick="addToStack()">+ Add to Export</button>
+        <button class="btn" id="btn-copy-json" disabled onclick="copyJson()">Copy JSON</button>
+      </div>
+    </div>
+    <div class="view-tabs">
+      <button class="view-tab active" data-vtab="preview">Preview</button>
+      <button class="view-tab" data-vtab="stack">Export Stack (<span id="stack-count">0</span>)</button>
+      <button class="view-tab" data-vtab="raw">Raw JSON</button>
+    </div>
+    <div class="preview-body">
+      <!-- PREVIEW TAB -->
+      <div id="vtab-preview" style="flex:1;overflow-y:auto;" class="skill-preview">
+        <div class="sp-empty">
+          <div class="sp-empty-icon">⚗</div>
+          <div class="sp-empty-text">No skill yet</div>
+          <div class="sp-empty-hint">Enter a topic or paste your curriculum content on the left, configure the output, then click Generate.</div>
+        </div>
+      </div>
+      <!-- STACK TAB -->
+      <div id="vtab-stack" style="flex:1;display:none;flex-direction:column;overflow:hidden;">
+        <div id="stack-list" class="scroll" style="flex:1;padding:20px;"></div>
+      </div>
+      <!-- RAW TAB -->
+      <div id="vtab-raw" style="flex:1;display:none;overflow-y:auto;">
+        <pre class="raw-json" id="raw-json-content">// No skill generated yet</pre>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════
+const CATS=[{id:1,name:"Cognitive",color:"#b87200"},{id:2,name:"Communication",color:"#1a55bb"},{id:3,name:"Emotional",color:"#128550"},{id:4,name:"Practical",color:"#a84000"},{id:5,name:"Custom",color:"#888"}];
+let mode="topic",currentSkill=null,exportStack=[],batchQueue=[],isRunning=false;
+const cfg={lessons:3,exercises:2,quiz:6};
+
+// ═══════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════
+function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+let _uid=Date.now();function uid(){return(++_uid).toString(36);}
+function setStatus(msg,type=""){const el=document.getElementById("gen-status");el.textContent=msg;el.className="gen-status"+(type?" "+type:"");}
+function catOf(id){return CATS[Math.max(0,Math.min(4,(id||4)-1))];}
+
+// ═══════════════════════════════════════════════
+// MODE SWITCHING
+// ═══════════════════════════════════════════════
+function setMode(m){
+  mode=m;
+  ["topic","curriculum","batch"].forEach(k=>{
+    document.getElementById("tab-"+k).classList.toggle("active",k===m);
+    document.getElementById("panel-"+k).style.display=k===m?(k==="batch"?"flex":"block"):"none";
+  });
+  document.getElementById("btn-generate").textContent=m==="batch"?"Generate All":"Generate Skill";
+  document.getElementById("btn-generate").onclick=m==="batch"?generateBatch:generate;
+}
+
+// ═══════════════════════════════════════════════
+// CONFIG STEPPERS
+// ═══════════════════════════════════════════════
+const LIMITS={lessons:[1,5],exercises:[0,4],quiz:[2,10]};
+function step(key,d){cfg[key]=Math.max(LIMITS[key][0],Math.min(LIMITS[key][1],cfg[key]+d));document.getElementById("val-"+key).textContent=cfg[key];}
+
+// ═══════════════════════════════════════════════
+// BATCH QUEUE
+// ═══════════════════════════════════════════════
+function renderBatchQueue(){
+  const el=document.getElementById("batch-queue");
+  document.getElementById("queue-count").textContent=batchQueue.length;
+  if(!batchQueue.length){el.innerHTML=`<div class="stack-empty">Queue is empty.<br>Add topics above.</div>`;return;}
+  el.innerHTML=batchQueue.map((item,i)=>`
+    <div class="batch-item" id="bq-${i}">
+      <div class="bi-num">${i+1}</div>
+      <div style="flex:1">
+        <div class="bi-name">${esc(item.topic)}</div>
+        <div class="bi-status ${item.status}" id="bqs-${i}">${{pending:"Pending",running:"Generating…",done:"Done ✓",err:"Error"}[item.status]}</div>
+      </div>
+      <button class="bi-rm" onclick="removeBatchItem(${i})">✕</button>
+    </div>`).join("");
+}
+function addBatchItem(topic){if(!topic.trim())return;batchQueue.push({topic:topic.trim(),status:"pending",skill:null});renderBatchQueue();}
+function removeBatchItem(i){batchQueue.splice(i,1);renderBatchQueue();}
+document.getElementById("btn-batch-add").addEventListener("click",()=>{const v=document.getElementById("batch-input");addBatchItem(v.value);v.value="";});
+document.getElementById("batch-input").addEventListener("keydown",e=>{if(e.key==="Enter"){const v=document.getElementById("batch-input");addBatchItem(v.value);v.value="";}});
+document.getElementById("btn-batch-import").addEventListener("click",()=>{const lines=document.getElementById("batch-list").value.split("\n").map(l=>l.trim()).filter(Boolean);lines.forEach(addBatchItem);document.getElementById("batch-list").value="";});
+
+// ═══════════════════════════════════════════════
+// PROMPT BUILDER
+// ═══════════════════════════════════════════════
+function buildPrompt(topicOrContent,isCurriculum,skillName){
+  const catId=parseInt(document.getElementById("cfg-cat").value)||4;
+  const level=document.getElementById("cfg-level").value;
+  const catInstruction=catId===0?"Choose the most appropriate catId (1=Cognitive, 2=Communication, 3=Emotional, 4=Practical, 5=Custom) based on the skill.":
+    `Use catId: ${catId} (${catOf(catId).name}).`;
+
+  const schema=`{
+  "name": "Skill Name",
+  "description": "One clear sentence describing the skill.",
+  "catId": ${catId===0?"(1|2|3|4|5)":catId},
+  "content": {
+    "lessons": [
+      {"id": "l1", "title": "Lesson Title", "body": "Lesson content as plain text with blank lines between paragraphs. 400-600 words. Use uppercase section headings where helpful (e.g. WHY IT MATTERS). No markdown."}
+    ],
+    "exercises": [
+      {"id": "e1", "title": "Exercise Title", "body": "Step-by-step exercise instructions. Practical, specific, actionable."}
+    ],
+    "quiz": [
+      {"id": "q1", "question": "Question text?", "type": "mc", "options": ["Option A", "Option B", "Option C", "Option D"], "correct": "Option A"},
+      {"id": "q2", "question": "True or false statement.", "type": "tf", "options": [], "correct": "True"},
+      {"id": "q3", "question": "Open-ended reflection question.", "type": "open", "options": [], "correct": ""}
+    ]
+  }
+}`;
+
+  const inputSection=isCurriculum
+    ?`CURRICULUM CONTENT TO STRUCTURE:\n"""\n${topicOrContent}\n"""\n${skillName?`SKILL NAME: ${skillName}\n`:""}`
+    :`SKILL TOPIC: ${topicOrContent}\n`;
+
+  return`You are a curriculum designer creating structured learning content for the 25/100 Learning Engine.
+
+${inputSection}
+AUDIENCE: ${level==="general"?"General adult learner":level.charAt(0).toUpperCase()+level.slice(1)+" level"}
+${catInstruction}
+
+OUTPUT REQUIREMENTS:
+- ${cfg.lessons} lesson(s) — each 400-600 words of substantive, practical content
+- ${cfg.exercises} exercise(s) — hands-on, actionable, specific
+- ${cfg.quiz} quiz question(s) — mix of mc (multiple choice, 4 options), tf (true/false), and open (self-assessed reflection)
+- For mc: always 4 options, mark the correct one
+- For tf: correct is exactly "True" or "False"
+- Lesson body: plain text only, no markdown symbols, use blank lines for paragraphs, UPPERCASE for section headings
+- Content must be genuinely educational, not generic platitudes
+
+Return ONLY valid JSON matching this exact schema. No preamble, no markdown, no explanation:
+
+${schema}`;
+}
+
+// ═══════════════════════════════════════════════
+// API CALL
+// ═══════════════════════════════════════════════
+async function callClaude(prompt){
+  const res=await fetch("https://api.anthropic.com/v1/messages",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+      model:"claude-sonnet-4-20250514",
+      max_tokens:4000,
+      messages:[{role:"user",content:prompt}]
+    })
+  });
+  if(!res.ok){const e=await res.text();throw new Error(`API error ${res.status}: ${e}`);}
+  const data=await res.json();
+  const text=data.content.map(b=>b.text||"").join("");
+  // Strip any accidental markdown fences
+  const cleaned=text.replace(/^```(?:json)?\s*/i,"").replace(/\s*```\s*$/,"").trim();
+  return JSON.parse(cleaned);
+}
+
+function assignIds(skill){
+  skill.content.lessons.forEach((l,i)=>l.id=l.id||`l${i+1}`);
+  skill.content.exercises.forEach((e,i)=>e.id=e.id||`e${i+1}`);
+  skill.content.quiz.forEach((q,i)=>{q.id=q.id||`q${i+1}`;if(!q.options)q.options=[];});
+  // Ensure blank progress fields
+  ["x","vPieces","vAtt","ivPieces","ivAtt","iiiPieces","iiiAtt","iiPieces","iiAtt","iPieces","iAtt"].forEach(k=>{if(skill[k]===undefined)skill[k]=0;});
+  if(!skill.log)skill.log=[];
+  if(!skill.lastActivity)skill.lastActivity=null;
+  return skill;
+}
+
+// ═══════════════════════════════════════════════
+// GENERATE SINGLE
+// ═══════════════════════════════════════════════
+async function generate(){
+  if(isRunning)return;
+  let prompt="",topic="";
+  if(mode==="topic"){
+    topic=document.getElementById("topic-input").value.trim();
+    const ctx=document.getElementById("topic-context").value.trim();
+    if(!topic){setStatus("Enter a topic first","err");return;}
+    prompt=buildPrompt(topic+(ctx?"\n\nContext: "+ctx:""),false);
+  }else if(mode==="curriculum"){
+    const content=document.getElementById("curriculum-input").value.trim();
+    const name=document.getElementById("curriculum-name").value.trim();
+    if(!content){setStatus("Paste curriculum content first","err");return;}
+    topic=name||"(from curriculum)";
+    prompt=buildPrompt(content,true,name);
+  }else{generateBatch();return;}
+
+  isRunning=true;
+  const btn=document.getElementById("btn-generate");
+  btn.disabled=true;
+  document.getElementById("btn-add-to-stack").disabled=true;
+  document.getElementById("btn-copy-json").disabled=true;
+  setStatus(`Generating skill${topic?" — "+topic:""}…`,"running");
+  document.getElementById("vtab-preview").innerHTML=`<div class="sp-empty"><div class="spinner"></div><div class="sp-empty-text" style="margin-top:10px">Thinking…</div></div>`;
+
+  try{
+    const skill=assignIds(await callClaude(prompt));
+    currentSkill=skill;
+    renderSkillPreview(skill);
+    document.getElementById("raw-json-content").textContent=JSON.stringify(skill,null,2);
+    document.getElementById("btn-add-to-stack").disabled=false;
+    document.getElementById("btn-copy-json").disabled=false;
+    setStatus(`✓ Generated: ${skill.name}`,"ok");
+  }catch(e){
+    console.error(e);
+    setStatus(`Error: ${e.message.slice(0,80)}`,"err");
+    document.getElementById("vtab-preview").innerHTML=`<div class="sp-empty"><div class="sp-empty-text" style="color:#c44">Generation failed</div><div class="sp-empty-hint" style="color:var(--muted)">${esc(e.message)}</div></div>`;
+  }finally{
+    isRunning=false;
+    btn.disabled=false;
+  }
+}
+
+// ═══════════════════════════════════════════════
+// GENERATE BATCH
+// ═══════════════════════════════════════════════
+async function generateBatch(){
+  if(isRunning)return;
+  const pending=batchQueue.filter(i=>i.status==="pending");
+  if(!pending.length){setStatus("No pending items in queue","err");return;}
+  isRunning=true;
+  document.getElementById("btn-generate").disabled=true;
+  setStatus(`Generating ${pending.length} skill(s)…`,"running");
+
+  for(let i=0;i<batchQueue.length;i++){
+    const item=batchQueue[i];
+    if(item.status!=="pending")continue;
+    item.status="running";
+    renderBatchQueue();
+    setStatus(`Generating ${i+1}/${batchQueue.length}: ${item.topic}…`,"running");
+    try{
+      const prompt=buildPrompt(item.topic,false);
+      const skill=assignIds(await callClaude(prompt));
+      item.skill=skill;item.status="done";
+      exportStack.push(skill);
+      updateStackUI();
+    }catch(e){
+      item.status="err";item.error=e.message;
+    }
+    renderBatchQueue();
+    if(i<batchQueue.length-1)await new Promise(r=>setTimeout(r,800));
+  }
+
+  isRunning=false;
+  document.getElementById("btn-generate").disabled=false;
+  const done=batchQueue.filter(i=>i.status==="done").length;
+  setStatus(`✓ Done — ${done} skill(s) generated`,"ok");
+}
+
+// ═══════════════════════════════════════════════
+// RENDER PREVIEW
+// ═══════════════════════════════════════════════
+function renderSkillPreview(s){
+  const c=catOf(s.catId);
+  let h=`<div class="skill-card-preview">
+    <div class="scp-cat" style="color:${c.color}">${c.name}</div>
+    <div class="scp-name">${esc(s.name)}</div>
+    <div class="scp-desc">${esc(s.description)}</div>
+  </div>`;
+  h+=renderSection("Lessons",s.content.lessons.map(l=>`<div class="ps-item"><div class="ps-item-title">${esc(l.title)}</div><div class="ps-item-body">${esc(l.body)}</div></div>`).join(""),true);
+  h+=renderSection("Exercises",s.content.exercises.map(e=>`<div class="ps-item"><div class="ps-item-title">${esc(e.title)}</div><div class="ps-item-body">${esc(e.body)}</div></div>`).join(""),false);
+  h+=renderSection("Quiz",s.content.quiz.map((q,qi)=>{
+    const typeBadge=q.type==="mc"?"Multiple Choice":q.type==="tf"?"True / False":"Open";
+    const badgeCls=q.type==="mc"?"mc":q.type==="tf"?"tf":"open";
+    let qh=`<div class="ps-item"><div class="quiz-badge badge-${badgeCls}">Q${qi+1} · ${typeBadge}</div><div class="quiz-q-text">${esc(q.question)}</div>`;
+    if(q.type==="mc"&&q.options.length){qh+=`<div class="quiz-opts">`;q.options.forEach(o=>{qh+=`<div class="quiz-opt${o===q.correct?" correct-ans":""}">${esc(o)}${o===q.correct?" ✓":""}</div>`;});qh+=`</div>`;}
+    else if(q.type==="tf"){qh+=`<div class="quiz-opt correct-ans">Correct: ${q.correct}</div>`;}
+    else{qh+=`<div style="font-size:9px;color:var(--muted)">Self-assessed by learner</div>`;}
+    qh+=`</div>`;return qh;
+  }).join(""),false);
+  document.getElementById("vtab-preview").innerHTML=h;
+}
+function renderSection(title,content,open){
+  const id="sec-"+title.toLowerCase();
+  return`<div class="preview-section"><div class="ps-header" onclick="toggleSec('${id}')">
+    <span class="ps-title">${title}</span>
+    <span class="ps-chevron ${open?"open":""}" id="ch-${id}">▼</span>
+  </div>
+  <div class="ps-body" id="${id}" ${open?"":"style=\"display:none\""} >${content}</div></div>`;
+}
+function toggleSec(id){const el=document.getElementById(id),ch=document.getElementById("ch-"+id);const showing=el.style.display!=="none";el.style.display=showing?"none":"block";ch.classList.toggle("open",!showing);}
+
+// ═══════════════════════════════════════════════
+// EXPORT STACK
+// ═══════════════════════════════════════════════
+function addToStack(){
+  if(!currentSkill)return;
+  exportStack.push(JSON.parse(JSON.stringify(currentSkill)));
+  updateStackUI();
+}
+function removeFromStack(i){exportStack.splice(i,1);updateStackUI();}
+function updateStackUI(){
+  const count=exportStack.length;
+  document.getElementById("stack-count").textContent=count;
+  document.getElementById("btn-export-all").disabled=count===0;
+  const list=document.getElementById("stack-list");
+  if(!count){list.innerHTML=`<div class="stack-empty">No skills in export stack.<br>Generate skills and click "+ Add to Export".</div>`;return;}
+  list.innerHTML=exportStack.map((s,i)=>{
+    const c=catOf(s.catId);
+    return`<div class="batch-item">
+      <div class="bi-num">${i+1}</div>
+      <div style="flex:1">
+        <div class="bi-name">${esc(s.name)}</div>
+        <div class="bi-cat" style="color:${c.color}">${c.name} · ${s.content.lessons.length}L ${s.content.exercises.length}E ${s.content.quiz.length}Q</div>
+      </div>
+      <button class="bi-rm" onclick="removeFromStack(${i})">✕</button>
+    </div>`;
+  }).join("");
+}
+updateStackUI();
+
+function copyJson(){
+  if(!currentSkill)return;
+  navigator.clipboard.writeText(JSON.stringify(currentSkill,null,2)).then(()=>setStatus("Copied to clipboard","ok")).catch(()=>setStatus("Copy failed — try Raw JSON tab","err"));
+}
+
+document.getElementById("btn-export-all").addEventListener("click",()=>{
+  if(!exportStack.length)return;
+  // Create import-ready JSON — the learning engine imports {skills:[...]}
+  // We assign sequential IDs starting from 6 (after the 5 starter skills, or from 1 if standalone)
+  const numbered=exportStack.map((s,i)=>({...s,id:i+1}));
+  const exportObj={version:2,profileName:"Imported Curriculum",teacherPin:null,skills:numbered};
+  const blob=new Blob([JSON.stringify(exportObj,null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob);const a=document.createElement("a");
+  a.href=url;a.download=`25-100_curriculum_${new Date().toISOString().slice(0,10)}.json`;
+  a.click();URL.revokeObjectURL(url);
+});
+
+// ═══════════════════════════════════════════════
+// VIEW TABS
+// ═══════════════════════════════════════════════
+document.querySelectorAll(".view-tab").forEach(t=>{
+  t.addEventListener("click",()=>{
+    const name=t.dataset.vtab;
+    document.querySelectorAll(".view-tab").forEach(x=>x.classList.toggle("active",x.dataset.vtab===name));
+    ["preview","stack","raw"].forEach(v=>{
+      const el=document.getElementById("vtab-"+v);
+      el.style.display=v===name?(v==="stack"?"flex":"block"):"none";
+    });
+    document.getElementById("preview-label").textContent=name==="stack"?"Export Stack":name==="raw"?"Raw JSON":"Preview";
+  });
+});
+</script>
+</body>
+</html>
