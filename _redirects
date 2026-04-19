@@ -1,3 +1,0 @@
-# Cloudflare Pages routing
-# SPA-style fallback — serves index.html for any unmatched path
-/*    /index.html   200
