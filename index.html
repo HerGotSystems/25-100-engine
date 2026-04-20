@@ -142,16 +142,6 @@ input[type="file"]{display:none;}
 .skill-card.dashed{border-style:dashed;opacity:.75;}
 .skill-card.empty-state{cursor:default;opacity:.5;display:flex;align-items:center;justify-content:center;padding:24px;font-size:11px;color:var(--muted);font-family:'Atkinson Hyperlegible',sans-serif;}
 .skill-card.empty-state:hover{border-color:var(--border);}
-.skill-grid-mini{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;}
-.mini-cell{aspect-ratio:1;border:1px solid var(--border);cursor:pointer;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;transition:all .12s;}
-.mini-cell:hover{border-color:var(--gold);}
-.mini-cell .mc-fill{position:absolute;inset:0;}
-.mini-cell .mc-label{position:relative;font-size:10px;font-weight:700;z-index:1;}
-.mini-cell::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 4px);left:50%;transform:translateX(-50%);background:#111;border:1px solid var(--border2);color:var(--text);font-size:10px;padding:4px 8px;white-space:nowrap;z-index:50;pointer-events:none;opacity:0;transition:opacity .1s;}
-.mini-cell:hover::after{opacity:1;}
-.mini-cell.nc{cursor:default;opacity:.35;}
-.mini-cell.nc:hover{border-color:var(--border);}
-.mini-cell.nc::after{display:none;}
 .recent-entry{padding:8px 0;border-bottom:1px solid var(--border);font-size:11px;}
 .recent-entry-skill{font-weight:700;margin-bottom:2px;}
 .recent-entry-meta{color:var(--muted);font-size:10px;}
@@ -465,8 +455,11 @@ input[type="file"]{display:none;}
         <input type="text" id="dp-input" class="dash-profile-input" style="display:none">
         <div class="dash-profile-sub" id="dp-sub"></div>
       </div>
-      <div style="margin-bottom:18px;"><div class="section-label">Continue Learning</div><div id="active-list"></div></div>
-      <div><div class="section-label">All Skills</div><div class="skill-grid-mini" id="mini-grid"></div></div>
+      <div>
+        <div class="section-label" id="active-label">Continue Learning</div>
+        <div id="active-list"></div>
+        <div id="active-toggle-wrap" style="margin-top:10px;"></div>
+      </div>
     </div>
     <div class="dash-right scroll">
       <div class="section-label" style="margin-bottom:10px;">Recent Activity</div>
@@ -926,34 +919,114 @@ function closeA11y(e){if(!e||e.target===document.getElementById("a11y-overlay"))
 // ═══════════════════════════════════
 // RENDER: DASHBOARD
 // ═══════════════════════════════════
+// Dashboard expand/collapse state (reset on page load)
+let dashExpanded = false;
+ 
 function renderDash(){
-  document.getElementById("dp-name").textContent=state.profileName;
-  const mc=state.skills.filter(mastered).length,st=state.skills.filter(s=>totalAtt(s)>0&&!mastered(s)).length;
-  document.getElementById("dp-sub").textContent=`${mc} mastered · ${st} in progress · ${state.skills.length-mc-st} not started`;
-  const active=state.skills.filter(s=>totalAtt(s)>0&&!mastered(s)&&hasContent(s)).sort((a,b)=>(b.lastActivity||"").localeCompare(a.lastActivity||"")).slice(0,3);
-  const next=state.skills.find(s=>totalAtt(s)===0&&hasContent(s));
-  let ah="";
-  if(!active.length&&!next)ah=`<div class="skill-card empty-state">Select a skill below to begin</div>`;
-  active.forEach(s=>{
-    const i=state.skills.indexOf(s),c=catOf(s),p=pct(s);
-    ah+=`<div class="skill-card" onclick="openLearn(${i})"><div class="skill-card-top"><div><div class="skill-card-cat" style="color:${c.color}">${c.name}</div><div class="skill-card-name">${esc(s.name)}</div></div><div class="skill-card-level" style="color:${c.color}">${currentLevel(s)}<br><span style="font-size:10px;color:var(--muted)">${p}%</span></div></div><div class="skill-bar-track"><div class="skill-bar-fill" style="width:${p}%;background:${c.color}"></div></div><div class="skill-card-meta"><span>${totalAtt(s)} sessions</span><span>${s.lastActivity?relTime(s.lastActivity):"never"}</span></div></div>`;
-  });
-  if(next){
-    const i=state.skills.indexOf(next),c=catOf(next);
-    ah+=`<div class="skill-card dashed" onclick="openLearn(${i})"><div class="skill-card-top"><div><div class="skill-card-cat" style="color:${c.color}">${c.name}</div><div class="skill-card-name">${esc(next.name)}</div></div><div class="skill-card-level" style="color:var(--muted)">Start →</div></div><div style="font-size:10px;color:var(--muted);margin-top:4px">${next.content.lessons.length} lessons · ${next.content.quiz.length} quiz questions</div></div>`;
+  document.getElementById("dp-name").textContent = state.profileName;
+  const mc = state.skills.filter(mastered).length;
+  const st = state.skills.filter(s => totalAtt(s) > 0 && !mastered(s)).length;
+  document.getElementById("dp-sub").textContent = `${mc} mastered · ${st} in progress · ${state.skills.length - mc - st} not started`;
+ 
+  // All in-progress skills, sorted by most recent activity
+  const activeAll = state.skills
+    .filter(s => totalAtt(s) > 0 && !mastered(s) && hasContent(s))
+    .sort((a, b) => (b.lastActivity || "").localeCompare(a.lastActivity || ""));
+ 
+  // Next skill to start: first one with content but zero activity
+  const next = state.skills.find(s => totalAtt(s) === 0 && hasContent(s));
+ 
+  const DEFAULT_SHOW = 5;
+  const showAll = dashExpanded || activeAll.length <= DEFAULT_SHOW;
+  const activeVisible = showAll ? activeAll : activeAll.slice(0, DEFAULT_SHOW);
+ 
+  // Update section label with count so people know how many there are
+  const labelEl = document.getElementById("active-label");
+  if(labelEl) labelEl.textContent = activeAll.length ? `Continue Learning (${activeAll.length})` : "Continue Learning";
+ 
+  let ah = "";
+  if(!activeAll.length && !next){
+    ah = `<div class="skill-card empty-state">No skills started yet — visit Grid to pick one</div>`;
   }
-  document.getElementById("active-list").innerHTML=ah;
-  let mg="";
-  state.skills.forEach((s,i)=>{
-    const c=catOf(s),p=pct(s),m=mastered(s),nc=!hasContent(s);
-    const op=nc?0:(m?.6:p>0?.1+p/100*.3:0);
-    mg+=`<div class="mini-cell${nc?" nc":""}" data-tip="${i+1}. ${esc(s.name)}" ${nc?"":`onclick="openLearn(${i})"`}><div class="mc-fill" style="background:${c.color};opacity:${op}"></div><div class="mc-label" style="color:${p>0||m?c.color:"var(--dim)"}">${m?"✓":p>0?currentLevel(s):(i+1)}</div></div>`;
+ 
+  activeVisible.forEach(s => {
+    const i = state.skills.indexOf(s);
+    const c = catOf(s);
+    const p = pct(s);
+    ah += `<div class="skill-card" onclick="openLearn(${i})">
+      <div class="skill-card-top">
+        <div>
+          <div class="skill-card-cat" style="color:${c.color}">${c.name}</div>
+          <div class="skill-card-name">${esc(s.name)}</div>
+        </div>
+        <div class="skill-card-level" style="color:${c.color}">${currentLevel(s)}<br><span style="font-size:10px;color:var(--muted)">${p}%</span></div>
+      </div>
+      <div class="skill-bar-track"><div class="skill-bar-fill" style="width:${p}%;background:${c.color}"></div></div>
+      <div class="skill-card-meta">
+        <span>${totalAtt(s)} sessions</span>
+        <span>${s.lastActivity ? relTime(s.lastActivity) : "never"}</span>
+      </div>
+    </div>`;
   });
-  for(let i=state.skills.length;i<MAX_SKILLS;i++)mg+=`<div class="mini-cell nc" style="opacity:.15;"><div class="mc-label" style="color:var(--dim);font-size:9px">${i+1}</div></div>`;
-  document.getElementById("mini-grid").innerHTML=mg;
-  const all=[];state.skills.forEach((s,i)=>(s.log||[]).forEach(e=>all.push({...e,sn:s.name,ci:i,cc:catOf(s).color})));all.sort((a,b)=>b.ts.localeCompare(a.ts));
-  document.getElementById("dash-recent").innerHTML=all.length?all.slice(0,8).map(e=>`<div class="recent-entry"><div class="recent-entry-skill" style="color:${e.cc}">${esc(e.sn)}${e.quizScore!=null?` <span style="float:right;color:var(--gold)">${e.quizScore}/${e.quizTotal}</span>`:""}</div><div class="recent-entry-meta">${e.level} · ${relTime(e.ts)}${e.note?` — "${esc(e.note)}"`:""}</div></div>`).join(""):`<div class="empty-msg">No activity yet.</div>`;
-  document.getElementById("dash-stats").innerHTML=`<div class="sc"><div class="sn" style="color:var(--gold)">${mc}</div><div class="sl">Mastered</div></div><div class="sc"><div class="sn" style="color:var(--cat2)">${state.skills.filter(s=>totalAtt(s)>0&&!mastered(s)).length}</div><div class="sl">Active</div></div><div class="sc"><div class="sn" style="color:var(--muted)">${state.skills.reduce((s,sk)=>s+totalAtt(sk),0)}</div><div class="sl">Sessions</div></div><div class="sc"><div class="sn" style="color:var(--cat3)">${state.skills.filter(hasContent).length}</div><div class="sl">Ready</div></div>`;
+ 
+  // Start-next card shown only when there's something new to start
+  if(next){
+    const i = state.skills.indexOf(next);
+    const c = catOf(next);
+    ah += `<div class="skill-card dashed" onclick="openLearn(${i})">
+      <div class="skill-card-top">
+        <div>
+          <div class="skill-card-cat" style="color:${c.color}">${c.name}</div>
+          <div class="skill-card-name">${esc(next.name)}</div>
+        </div>
+        <div class="skill-card-level" style="color:var(--muted)">Start →</div>
+      </div>
+      <div style="font-size:10px;color:var(--muted);margin-top:4px">
+        ${next.content.lessons.length} lesson${next.content.lessons.length !== 1 ? "s" : ""} · ${next.content.quiz.length} quiz question${next.content.quiz.length !== 1 ? "s" : ""}
+      </div>
+    </div>`;
+  }
+ 
+  document.getElementById("active-list").innerHTML = ah;
+ 
+  // Show-all toggle only visible when there are more than DEFAULT_SHOW in progress
+  const toggleWrap = document.getElementById("active-toggle-wrap");
+  if(toggleWrap){
+    if(activeAll.length > DEFAULT_SHOW){
+      const hiddenCount = activeAll.length - DEFAULT_SHOW;
+      toggleWrap.innerHTML = dashExpanded
+        ? `<button class="btn btn-ghost btn-sm" onclick="toggleDashExpand()">Show less ↑</button>`
+        : `<button class="btn btn-ghost btn-sm" onclick="toggleDashExpand()">Show ${hiddenCount} more ↓</button>`;
+    } else {
+      toggleWrap.innerHTML = "";
+    }
+  }
+ 
+  // Recent activity (right column)
+  const all = [];
+  state.skills.forEach((s, i) => (s.log || []).forEach(e => all.push({...e, sn: s.name, ci: i, cc: catOf(s).color})));
+  all.sort((a, b) => b.ts.localeCompare(a.ts));
+  document.getElementById("dash-recent").innerHTML = all.length
+    ? all.slice(0, 8).map(e => `<div class="recent-entry">
+        <div class="recent-entry-skill" style="color:${e.cc}">${esc(e.sn)}${e.quizScore != null ? ` <span style="float:right;color:var(--gold)">${e.quizScore}/${e.quizTotal}</span>` : ""}</div>
+        <div class="recent-entry-meta">${e.level} · ${relTime(e.ts)}${e.note ? ` — "${esc(e.note)}"` : ""}</div>
+      </div>`).join("")
+    : `<div class="empty-msg">No activity yet.</div>`;
+ 
+  // Stats block (right column)
+  const totalSess = state.skills.reduce((s, sk) => s + totalAtt(sk), 0);
+  const readyCount = state.skills.filter(hasContent).length;
+  document.getElementById("dash-stats").innerHTML = `
+    <div class="sc"><div class="sn" style="color:var(--gold)">${mc}</div><div class="sl">Mastered</div></div>
+    <div class="sc"><div class="sn" style="color:var(--cat2)">${st}</div><div class="sl">Active</div></div>
+    <div class="sc"><div class="sn" style="color:var(--muted)">${totalSess}</div><div class="sl">Sessions</div></div>
+    <div class="sc"><div class="sn" style="color:var(--cat3)">${readyCount}</div><div class="sl">Ready</div></div>
+  `;
+}
+ 
+function toggleDashExpand(){
+  dashExpanded = !dashExpanded;
+  renderDash();
 }
  
 // ═══════════════════════════════════
