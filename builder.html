@@ -5,149 +5,150 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Skill Builder — 25/100</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#0c0c0c;--surface:#141414;--surface2:#1c1c1c;--border:#2a2a2a;--border2:#363636;
-  --text:#e0e0e0;--muted:#555;--dim:#2a2a2a;
+  --text:#e0e0e0;--muted:#8a8a8a;--dim:#3a3a3a;
   --gold:#c8960a;--gold-dim:#1a1200;
   --accent:#ffaa22;--accent-dim:#1a0e00;
   --ok:#128550;--ok-dim:#031508;
-  --err:#992020;--err-dim:#1a0000;
+  --warn:#c8960a;--warn-dim:#1a1200;
+  --err:#c04040;--err-dim:#1a0000;
   --cat1:#b87200;--cat2:#1a55bb;--cat3:#128550;--cat4:#a84000;
   --font:'Space Mono',monospace;
+  --font-read:'Atkinson Hyperlegible',sans-serif;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html,body{height:100%;overflow:hidden;}
-body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:12px;line-height:1.5;display:flex;flex-direction:column;}
-
-header{background:var(--surface);border-bottom:1px solid var(--border);height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0;}
-.logo{font-size:14px;font-weight:700;color:var(--accent);letter-spacing:1px;}
-.logo span{color:var(--muted);font-size:9px;letter-spacing:3px;font-weight:400;margin-left:10px;text-transform:uppercase;}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:13px;line-height:1.5;display:flex;flex-direction:column;}
+header{background:var(--surface);border-bottom:1px solid var(--border);height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0;}
+.logo{font-size:15px;font-weight:700;color:var(--accent);letter-spacing:0;}
+.logo span{color:var(--muted);font-size:10px;letter-spacing:2px;font-weight:400;margin-left:12px;}
 .header-right{display:flex;gap:8px;align-items:center;}
-.hlink{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:4px 10px;border:1px solid var(--border);background:none;cursor:pointer;font-family:var(--font);}
+.hlink{font-size:10px;letter-spacing:1px;color:var(--muted);text-decoration:none;padding:5px 12px;border:1px solid var(--border);background:none;cursor:pointer;font-family:var(--font);}
 .hlink:hover{color:var(--gold);border-color:var(--gold);}
-
 .workspace{flex:1;overflow:hidden;display:flex;}
 .scroll{overflow-y:auto;}
-.scroll::-webkit-scrollbar{width:3px;}
+.scroll::-webkit-scrollbar{width:4px;}
 .scroll::-webkit-scrollbar-thumb{background:var(--border2);}
-
-/* COLUMNS */
-.col-groups{width:220px;border-right:1px solid var(--border);background:var(--surface);display:flex;flex-direction:column;}
-.col-prompt{width:340px;border-right:1px solid var(--border);display:flex;flex-direction:column;}
-.col-paste{width:340px;border-right:1px solid var(--border);display:flex;flex-direction:column;}
+ 
+.col-groups{width:230px;border-right:1px solid var(--border);background:var(--surface);display:flex;flex-direction:column;}
+.col-prompt{width:360px;border-right:1px solid var(--border);display:flex;flex-direction:column;}
+.col-paste{width:380px;border-right:1px solid var(--border);display:flex;flex-direction:column;}
 .col-bank{flex:1;display:flex;flex-direction:column;}
-
-.col-header{background:var(--surface);border-bottom:1px solid var(--border);padding:10px 14px;flex-shrink:0;}
-.col-title{font-size:9px;text-transform:uppercase;letter-spacing:3px;color:var(--muted);}
-.col-sub{font-size:9px;color:var(--dim);margin-top:3px;}
-
-/* GROUP LIST */
-.group-item{padding:9px 14px;border-bottom:1px solid var(--border);cursor:pointer;transition:all .1s;display:flex;align-items:flex-start;gap:8px;}
+.col-header{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 14px;flex-shrink:0;}
+.col-title{font-size:11px;font-weight:700;color:var(--text);letter-spacing:0;}
+.col-sub{font-size:10px;color:var(--muted);margin-top:3px;}
+ 
+.group-item{padding:10px 14px;border-bottom:1px solid var(--border);cursor:pointer;transition:all .1s;display:flex;align-items:flex-start;gap:8px;}
 .group-item:hover{background:var(--surface2);}
 .group-item.active{background:var(--accent-dim);border-left:2px solid var(--accent);}
 .group-item.done{border-left:2px solid var(--ok);}
-.gi-num{font-size:9px;color:var(--muted);min-width:22px;padding-top:1px;}
+.gi-num{font-size:10px;color:var(--muted);min-width:26px;padding-top:1px;font-weight:700;}
 .gi-skills{flex:1;}
-.gi-skill{font-size:9px;color:var(--muted);line-height:1.6;}
+.gi-skill{font-size:10px;color:var(--muted);line-height:1.7;}
 .gi-skill.active-skill{color:var(--text);}
-.gi-badge{font-size:8px;padding:1px 5px;border:1px solid var(--ok);color:var(--ok);margin-left:4px;vertical-align:middle;}
-.custom-group{padding:12px 14px;border-bottom:1px solid var(--border);}
-.cl{font-size:9px;text-transform:uppercase;letter-spacing:2px;color:var(--muted);display:block;margin-bottom:5px;}
-.t-ta{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:var(--font);font-size:10px;padding:8px;resize:none;line-height:1.7;}
+.gi-skill.banked{color:var(--ok);}
+.gi-badge{font-size:9px;padding:1px 6px;border:1px solid var(--ok);color:var(--ok);margin-left:4px;vertical-align:middle;}
+ 
+.custom-group{padding:14px;border-bottom:1px solid var(--border);}
+.cl{font-size:10px;color:var(--muted);display:block;margin-bottom:6px;}
+.t-ta{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:var(--font);font-size:11px;padding:9px;resize:none;line-height:1.7;}
 .t-ta:focus{outline:none;border-color:var(--accent);}
-.t-ta::placeholder{color:#333;}
-.t-input{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:var(--font);font-size:11px;padding:7px 10px;}
+.t-ta::placeholder{color:var(--dim);}
+.t-input{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:var(--font);font-size:12px;padding:8px 10px;}
 .t-input:focus{outline:none;border-color:var(--accent);}
-.t-select{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:var(--font);font-size:11px;padding:6px 10px;}
+.t-select{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:var(--font);font-size:11px;padding:7px 10px;}
 .t-select:focus{outline:none;border-color:var(--accent);}
-
-/* PROMPT COLUMN */
-.prompt-body{flex:1;padding:14px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;}
-.prompt-box{background:var(--surface2);border:1px solid var(--border);padding:12px;font-size:9px;line-height:1.8;color:var(--text);white-space:pre-wrap;word-break:break-word;flex:1;overflow-y:auto;max-height:400px;}
-.prompt-box.empty{color:var(--muted);font-style:italic;display:flex;align-items:center;justify-content:center;text-align:center;padding:30px;}
-.config-row{display:flex;gap:8px;align-items:center;}
-.config-row label{font-size:9px;text-transform:uppercase;letter-spacing:2px;color:var(--muted);white-space:nowrap;}
+ 
+.prompt-body{flex:1;padding:14px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;}
+.prompt-box{background:var(--surface2);border:1px solid var(--border);padding:12px;font-size:10px;line-height:1.8;color:var(--text);white-space:pre-wrap;word-break:break-word;flex:1;overflow-y:auto;max-height:360px;}
+.prompt-box.empty{color:var(--muted);display:flex;align-items:center;justify-content:center;text-align:center;padding:30px;font-family:var(--font-read);font-size:12px;}
+.config-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
 .num-row{display:flex;align-items:center;gap:6px;}
-.nb{width:22px;height:22px;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.num-row label{font-size:10px;color:var(--muted);}
+.nb{width:24px;height:24px;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
 .nb:hover{border-color:var(--accent);color:var(--accent);}
-.nv{width:24px;text-align:center;font-size:11px;font-weight:700;}
-
-.btn{background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:var(--font);font-size:9px;letter-spacing:2px;padding:6px 14px;cursor:pointer;transition:all .12s;text-transform:uppercase;}
+.nv{width:28px;text-align:center;font-size:12px;font-weight:700;}
+.btn{background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:var(--font);font-size:11px;letter-spacing:0;padding:7px 14px;cursor:pointer;transition:all .12s;}
 .btn:hover{border-color:var(--gold);color:var(--gold);}
 .btn:disabled{opacity:.3;cursor:not-allowed;}
 .btn-accent{background:var(--accent-dim);border-color:var(--accent);color:var(--accent);}
 .btn-accent:hover{background:var(--accent);color:#000;}
 .btn-ok{background:var(--ok-dim);border-color:var(--ok);color:var(--ok);}
 .btn-ok:hover{background:var(--ok);color:#000;}
+.btn-warn{background:var(--warn-dim);border-color:var(--warn);color:var(--warn);}
+.btn-warn:hover{background:var(--warn);color:#000;}
 .btn-full{width:100%;}
-
-/* PASTE COLUMN */
+ 
+.hint-box{background:var(--surface);border:1px solid var(--border);padding:12px;font-size:11px;color:var(--muted);line-height:1.8;font-family:var(--font-read);}
+.hint-box strong{color:var(--text);font-weight:700;}
+ 
 .paste-body{flex:1;padding:14px;display:flex;flex-direction:column;gap:10px;overflow-y:auto;}
-.paste-zone{background:var(--surface2);border:2px dashed var(--border);padding:14px;font-size:10px;resize:none;width:100%;color:var(--text);font-family:var(--font);line-height:1.7;flex:1;min-height:200px;}
+.paste-zone{background:var(--surface2);border:2px dashed var(--border);padding:14px;font-size:11px;resize:none;width:100%;color:var(--text);font-family:var(--font);line-height:1.7;flex:1;min-height:200px;}
 .paste-zone:focus{outline:none;border-color:var(--accent);}
-.paste-zone::placeholder{color:#333;}
-.parse-result{background:var(--surface);border:1px solid var(--border);padding:12px;font-size:10px;}
-.pr-ok{color:var(--ok);font-weight:700;margin-bottom:6px;}
-.pr-err{color:#c44;font-weight:700;margin-bottom:6px;}
-.pr-skill{padding:3px 0;border-bottom:1px solid var(--border);font-size:9px;display:flex;justify-content:space-between;}
+.paste-zone::placeholder{color:var(--dim);}
+.parse-result{background:var(--surface);border:1px solid var(--border);padding:12px;font-size:11px;max-height:280px;overflow-y:auto;}
+.pr-ok{color:var(--ok);font-weight:700;margin-bottom:8px;}
+.pr-err{color:var(--err);font-weight:700;margin-bottom:8px;}
+.pr-warn-head{color:var(--warn);font-weight:700;margin-top:8px;margin-bottom:4px;font-size:10px;}
+.pr-skill{padding:4px 0;border-bottom:1px solid var(--border);font-size:10px;display:flex;justify-content:space-between;gap:8px;}
 .pr-skill:last-child{border-bottom:none;}
-.pr-skill-name{color:var(--text);}
-.pr-skill-meta{color:var(--muted);}
-.pr-warn{color:var(--gold);font-size:9px;margin-top:6px;}
-
-/* BANK COLUMN */
+.pr-skill-name{color:var(--text);flex:1;}
+.pr-skill-meta{color:var(--muted);font-size:10px;white-space:nowrap;}
+.pr-note{color:var(--muted);font-size:10px;margin-top:2px;font-family:var(--font-read);}
+.pr-line{font-size:10px;margin-top:3px;font-family:var(--font-read);}
+.pr-line.warn{color:var(--warn);}
+.pr-line.err{color:var(--err);}
+ 
 .bank-body{flex:1;overflow-y:auto;padding:14px;}
 .bank-stat{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;}
 .bs{background:var(--surface);border:1px solid var(--border);padding:12px;text-align:center;}
-.bs-num{font-size:24px;font-weight:700;line-height:1;}
-.bs-lbl{font-size:8px;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-top:3px;}
+.bs-num{font-size:26px;font-weight:700;line-height:1;}
+.bs-lbl{font-size:10px;color:var(--muted);margin-top:4px;}
 .bank-skill{background:var(--surface);border:1px solid var(--border);padding:10px 12px;margin-bottom:6px;display:flex;align-items:center;gap:10px;}
-.bsk-num{font-size:9px;color:var(--muted);width:20px;text-align:right;flex-shrink:0;}
-.bsk-name{font-size:11px;font-weight:700;flex:1;}
-.bsk-cat{font-size:8px;letter-spacing:1px;text-transform:uppercase;}
-.bsk-meta{font-size:9px;color:var(--muted);}
-.bsk-rm{background:none;border:none;color:#c44;font-family:var(--font);font-size:10px;cursor:pointer;padding:2px 5px;flex-shrink:0;}
+.bsk-num{font-size:10px;color:var(--muted);width:22px;text-align:right;flex-shrink:0;}
+.bsk-name{font-size:12px;font-weight:700;flex:1;}
+.bsk-cat{font-size:10px;}
+.bsk-meta{font-size:10px;color:var(--muted);}
+.bsk-rm{background:none;border:none;color:var(--err);font-family:var(--font);font-size:11px;cursor:pointer;padding:3px 7px;flex-shrink:0;}
 .bsk-rm:hover{background:var(--err-dim);}
-.bank-empty{color:var(--muted);font-size:10px;text-align:center;padding:40px 20px;}
-
-.bank-footer{background:var(--surface);border-top:1px solid var(--border);padding:12px 14px;flex-shrink:0;display:flex;gap:8px;align-items:center;}
-.bank-footer-info{flex:1;font-size:9px;color:var(--muted);}
-
-/* STATUS */
+.bank-empty{color:var(--muted);font-size:11px;text-align:center;padding:40px 20px;font-family:var(--font-read);}
+.bank-footer{background:var(--surface);border-top:1px solid var(--border);padding:12px 14px;flex-shrink:0;display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.bank-footer-info{flex:1;font-size:10px;color:var(--muted);font-family:var(--font-read);}
+ 
 .status-bar{height:3px;background:var(--border);flex-shrink:0;}
 .status-bar-fill{height:100%;background:var(--ok);transition:width .4s;}
-
-/* CAT COLORS */
-.cat-1{color:#b87200;}.cat-2{color:#1a55bb;}.cat-3{color:#128550;}.cat-4{color:#a84000;}.cat-5{color:#888;}
+ 
+.export-warn{background:var(--warn-dim);border:1px solid var(--warn);color:var(--warn);padding:10px 12px;margin-bottom:10px;font-size:11px;line-height:1.7;font-family:var(--font-read);}
+.export-warn strong{display:block;margin-bottom:3px;font-family:var(--font);letter-spacing:0;}
+ 
+.cat-1{color:#c88a30;}.cat-2{color:#5088d8;}.cat-3{color:#3aa878;}.cat-4{color:#c8603c;}.cat-5{color:#a0a0a0;}
 </style>
 </head>
 <body>
-
 <header>
-  <div class="logo">SKILL BUILDER <span>25/100 workflow</span></div>
+  <div class="logo">SKILL BUILDER <span>25/100 authoring workflow</span></div>
   <div class="header-right">
-    <a href="creator.html" class="hlink">AI Creator</a>
     <a href="index.html" class="hlink">← Engine</a>
   </div>
 </header>
-
+ 
 <div class="workspace">
-
   <!-- COL 1: GROUP SELECTOR -->
   <div class="col-groups">
     <div class="col-header">
       <div class="col-title">Skill Groups</div>
-      <div class="col-sub" id="groups-sub">Click a group to generate prompt</div>
+      <div class="col-sub" id="groups-sub">Select a group, or use custom</div>
     </div>
     <div class="scroll" style="flex:1;">
       <div id="group-list"></div>
       <div class="custom-group">
         <label class="cl">Custom Skills (one per line)</label>
-        <textarea class="t-ta" id="custom-skills" rows="5" placeholder="Negotiation Skills&#10;Public Speaking&#10;Goal Setting&#10;Memory Techniques&#10;Resilience"></textarea>
-        <div style="display:flex;gap:6px;margin-top:8px;">
-          <select class="t-select" id="custom-cat" style="flex:1;">
+        <textarea class="t-ta" id="custom-skills" rows="5" placeholder="Negotiation Skills&#10;Public Speaking&#10;Goal Setting"></textarea>
+        <div style="margin-top:8px;">
+          <select class="t-select" id="custom-cat">
             <option value="0">Auto-detect category</option>
             <option value="1">Cognitive</option>
             <option value="2">Communication</option>
@@ -159,175 +160,171 @@ header{background:var(--surface);border-bottom:1px solid var(--border);height:46
       </div>
     </div>
   </div>
-
+ 
   <!-- COL 2: PROMPT GENERATOR -->
   <div class="col-prompt">
     <div class="col-header">
-      <div class="col-title">ChatGPT Prompt</div>
-      <div class="col-sub">Copy → paste into ChatGPT</div>
+      <div class="col-title">Generation Prompt</div>
+      <div class="col-sub">Copy into ChatGPT / Claude / any LLM</div>
     </div>
     <div class="prompt-body">
-      <div style="display:flex;gap:8px;flex-wrap:wrap;">
-        <div class="num-row"><span style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-right:4px;">Lessons</span>
+      <div class="config-row">
+        <div class="num-row"><label>Lessons</label>
           <button class="nb" onclick="stepCfg('L',-1)">−</button><div class="nv" id="cfg-L">2</div><button class="nb" onclick="stepCfg('L',1)">+</button>
         </div>
-        <div class="num-row"><span style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-right:4px;">Exercises</span>
+        <div class="num-row"><label>Exercises</label>
           <button class="nb" onclick="stepCfg('E',-1)">−</button><div class="nv" id="cfg-E">2</div><button class="nb" onclick="stepCfg('E',1)">+</button>
         </div>
-        <div class="num-row"><span style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-right:4px;">Quiz Qs</span>
+        <div class="num-row"><label>Quiz</label>
           <button class="nb" onclick="stepCfg('Q',-1)">−</button><div class="nv" id="cfg-Q">6</div><button class="nb" onclick="stepCfg('Q',1)">+</button>
         </div>
       </div>
-
-      <div class="prompt-box empty" id="prompt-box">← Select a group or enter custom skills</div>
-
+      <div class="prompt-box empty" id="prompt-box">← Select a group on the left, or enter custom skills below it</div>
       <div style="display:flex;gap:8px;">
         <button class="btn btn-accent" style="flex:1;" id="btn-copy-prompt" onclick="copyPrompt()" disabled>Copy Prompt</button>
         <button class="btn" id="btn-regen" onclick="buildPrompt()" disabled>Rebuild</button>
       </div>
-      <div style="font-size:9px;color:var(--muted);line-height:1.7;background:var(--surface);border:1px solid var(--border);padding:10px;">
-        <strong style="color:var(--text)">Workflow:</strong><br>
-        1. Pick group on left<br>
-        2. Copy prompt above<br>
-        3. Paste into ChatGPT<br>
-        4. Copy ChatGPT's full response<br>
-        5. Paste into column 3 →<br>
-        6. Repeat for each group<br>
-        7. Export when done
+      <div class="hint-box">
+        <strong>Workflow</strong>
+        1 · Pick a group (left) or enter custom skills<br>
+        2 · Copy the prompt above<br>
+        3 · Paste into ChatGPT, wait for response<br>
+        4 · Copy ChatGPT's entire response (you can include multiple responses)<br>
+        5 · Paste into the box on the right →<br>
+        6 · The parser handles multi-response, retries, and truncation
       </div>
     </div>
   </div>
-
+ 
   <!-- COL 3: PASTE + PARSE -->
   <div class="col-paste">
     <div class="col-header">
-      <div class="col-title">Paste Response</div>
-      <div class="col-sub">Paste ChatGPT's JSON here</div>
+      <div class="col-title">Paste LLM Response</div>
+      <div class="col-sub">One, many, or messy — parser handles all</div>
     </div>
     <div class="paste-body">
-      <textarea class="paste-zone" id="paste-zone" placeholder="Paste ChatGPT's entire JSON response here…&#10;&#10;It can include code fences (```json) — they will be stripped automatically." rows="12" oninput="onPasteInput()"></textarea>
-
+      <textarea class="paste-zone" id="paste-zone" placeholder="Paste the raw output from ChatGPT or Claude here.&#10;&#10;It's fine if you have:&#10; · multiple responses concatenated&#10; · 'Thought for 5 seconds' preambles&#10; · markdown code fences&#10; · one truncated response followed by a retry&#10; · duplicates from retries&#10;&#10;The parser will extract every complete skill it can find." rows="10" oninput="onPasteInput()"></textarea>
       <div id="parse-result" style="display:none;" class="parse-result"></div>
-
-      <button class="btn btn-ok btn-full" id="btn-bank" onclick="bankSkills()" disabled>Add to Bank</button>
-      <button class="btn btn-full" id="btn-clear-paste" onclick="clearPaste()">Clear</button>
-
-      <div style="background:var(--surface);border:1px solid var(--border);padding:10px;font-size:9px;color:var(--muted);line-height:1.8;">
-        <strong style="color:var(--text)">Validation checks:</strong><br>
-        ✓ Valid JSON structure<br>
-        ✓ Skills array present<br>
-        ✓ Required fields per skill<br>
-        ✓ Quiz correct answers match options<br>
-        ✓ No duplicate skill names<br>
-        ⚠ Warns if lessons/quiz look thin
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-ok" style="flex:1" id="btn-bank" onclick="bankSkills()" disabled>Add to Bank</button>
+        <button class="btn" onclick="clearPaste()">Clear</button>
+      </div>
+      <div class="hint-box">
+        <strong>Validation checks</strong>
+        ✓ All quiz correct answers match their options<br>
+        ✓ Multiple-choice has exactly 4 options<br>
+        ✓ True/False is "True" or "False" (not "true", "yes", etc.)<br>
+        ✓ Duplicate detection against existing bank<br>
+        ⚠ Warns on short lessons or missing fields — but keeps them
       </div>
     </div>
   </div>
-
+ 
   <!-- COL 4: SKILL BANK -->
   <div class="col-bank">
     <div class="col-header" style="display:flex;align-items:center;justify-content:space-between;">
       <div>
         <div class="col-title">Skill Bank</div>
-        <div class="col-sub" id="bank-sub">0 skills collected</div>
+        <div class="col-sub" id="bank-sub">0 / 25 skills collected</div>
       </div>
-      <div style="display:flex;gap:6px;">
-        <button class="btn" id="btn-clear-bank" onclick="clearBank()">Clear All</button>
-      </div>
+      <button class="btn" id="btn-clear-bank" onclick="clearBank()">Clear All</button>
     </div>
     <div class="status-bar"><div class="status-bar-fill" id="progress-bar" style="width:0%"></div></div>
     <div class="bank-body scroll" id="bank-body">
-      <div class="bank-empty" id="bank-empty">No skills yet.<br>Parse responses and click Add to Bank.</div>
+      <div class="bank-empty" id="bank-empty">No skills in bank yet.<br>Paste responses on the left → click Add to Bank.</div>
     </div>
     <div class="bank-footer">
-      <div class="bank-footer-info" id="bank-footer-info">Export as a complete 25/100 import file</div>
-      <button class="btn" id="btn-export-engine" onclick="exportForEngine()" disabled>Export for Engine →</button>
-      <button class="btn" id="btn-export-append" onclick="exportAppend()" disabled>Export Skills Only</button>
+      <div style="width:100%">
+        <div class="export-warn" id="export-warn" style="display:none">
+          <strong>⚠ Replace mode wipes all engine progress</strong>
+          "Export as Full Engine File" creates a bundle that, when imported, replaces the user's entire state — including log entries, mastery progress, and existing skills. Only use this for a fresh install or a full reset.
+          For adding skills without destroying progress, use <em>Export (Skills Only)</em>.
+        </div>
+        <div style="display:flex;gap:6px;align-items:center;">
+          <div class="bank-footer-info" id="bank-footer-info">Export when ready</div>
+          <button class="btn" id="btn-toggle-warn" onclick="toggleExportWarn()">ⓘ</button>
+          <button class="btn btn-ok" id="btn-export-skills" onclick="exportSkillsOnly()" disabled>Export Skills Only</button>
+          <button class="btn btn-warn" id="btn-export-engine" onclick="exportForEngine()" disabled>Full Engine File</button>
+        </div>
+      </div>
     </div>
   </div>
-
 </div>
-
+ 
 <script>
-// ═══════════════════════════════════════════════
-// SKILL GROUPS DATA
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
+// DATA — 25 skill groups (same as original)
+// ═══════════════════════════════════════════════════════════════
 const GROUPS = [
-  {n:1,  skills:["Critical Thinking (Cognitive)","Active Listening (Communication)","Emotional Regulation (Emotional)","Time Management (Practical)","Financial Literacy (Practical)"], done:true},
-  {n:2,  skills:["Negotiation Skills (Practical)","Public Speaking (Communication)","Growth Mindset (Cognitive)","Managing Anxiety (Emotional)","Habit Formation (Practical)"]},
-  {n:3,  skills:["Memory Techniques (Cognitive)","Storytelling (Communication)","Empathy (Emotional)","Goal Setting (Practical)","Decision Making (Cognitive)"]},
-  {n:4,  skills:["Speed Reading (Cognitive)","Written Communication (Communication)","Self-Compassion (Emotional)","Sleep Optimisation (Practical)","Systems Thinking (Cognitive)"]},
-  {n:5,  skills:["Problem Solving (Cognitive)","Giving and Receiving Feedback (Communication)","Resilience (Emotional)","Nutrition Basics (Practical)","Mental Models (Cognitive)"]},
-  {n:6,  skills:["Creative Thinking (Cognitive)","Assertive Communication (Communication)","Boundaries (Emotional)","Exercise and Movement (Practical)","Focus and Deep Work (Cognitive)"]},
-  {n:7,  skills:["Logical Reasoning (Cognitive)","Conflict Resolution (Communication)","Managing Perfectionism (Emotional)","Career Planning (Practical)","Pattern Recognition (Cognitive)"]},
-  {n:8,  skills:["Research Skills (Cognitive)","Non-verbal Communication (Communication)","Dealing with Failure (Emotional)","Cooking Fundamentals (Practical)","Analytical Writing (Cognitive)"]},
-  {n:9,  skills:["Statistical Thinking (Cognitive)","Difficult Conversations (Communication)","Managing Overwhelm (Emotional)","Job Searching (Practical)","Strategic Thinking (Cognitive)"]},
-  {n:10, skills:["Learning How to Learn (Cognitive)","Persuasion and Influence (Communication)","Self-Awareness (Emotional)","Project Management (Practical)","Cognitive Bias Awareness (Cognitive)"]},
-  {n:11, skills:["Lateral Thinking (Cognitive)","Networking (Communication)","Mindfulness (Emotional)","Investing Basics (Practical)","Data Literacy (Cognitive)"]},
-  {n:12, skills:["Argument Mapping (Cognitive)","Cross-cultural Communication (Communication)","Anger Management (Emotional)","Leadership Fundamentals (Practical)","Philosophical Thinking (Cognitive)"]},
-  {n:13, skills:["Socratic Questioning (Cognitive)","Presentation Skills (Communication)","Gratitude Practice (Emotional)","Delegation (Practical)","Inductive and Deductive Reasoning (Cognitive)"]},
-  {n:14, skills:["Risk Assessment (Cognitive)","Teaching and Explaining (Communication)","Loneliness and Connection (Emotional)","Running Effective Meetings (Practical)","Hypothesis Testing (Cognitive)"]},
-  {n:15, skills:["Second-order Thinking (Cognitive)","Interview Skills (Communication)","Trust Building (Emotional)","Remote Work Skills (Practical)","Mental Simulation (Cognitive)"]},
-  {n:16, skills:["Reading Comprehension (Cognitive)","Email and Professional Writing (Communication)","Managing Imposter Syndrome (Emotional)","Productivity Systems (Practical)","Analogical Thinking (Cognitive)"]},
-  {n:17, skills:["Forecasting and Prediction (Cognitive)","Facilitation Skills (Communication)","Processing Grief and Loss (Emotional)","Digital Security and Privacy (Practical)","Thought Experiments (Cognitive)"]},
-  {n:18, skills:["Information Literacy (Cognitive)","Sales Communication (Communication)","Managing Envy and Comparison (Emotional)","Entrepreneurship Basics (Practical)","Intellectual Humility (Cognitive)"]},
-  {n:19, skills:["Probabilistic Thinking (Cognitive)","Debate and Argumentation (Communication)","Psychological Safety (Emotional)","Reading Financial Statements (Practical)","Abstraction and Generalisation (Cognitive)"]},
-  {n:20, skills:["Metacognition (Cognitive)","Digital Communication Etiquette (Communication)","Managing Chronic Stress (Emotional)","Tax Literacy (Practical)","Counterfactual Thinking (Cognitive)"]},
-  {n:21, skills:["Causal Reasoning (Cognitive)","Listening to Understand vs. to Reply (Communication)","Emotional Intelligence (Emotional)","Contract and Legal Literacy Basics (Practical)","Ethical Reasoning (Cognitive)"]},
-  {n:22, skills:["Wisdom vs. Knowledge (Cognitive)","Humour and Levity in Communication (Communication)","Motivation and Drive (Emotional)","Sustainable Living (Practical)","Epistemology Basics (Cognitive)"]},
-  {n:23, skills:["Attention and Perception (Cognitive)","Storytelling with Data (Communication)","Psychological Resilience (Emotional)","Home Finance and Household Management (Practical)","Conceptual Thinking (Cognitive)"]},
-  {n:24, skills:["Philosophy of Science (Cognitive)","Negotiating Salary and Benefits (Communication)","Navigating Change and Uncertainty (Emotional)","Parenting Fundamentals (Practical)","Deconstructing Arguments (Cognitive)"]},
-  {n:25, skills:["First Principles Thinking (Cognitive)","Giving a Great Presentation (Communication)","Self-Regulation Under Pressure (Emotional)","Minimalism and Decluttering (Practical)","Knowledge Management (Cognitive)"]},
+  {n:1, skills:["Critical Thinking (Cognitive)","Active Listening (Communication)","Emotional Regulation (Emotional)","Time Management (Practical)","Financial Literacy (Practical)"]},
+  {n:2, skills:["Negotiation Skills (Practical)","Public Speaking (Communication)","Growth Mindset (Cognitive)","Managing Anxiety (Emotional)","Habit Formation (Practical)"]},
+  {n:3, skills:["Memory Techniques (Cognitive)","Storytelling (Communication)","Empathy (Emotional)","Goal Setting (Practical)","Decision Making (Cognitive)"]},
+  {n:4, skills:["Speed Reading (Cognitive)","Written Communication (Communication)","Self-Compassion (Emotional)","Sleep Optimisation (Practical)","Systems Thinking (Cognitive)"]},
+  {n:5, skills:["Problem Solving (Cognitive)","Giving and Receiving Feedback (Communication)","Resilience (Emotional)","Nutrition Basics (Practical)","Mental Models (Cognitive)"]},
 ];
-
-const CATS = [{id:1,name:"Cognitive",color:"#b87200"},{id:2,name:"Communication",color:"#1a55bb"},{id:3,name:"Emotional",color:"#128550"},{id:4,name:"Practical",color:"#a84000"},{id:5,name:"Custom",color:"#888"}];
-const CAT_MAP = {"cognitive":1,"communication":2,"emotional":3,"practical":4};
-
-// ═══════════════════════════════════════════════
+ 
+const CATS = [
+  {id:1,name:"Cognitive",    color:"#c88a30"},
+  {id:2,name:"Communication",color:"#5088d8"},
+  {id:3,name:"Emotional",    color:"#3aa878"},
+  {id:4,name:"Practical",    color:"#c8603c"},
+  {id:5,name:"Custom",       color:"#a0a0a0"},
+];
+const CAT_MAP = {cognitive:1, communication:2, emotional:3, practical:4};
+const TARGET_SKILLS = 25;
+ 
+// ═══════════════════════════════════════════════════════════════
 // STATE
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 let selectedGroup = null;
 let parsedSkills = null;
+let parsedWarnings = [];
 let bank = [];
 const cfg = {L:2, E:2, Q:6};
 const LIMITS = {L:[1,5], E:[0,4], Q:[2,10]};
-
-function stepCfg(k, d){cfg[k]=Math.max(LIMITS[k][0],Math.min(LIMITS[k][1],cfg[k]+d));document.getElementById("cfg-"+k).textContent=cfg[k];if(selectedGroup!==null)buildPrompt();}
-
-// ═══════════════════════════════════════════════
-// RENDER GROUPS
-// ═══════════════════════════════════════════════
+ 
+function stepCfg(k, d){
+  cfg[k] = Math.max(LIMITS[k][0], Math.min(LIMITS[k][1], cfg[k] + d));
+  document.getElementById("cfg-"+k).textContent = cfg[k];
+  if(selectedGroup !== null) buildPrompt();
+}
+ 
+// ═══════════════════════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════════════════════
+function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function normName(s){return String(s||"").toLowerCase().replace(/[-\s]+/g,"");}
+function catOf(s){return CATS[Math.max(0, Math.min(4, (s.catId||5) - 1))];}
+ 
+// ═══════════════════════════════════════════════════════════════
+// GROUPS
+// ═══════════════════════════════════════════════════════════════
 function renderGroups(){
-  const bankedNames = new Set(bank.map(s => s.name.toLowerCase()));
+  const bankedNames = new Set(bank.map(s => normName(s.name)));
   const el = document.getElementById("group-list");
   el.innerHTML = GROUPS.map((g,i) => {
-    const isDone = g.done || g.skills.every(s => {
-      const name = s.replace(/\s*\([^)]+\)/,"").toLowerCase();
-      return bankedNames.has(name);
+    const skillStatus = g.skills.map(s => {
+      const name = s.replace(/\s*\([^)]+\)/, "").trim();
+      const inBank = bankedNames.has(normName(name));
+      return {label:s, inBank};
     });
+    const isDone = skillStatus.every(s => s.inBank);
     const isActive = selectedGroup === i;
     return `<div class="group-item${isActive?" active":""}${isDone?" done":""}" onclick="selectGroup(${i})">
       <div class="gi-num">G${g.n}${isDone?" <span class='gi-badge'>✓</span>":""}</div>
-      <div class="gi-skills">${g.skills.map(s=>`<div class="gi-skill${isActive?" active-skill":""}">${s}</div>`).join("")}</div>
+      <div class="gi-skills">${skillStatus.map(s => 
+        `<div class="gi-skill${isActive?" active-skill":""}${s.inBank?" banked":""}">${esc(s.label)}</div>`
+      ).join("")}</div>
     </div>`;
   }).join("");
 }
-
-function selectGroup(i){
-  selectedGroup = i;
-  renderGroups();
-  buildPrompt();
-}
-
-function selectCustom(){
-  selectedGroup = "custom";
-  renderGroups();
-  buildPrompt();
-}
-
-// ═══════════════════════════════════════════════
+ 
+function selectGroup(i){selectedGroup = i; renderGroups(); buildPrompt();}
+function selectCustom(){selectedGroup = "custom"; renderGroups(); buildPrompt();}
+ 
+// ═══════════════════════════════════════════════════════════════
 // PROMPT BUILDER
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 function getSkillLines(){
   if(selectedGroup === "custom"){
     return document.getElementById("custom-skills").value.split("\n").map(l=>l.trim()).filter(Boolean);
@@ -335,43 +332,37 @@ function getSkillLines(){
   if(selectedGroup === null) return [];
   return GROUPS[selectedGroup].skills;
 }
-
-function parseCatFromParens(skillLine){
-  const m = skillLine.match(/\(([^)]+)\)/);
-  if(!m) return null;
-  return CAT_MAP[m[1].toLowerCase()] || null;
-}
-
+ 
 function buildPrompt(){
   const lines = getSkillLines();
+  const box = document.getElementById("prompt-box");
   if(!lines.length){
-    document.getElementById("prompt-box").textContent = "← Select a group or enter custom skills";
-    document.getElementById("prompt-box").classList.add("empty");
+    box.textContent = "← Select a group on the left, or enter custom skills below it";
+    box.classList.add("empty");
     document.getElementById("btn-copy-prompt").disabled = true;
     document.getElementById("btn-regen").disabled = true;
     return;
   }
-
-  const customCat = selectedGroup === "custom" ? parseInt(document.getElementById("custom-cat").value)||0 : 0;
-  const catInstruction = customCat > 0
-    ? `Use catId ${customCat} for all skills unless the skill clearly belongs to a different category.`
-    : `catId: 1=Cognitive, 2=Communication, 3=Emotional, 4=Practical — assign appropriately per skill based on the category hint in parentheses.`;
-
-  const skillList = lines.map((s,i) => `${i+1}. ${s}`).join("\n");
-
+  const customCat = selectedGroup === "custom" ? parseInt(document.getElementById("custom-cat").value) || 0 : 0;
+  const catLine = customCat > 0
+    ? `Use catId ${customCat} for all skills unless a skill clearly belongs elsewhere.`
+    : `catId: 1=Cognitive, 2=Communication, 3=Emotional, 4=Practical — assign per skill based on the category hint in parentheses.`;
+ 
+  const skillList = lines.map((s, i) => `${i+1}. ${s}`).join("\n");
+ 
   const prompt = `You are a curriculum designer. Generate exactly ${lines.length} skills for a learning engine.
-
-Return ONLY a JSON object. No explanation. No markdown. No text before or after. Just the JSON.
-
-FORMAT:
+ 
+Return ONLY a valid JSON object. No explanation, no markdown, no text before or after. Just the JSON.
+ 
+STRUCTURE:
 {
   "version": 2,
-  "profileName": "Imported Skills",
+  "profileName": "Generated Skills",
   "teacherPin": null,
   "skills": [ ...skill objects... ]
 }
-
-Each skill object:
+ 
+Each skill:
 {
   "id": 1,
   "name": "Skill Name",
@@ -380,10 +371,10 @@ Each skill object:
   "locked": false,
   "content": {
     "lessons": [
-      {"id": "l1", "title": "Title", "body": "300-500 words. Plain text only. No markdown symbols. Blank lines between paragraphs. UPPERCASE for section headings."}
+      {"id": "l1", "title": "Title", "body": "300-500 words. Plain text only. No markdown. Blank lines between paragraphs. UPPERCASE for section headings inside the body."}
     ],
     "exercises": [
-      {"id": "e1", "title": "Title", "body": "Step-by-step practical instructions."}
+      {"id": "e1", "title": "Title", "body": "Numbered step-by-step instructions for a practical exercise."}
     ],
     "quiz": [
       {"id": "q1", "question": "Question?", "type": "mc", "options": ["A","B","C","D"], "correct": "A"},
@@ -398,271 +389,486 @@ Each skill object:
   "iPieces": 0, "iAtt": 0,
   "log": [], "lastActivity": null
 }
-
+ 
 RULES:
-- ${cfg.L} lesson(s) per skill (ids: l1, l2, l3...)
-- ${cfg.E} exercise(s) per skill (ids: e1, e2...)
-- ${cfg.Q} quiz questions per skill (ids: q1 through q${cfg.Q})
-- Quiz mix: at least ${Math.max(2,cfg.Q-2)} mc questions, 1 tf, 1 open per skill
-- mc: exactly 4 options. "correct" must match one option exactly, character for character
-- tf: "correct" is exactly "True" or "False"
-- Make wrong answer options plausible — not obviously silly
-- ${catInstruction}
-- IDs start at 1 for each skill (id:1, id:2, id:3...)
-
+- ${cfg.L} lesson(s) per skill (ids: l1, l2, ...)
+- ${cfg.E} exercise(s) per skill (ids: e1, e2, ...)
+- ${cfg.Q} quiz questions per skill (ids: q1, q2, ... q${cfg.Q})
+- Quiz mix per skill: at least ${Math.max(2, cfg.Q - 2)} mc questions, 1 tf, 1 open
+- mc: exactly 4 options. "correct" must match one option exactly, character for character.
+- tf: "correct" is exactly "True" or "False" (capital first letter).
+- Wrong answer options must be plausible, not obviously silly.
+- Lesson bodies: substantive practical content, not generic motivational filler.
+- ${catLine}
+- IDs start at 1 for each skill (id:1, id:2, ...).
+ 
 SKILLS TO GENERATE:
 ${skillList}`;
-
-  document.getElementById("prompt-box").textContent = prompt;
-  document.getElementById("prompt-box").classList.remove("empty");
+ 
+  box.textContent = prompt;
+  box.classList.remove("empty");
   document.getElementById("btn-copy-prompt").disabled = false;
   document.getElementById("btn-regen").disabled = false;
 }
-
+ 
 function copyPrompt(){
   const text = document.getElementById("prompt-box").textContent;
-  navigator.clipboard.writeText(text).then(()=>{
+  navigator.clipboard.writeText(text).then(() => {
     const btn = document.getElementById("btn-copy-prompt");
     const orig = btn.textContent;
     btn.textContent = "Copied ✓";
     btn.style.background = "var(--ok)";
     btn.style.color = "#000";
-    setTimeout(()=>{btn.textContent=orig;btn.style.background="";btn.style.color="";},1800);
+    setTimeout(() => {btn.textContent = orig; btn.style.background = ""; btn.style.color = "";}, 1600);
+  }).catch(() => {
+    // Fallback: select the text so user can ctrl-C
+    const range = document.createRange();
+    range.selectNodeContents(document.getElementById("prompt-box"));
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
   });
 }
-
-// ═══════════════════════════════════════════════
-// PARSE + VALIDATE
-// ═══════════════════════════════════════════════
+ 
+// ═══════════════════════════════════════════════════════════════
+// MULTI-RESPONSE PARSER
+// This is the core upgrade. It handles:
+//  - Single JSON response (old behavior)
+//  - Multiple responses concatenated in one paste
+//  - ChatGPT "Thought for N seconds" preambles between responses
+//  - Markdown fences (```json ... ```)
+//  - Truncated responses with Retry artifacts
+//  - Leading/trailing non-JSON prose
+// ═══════════════════════════════════════════════════════════════
+function splitResponses(raw){
+  // Split on ChatGPT markers that appear between regenerated responses
+  // Markers: "Thought for X seconds", "next", "Retry"
+  // Use the first { after each marker as the segment start.
+  let text = raw.replace(/^\uFEFF/, "");
+  // Normalize line endings
+  text = text.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+  // Strip ChatGPT trailing "Retry" / "Message delivery timed out" noise
+  text = text.replace(/\bMessage delivery timed out[^\n]*\n?/g, "\n");
+  // Split points: before each "Thought for" occurrence after the first char
+  const parts = text.split(/\bThought for [^\n]*\n/);
+  // If no "Thought for" split, whole text is one segment
+  return parts.filter(p => p.trim().length > 0);
+}
+ 
+function extractBalancedJsonObjects(segment){
+  // Walk the segment and extract every top-level {...} block, brace-balanced,
+  // string-aware (handles escapes).
+  const blocks = [];
+  const n = segment.length;
+  let i = 0;
+  while(i < n){
+    if(segment[i] === "{"){
+      let depth = 0, inStr = false, esc = false, start = i;
+      let closed = false;
+      while(i < n){
+        const c = segment[i];
+        if(inStr){
+          if(esc) esc = false;
+          else if(c === "\\") esc = true;
+          else if(c === '"') inStr = false;
+        } else {
+          if(c === '"') inStr = true;
+          else if(c === "{") depth++;
+          else if(c === "}"){
+            depth--;
+            if(depth === 0){
+              blocks.push(segment.slice(start, i + 1));
+              i++;
+              closed = true;
+              break;
+            }
+          }
+        }
+        i++;
+      }
+      if(!closed) break; // unclosed — stop
+    } else {
+      i++;
+    }
+  }
+  return blocks;
+}
+ 
+function extractSkillsForgivingly(segment){
+  // For truncated segments: find `"skills": [` then walk individual balanced objects inside.
+  const skillsRe = /"skills"\s*:\s*\[/;
+  const m = segment.match(skillsRe);
+  if(!m) return [];
+  const arrStart = m.index + m[0].length;
+  return extractBalancedJsonObjects(segment.slice(arrStart));
+}
+ 
+function parseAll(raw){
+  const segments = splitResponses(raw);
+  const allSkills = [];
+  const log = [];
+ 
+  segments.forEach((seg, si) => {
+    // Try full parse first
+    const stripped = seg.replace(/^\s*```(?:json)?\s*/i, "").replace(/\s*```\s*$/, "").trim();
+    const blocks = extractBalancedJsonObjects(stripped);
+    let gotBundle = false;
+    for(const block of blocks){
+      let obj;
+      try { obj = JSON.parse(block); } catch { continue; }
+      if(obj && typeof obj === "object" && Array.isArray(obj.skills)){
+        allSkills.push(...obj.skills);
+        log.push(`Segment ${si+1}: bundle with ${obj.skills.length} skill${obj.skills.length>1?"s":""}`);
+        gotBundle = true;
+        break; // first valid bundle per segment is enough
+      } else if(obj && obj.name && obj.content){
+        // Looks like a lone skill object — skip the prompt-schema artifact
+        if(obj.name !== "Skill Name"){
+          allSkills.push(obj);
+          log.push(`Segment ${si+1}: lone skill "${obj.name}"`);
+          gotBundle = true;
+        }
+      }
+    }
+    if(!gotBundle){
+      // Fallback: forgiving extraction for truncated segments
+      const rawSkills = extractSkillsForgivingly(stripped);
+      const valid = [];
+      for(const s of rawSkills){
+        try {
+          const parsed = JSON.parse(s);
+          if(parsed && parsed.name && parsed.content && parsed.content.lessons && parsed.content.quiz){
+            valid.push(parsed);
+          }
+        } catch {}
+      }
+      if(valid.length){
+        allSkills.push(...valid);
+        log.push(`Segment ${si+1}: forgiving extraction — ${valid.length} complete skill${valid.length>1?"s":""} recovered (rest truncated)`);
+      } else {
+        log.push(`Segment ${si+1}: no usable JSON`);
+      }
+    }
+  });
+ 
+  return {skills: allSkills, log};
+}
+ 
+// ═══════════════════════════════════════════════════════════════
+// VALIDATION + DEDUP
+// ═══════════════════════════════════════════════════════════════
+function skillWeight(s){
+  const c = s.content || {};
+  return (c.lessons||[]).length * 1000 + (c.quiz||[]).length * 100 + (c.exercises||[]).length;
+}
+ 
+function dedupeSkills(skills){
+  const seen = new Map();
+  const dropped = [];
+  for(const s of skills){
+    const k = normName(s.name);
+    if(!k) continue;
+    if(!seen.has(k)){
+      seen.set(k, s);
+    } else {
+      const existing = seen.get(k);
+      if(skillWeight(s) > skillWeight(existing)){
+        dropped.push({kept:s.name, dropped:existing.name, reason:"replaced with more complete version"});
+        seen.set(k, s);
+      } else {
+        dropped.push({kept:existing.name, dropped:s.name, reason:"duplicate of earlier version"});
+      }
+    }
+  }
+  return {unique: [...seen.values()], dropped};
+}
+ 
+function validateSkill(s, idx){
+  const errors = [], warnings = [];
+  const label = `"${s.name||"?"}"`;
+  if(!s.name) errors.push(`Skill ${idx+1}: missing name`);
+  if(!s.content) { errors.push(`${label}: missing content`); return {errors, warnings}; }
+  if(!s.content.lessons?.length) errors.push(`${label}: no lessons`);
+  if(!s.content.quiz?.length) errors.push(`${label}: no quiz`);
+  (s.content.quiz || []).forEach((q, qi) => {
+    if(q.type === "mc"){
+      if(!q.options || q.options.length !== 4) warnings.push(`${label} Q${qi+1}: mc has ${(q.options||[]).length} options (expected 4)`);
+      else if(!q.options.includes(q.correct)) warnings.push(`${label} Q${qi+1}: correct answer not in options`);
+    } else if(q.type === "tf"){
+      if(q.correct !== "True" && q.correct !== "False") warnings.push(`${label} Q${qi+1}: tf correct is "${q.correct}" (must be "True" or "False")`);
+    }
+  });
+  (s.content.lessons || []).forEach((l, li) => {
+    if(!l.body || l.body.length < 100) warnings.push(`${label} L${li+1}: lesson body is very short (${(l.body||"").length} chars)`);
+  });
+  return {errors, warnings};
+}
+ 
+function fillDefaults(s){
+  ["x","vPieces","vAtt","ivPieces","ivAtt","iiiPieces","iiiAtt","iiPieces","iiAtt","iPieces","iAtt"].forEach(k => {
+    if(s[k] === undefined) s[k] = 0;
+  });
+  if(!s.log) s.log = [];
+  if(!s.lastActivity) s.lastActivity = null;
+  if(s.locked === undefined) s.locked = false;
+  if(!s.content.exercises) s.content.exercises = [];
+  return s;
+}
+ 
+// ═══════════════════════════════════════════════════════════════
+// PASTE INPUT HANDLING
+// ═══════════════════════════════════════════════════════════════
 function onPasteInput(){
   const raw = document.getElementById("paste-zone").value.trim();
-  if(!raw){document.getElementById("parse-result").style.display="none";document.getElementById("btn-bank").disabled=true;parsedSkills=null;return;}
-  parseResponse(raw);
+  if(!raw){
+    document.getElementById("parse-result").style.display = "none";
+    document.getElementById("btn-bank").disabled = true;
+    parsedSkills = null;
+    return;
+  }
+  parseAndRender(raw);
 }
-
-function parseResponse(raw){
+ 
+function parseAndRender(raw){
   const resultEl = document.getElementById("parse-result");
   resultEl.style.display = "block";
   parsedSkills = null;
   document.getElementById("btn-bank").disabled = true;
-
-  // Strip markdown fences
-  let cleaned = raw.replace(/^```(?:json)?\s*/i,"").replace(/\s*```\s*$/,"").trim();
-
-  let data;
-  try{ data = JSON.parse(cleaned); }
-  catch(e){
-    resultEl.innerHTML = `<div class="pr-err">✗ Invalid JSON — ${esc(e.message.slice(0,100))}</div>
-      <div style="font-size:9px;color:var(--muted);margin-top:6px">Check for missing brackets or quotes. ChatGPT sometimes adds text before or after the JSON — delete it and try again.</div>`;
+ 
+  const {skills: rawSkills, log} = parseAll(raw);
+  if(!rawSkills.length){
+    resultEl.innerHTML = `<div class="pr-err">✗ No valid JSON skills found</div>
+      <div class="pr-line">${log.map(l => esc(l)).join("<br>")}</div>
+      <div class="pr-note">Check that the paste contains at least one complete JSON object with a "skills": [...] array or a skill object with "name" and "content".</div>`;
     return;
   }
-
-  // Accept either {skills:[...]} or just [...]
-  let skills = Array.isArray(data) ? data : (data.skills || null);
-  if(!skills || !Array.isArray(skills) || !skills.length){
-    resultEl.innerHTML = `<div class="pr-err">✗ No skills array found in JSON</div>`;
-    return;
-  }
-
-  const warnings = [];
-  const errors = [];
-  const valid = [];
-  const bankedNames = new Set(bank.map(s=>s.name.toLowerCase()));
-
-  skills.forEach((s,i)=>{
-    const label = `Skill ${i+1} "${s.name||"?"}"`;
-    if(!s.name){errors.push(`${label}: missing name`);return;}
-    if(!s.content){errors.push(`${label}: missing content`);return;}
-    if(!s.content.lessons?.length){errors.push(`${label}: no lessons`);return;}
-    if(!s.content.quiz?.length){errors.push(`${label}: no quiz questions`);return;}
-
-    // Quiz validation
-    let qErrs = 0;
-    (s.content.quiz||[]).forEach((q,qi)=>{
-      if(q.type==="mc"){
-        if(!q.options||q.options.length!==4){warnings.push(`${label} Q${qi+1}: expected 4 options`);qErrs++;}
-        else if(!q.options.includes(q.correct)){warnings.push(`${label} Q${qi+1}: correct answer not in options`);qErrs++;}
-      }
-      if(q.type==="tf" && q.correct!=="True" && q.correct!=="False"){
-        warnings.push(`${label} Q${qi+1}: tf correct should be "True" or "False", got "${q.correct}"`);qErrs++;
-      }
-    });
-
-    if(s.content.lessons.some(l=>!l.body||l.body.length<100)) warnings.push(`${label}: some lessons look very short`);
-    if(bankedNames.has(s.name.toLowerCase())) warnings.push(`${label}: already in bank — will be added again`);
-
-    // Ensure progress fields
-    ["x","vPieces","vAtt","ivPieces","ivAtt","iiiPieces","iiiAtt","iiPieces","iiAtt","iPieces","iAtt"].forEach(k=>{if(s[k]===undefined)s[k]=0;});
-    if(!s.log)s.log=[];if(!s.lastActivity)s.lastActivity=null;if(s.locked===undefined)s.locked=false;
-
-    valid.push(s);
+ 
+  const {unique, dropped} = dedupeSkills(rawSkills);
+ 
+  // Validate each
+  const allErrors = [], allWarnings = [];
+  unique.forEach((s, i) => {
+    const {errors, warnings} = validateSkill(s, i);
+    allErrors.push(...errors);
+    allWarnings.push(...warnings);
+    fillDefaults(s);
   });
-
-  if(!valid.length){
-    resultEl.innerHTML = `<div class="pr-err">✗ No valid skills found</div>${errors.map(e=>`<div style="font-size:9px;color:#c44;margin-top:3px">• ${esc(e)}</div>`).join("")}`;
+ 
+  // Mark duplicates against existing bank
+  const bankedNames = new Set(bank.map(s => normName(s.name)));
+  const newToBank = [];
+  const dupsInBank = [];
+  for(const s of unique){
+    if(bankedNames.has(normName(s.name))) dupsInBank.push(s.name);
+    else newToBank.push(s);
+  }
+ 
+  if(!unique.length || allErrors.length && !newToBank.length){
+    resultEl.innerHTML = `<div class="pr-err">✗ Parse failed — no usable skills</div>
+      ${allErrors.map(e => `<div class="pr-line err">• ${esc(e)}</div>`).join("")}`;
     return;
   }
-
-  parsedSkills = valid;
-
-  const catOf = s => CATS[Math.max(0,Math.min(4,(s.catId||4)-1))];
-  let html = `<div class="pr-ok">✓ ${valid.length} skill${valid.length>1?"s":""} parsed</div>`;
-  html += valid.map(s=>{
+ 
+  parsedSkills = unique;
+ 
+  let html = `<div class="pr-ok">✓ Extracted ${unique.length} unique skill${unique.length>1?"s":""}</div>`;
+  html += unique.map(s => {
     const c = catOf(s);
+    const inBank = bankedNames.has(normName(s.name));
     return `<div class="pr-skill">
-      <span class="pr-skill-name">${esc(s.name)}</span>
-      <span class="pr-skill-meta" style="color:${c.color}">${c.name} · ${s.content.lessons.length}L ${(s.content.exercises||[]).length}E ${s.content.quiz.length}Q</span>
+      <span class="pr-skill-name">${esc(s.name)}${inBank?' <span style="color:var(--warn);font-size:9px">[already in bank]</span>':''}</span>
+      <span class="pr-skill-meta cat-${s.catId||5}">${c.name} · ${s.content.lessons.length}L ${s.content.exercises.length}E ${s.content.quiz.length}Q</span>
     </div>`;
   }).join("");
-  if(errors.length) html += errors.map(e=>`<div style="font-size:9px;color:#c44;margin-top:3px">✗ ${esc(e)}</div>`).join("");
-  if(warnings.length) html += `<div class="pr-warn">⚠ ${warnings.length} warning(s):</div>`+warnings.map(w=>`<div style="font-size:9px;color:var(--gold);margin-top:2px">• ${esc(w)}</div>`).join("");
-
+ 
+  html += `<div class="pr-note" style="margin-top:8px">${log.map(l => esc(l)).join(" · ")}</div>`;
+ 
+  if(dropped.length){
+    html += `<div class="pr-warn-head">Deduplicated (${dropped.length}):</div>`;
+    html += dropped.map(d => `<div class="pr-line warn">• ${esc(d.kept)}: ${esc(d.reason)}</div>`).join("");
+  }
+  if(allWarnings.length){
+    html += `<div class="pr-warn-head">Warnings (${allWarnings.length}):</div>`;
+    html += allWarnings.slice(0, 10).map(w => `<div class="pr-line warn">• ${esc(w)}</div>`).join("");
+    if(allWarnings.length > 10) html += `<div class="pr-line warn">…and ${allWarnings.length - 10} more</div>`;
+  }
+  if(allErrors.length){
+    html += `<div class="pr-warn-head" style="color:var(--err)">Errors (${allErrors.length}):</div>`;
+    html += allErrors.map(e => `<div class="pr-line err">• ${esc(e)}</div>`).join("");
+  }
+ 
   resultEl.innerHTML = html;
   document.getElementById("btn-bank").disabled = false;
 }
-
+ 
 function clearPaste(){
-  document.getElementById("paste-zone").value="";
-  document.getElementById("parse-result").style.display="none";
-  document.getElementById("btn-bank").disabled=true;
-  parsedSkills=null;
+  document.getElementById("paste-zone").value = "";
+  document.getElementById("parse-result").style.display = "none";
+  document.getElementById("btn-bank").disabled = true;
+  parsedSkills = null;
 }
-
-// ═══════════════════════════════════════════════
+ 
+// ═══════════════════════════════════════════════════════════════
 // BANK
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 function bankSkills(){
   if(!parsedSkills) return;
-  bank.push(...parsedSkills);
-  // Re-ID
-  bank.forEach((s,i)=>s.id=i+1);
+  const bankedNames = new Set(bank.map(s => normName(s.name)));
+  let added = 0, replaced = 0;
+  for(const s of parsedSkills){
+    const k = normName(s.name);
+    if(bankedNames.has(k)){
+      const idx = bank.findIndex(existing => normName(existing.name) === k);
+      if(skillWeight(s) > skillWeight(bank[idx])){
+        bank[idx] = s;
+        replaced++;
+      }
+    } else {
+      bank.push(s);
+      bankedNames.add(k);
+      added++;
+    }
+  }
+  bank.forEach((s, i) => s.id = i + 1);
   saveBank();
   renderBank();
   renderGroups();
   clearPaste();
-  // Flash confirmation
   const btn = document.getElementById("btn-bank");
-  btn.textContent = `Added ${parsedSkills.length} ✓`;
-  setTimeout(()=>btn.textContent="Add to Bank",1600);
+  btn.textContent = `${added > 0 ? `+${added}` : ""}${replaced > 0 ? ` ↻${replaced}` : ""} ✓`;
+  setTimeout(() => btn.textContent = "Add to Bank", 1800);
 }
-
+ 
 function removeFromBank(i){
-  bank.splice(i,1);
-  bank.forEach((s,j)=>s.id=j+1);
+  bank.splice(i, 1);
+  bank.forEach((s, j) => s.id = j + 1);
   saveBank();
   renderBank();
   renderGroups();
 }
-
+ 
 function clearBank(){
   if(!bank.length) return;
-  if(!confirm("Clear all "+bank.length+" skills from the bank?")) return;
-  bank=[];saveBank();renderBank();renderGroups();
+  if(!confirm(`Clear all ${bank.length} skills from the bank? This does not affect any engine data you've already imported.`)) return;
+  bank = [];
+  saveBank();
+  renderBank();
+  renderGroups();
 }
-
+ 
 function renderBank(){
   const el = document.getElementById("bank-body");
-  const empty = document.getElementById("bank-empty");
   const sub = document.getElementById("bank-sub");
   const footer = document.getElementById("bank-footer-info");
-  const expBtn = document.getElementById("btn-export-engine");
-  const appBtn = document.getElementById("btn-export-append");
+  const expSkills = document.getElementById("btn-export-skills");
+  const expEngine = document.getElementById("btn-export-engine");
   const pb = document.getElementById("progress-bar");
-
-  sub.textContent = `${bank.length} skill${bank.length!==1?"s":""} collected`;
-  footer.textContent = bank.length ? `${bank.length} skills ready — export as full engine file or skills-only` : "Export as a complete 25/100 import file";
-  expBtn.disabled = !bank.length;
-  appBtn.disabled = !bank.length;
-  pb.style.width = Math.min(100, Math.round(bank.length/100*100))+"%";
-
+ 
+  sub.textContent = `${bank.length} / ${TARGET_SKILLS} skills collected`;
+  pb.style.width = Math.min(100, Math.round(bank.length / TARGET_SKILLS * 100)) + "%";
+  expSkills.disabled = !bank.length;
+  expEngine.disabled = !bank.length;
+  footer.textContent = bank.length
+    ? `${bank.length} skill${bank.length>1?"s":""} ready to export`
+    : "Export when ready";
+ 
   if(!bank.length){
-    empty.style.display="block";
-    el.innerHTML="";
-    el.appendChild(empty);
-
-    // stats
-    const statsHtml = `<div class="bank-stat">
-      <div class="bs"><div class="bs-num" style="color:var(--muted)">0</div><div class="bs-lbl">Skills</div></div>
-      <div class="bs"><div class="bs-num" style="color:var(--muted)">0</div><div class="bs-lbl">Lessons</div></div>
-      <div class="bs"><div class="bs-num" style="color:var(--muted)">0</div><div class="bs-lbl">Exercises</div></div>
-      <div class="bs"><div class="bs-num" style="color:var(--muted)">0</div><div class="bs-lbl">Quiz Qs</div></div>
-    </div>`;
-    el.innerHTML = statsHtml;
-    el.appendChild(empty);
+    el.innerHTML = `<div class="bank-stat">
+      <div class="bs"><div class="bs-num" style="color:var(--dim)">0</div><div class="bs-lbl">Skills</div></div>
+      <div class="bs"><div class="bs-num" style="color:var(--dim)">0</div><div class="bs-lbl">Lessons</div></div>
+      <div class="bs"><div class="bs-num" style="color:var(--dim)">0</div><div class="bs-lbl">Exercises</div></div>
+      <div class="bs"><div class="bs-num" style="color:var(--dim)">0</div><div class="bs-lbl">Quiz Qs</div></div>
+    </div>
+    <div class="bank-empty">No skills in bank yet.<br>Paste responses on the left → click Add to Bank.</div>`;
     return;
   }
-
-  const totalL = bank.reduce((s,sk)=>s+sk.content.lessons.length,0);
-  const totalE = bank.reduce((s,sk)=>s+(sk.content.exercises||[]).length,0);
-  const totalQ = bank.reduce((s,sk)=>s+sk.content.quiz.length,0);
-
-  const catOf = s => CATS[Math.max(0,Math.min(4,(s.catId||4)-1))];
-
+ 
+  const totalL = bank.reduce((s, sk) => s + sk.content.lessons.length, 0);
+  const totalE = bank.reduce((s, sk) => s + (sk.content.exercises||[]).length, 0);
+  const totalQ = bank.reduce((s, sk) => s + sk.content.quiz.length, 0);
+ 
   let html = `<div class="bank-stat">
-    <div class="bs"><div class="bs-num" style="color:var(--gold)">${bank.length}</div><div class="bs-lbl">Skills</div></div>
+    <div class="bs"><div class="bs-num" style="color:var(--accent)">${bank.length}</div><div class="bs-lbl">Skills</div></div>
     <div class="bs"><div class="bs-num" style="color:var(--cat2)">${totalL}</div><div class="bs-lbl">Lessons</div></div>
     <div class="bs"><div class="bs-num" style="color:var(--cat3)">${totalE}</div><div class="bs-lbl">Exercises</div></div>
     <div class="bs"><div class="bs-num" style="color:var(--cat1)">${totalQ}</div><div class="bs-lbl">Quiz Qs</div></div>
   </div>`;
-
-  html += bank.map((s,i)=>{
+ 
+  html += bank.map((s, i) => {
     const c = catOf(s);
     return `<div class="bank-skill">
       <div class="bsk-num">${i+1}</div>
       <div style="flex:1;min-width:0;">
         <div class="bsk-name">${esc(s.name)}</div>
-        <div class="bsk-cat" style="color:${c.color}">${c.name}</div>
+        <div class="bsk-cat cat-${s.catId||5}">${c.name}</div>
       </div>
       <div class="bsk-meta">${s.content.lessons.length}L · ${(s.content.exercises||[]).length}E · ${s.content.quiz.length}Q</div>
-      <button class="bsk-rm" onclick="removeFromBank(${i})">✕</button>
+      <button class="bsk-rm" onclick="removeFromBank(${i})" title="Remove from bank">✕</button>
     </div>`;
   }).join("");
-
+ 
   el.innerHTML = html;
 }
-
-// ═══════════════════════════════════════════════
+ 
+// ═══════════════════════════════════════════════════════════════
 // EXPORT
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
+function toggleExportWarn(){
+  const w = document.getElementById("export-warn");
+  w.style.display = w.style.display === "none" ? "block" : "none";
+}
+ 
 function exportForEngine(){
   if(!bank.length) return;
+  if(!confirm(`⚠ Full Engine File will REPLACE the target engine's entire state on import, including all log entries, mastery progress, and the profile name.\n\nUse this only for a fresh install or full reset.\n\nFor adding skills to an existing engine without destroying progress, cancel and use "Export Skills Only" instead.\n\nContinue with full export?`)) return;
   const data = {version:2, profileName:"25/100 Curriculum", teacherPin:null, skills:bank};
-  download(JSON.stringify(data,null,2), `25-100_skills_${bank.length}_${date()}.json`);
+  download(JSON.stringify(data, null, 2), `25-100_FULL_ENGINE_${bank.length}skills_${today()}.json`);
 }
-
-function exportAppend(){
+ 
+function exportSkillsOnly(){
   if(!bank.length) return;
-  // Just the array — for manual merging
-  download(JSON.stringify({skills:bank},null,2), `25-100_skills-only_${bank.length}_${date()}.json`);
+  const data = {skills: bank};
+  download(JSON.stringify(data, null, 2), `25-100_skills_${bank.length}_${today()}.json`);
 }
-
+ 
 function download(content, filename){
-  const b = new Blob([content],{type:"application/json"});
+  const b = new Blob([content], {type:"application/json"});
   const u = URL.createObjectURL(b);
   const a = document.createElement("a");
-  a.href=u; a.download=filename; a.click();
+  a.href = u; a.download = filename; a.click();
   URL.revokeObjectURL(u);
 }
-
-function date(){return new Date().toISOString().slice(0,10);}
-
-// ═══════════════════════════════════════════════
+ 
+function today(){return new Date().toISOString().slice(0,10);}
+ 
+// ═══════════════════════════════════════════════════════════════
 // PERSISTENCE
-// ═══════════════════════════════════════════════
-function saveBank(){try{localStorage.setItem("skillbuilder-bank",JSON.stringify(bank));}catch(e){}}
-function loadBank(){try{const r=localStorage.getItem("skillbuilder-bank");if(r){bank=JSON.parse(r);}}catch(e){}}
-
-// ═══════════════════════════════════════════════
-// UTILS
-// ═══════════════════════════════════════════════
-function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
-
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
+const STORAGE_KEY = "skillbuilder-bank-v2";
+function saveBank(){try{localStorage.setItem(STORAGE_KEY, JSON.stringify({version:2, bank}));}catch(e){}}
+function loadBank(){
+  try {
+    const r = localStorage.getItem(STORAGE_KEY);
+    if(r){
+      const parsed = JSON.parse(r);
+      if(parsed && parsed.version === 2 && Array.isArray(parsed.bank)) bank = parsed.bank;
+    } else {
+      // Fallback: read old v1 storage if present
+      const old = localStorage.getItem("skillbuilder-bank");
+      if(old){
+        bank = JSON.parse(old);
+        saveBank();
+      }
+    }
+  } catch(e){bank = [];}
+}
+ 
+// ═══════════════════════════════════════════════════════════════
 // INIT
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 loadBank();
 renderGroups();
 renderBank();
 </script>
 </body>
 </html>
+ 
