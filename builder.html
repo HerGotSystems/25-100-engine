@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Skill Builder — 25/100</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#0c0c0c;--surface:#141414;--surface2:#1c1c1c;--border:#2a2a2a;--border2:#363636;
@@ -18,6 +18,19 @@
   --cat1:#b87200;--cat2:#1a55bb;--cat3:#128550;--cat4:#a84000;
   --font:'Space Mono',monospace;
   --font-read:'Atkinson Hyperlegible',sans-serif;
+  /* reading vars — overridden by accessibility panel and shared with engine */
+  --read-font:'Space Mono',monospace;
+  --read-size:12px;
+  --read-lh:1.7;
+}
+/* READING MODES (shared with engine via data-read attribute) */
+body[data-read="warm"]{--bg:#1a1410;--surface:#221a14;--surface2:#2a2018;--border:#3a2e24;--text:#f0e6d6;--muted:#a08460;}
+body[data-read="paper"]{--bg:#f5f0e8;--surface:#faf7f0;--surface2:#f0ebe0;--border:#d8d0c0;--text:#2a2218;--muted:#6a5a4a;--gold:#8a6400;}
+body[data-read="highcontrast"]{--bg:#000;--surface:#000;--surface2:#111;--border:#fff;--text:#fff;--muted:#cccccc;--gold:#ffff00;}
+body[data-read="focus"]{--bg:#0a0a0a;--surface:#0a0a0a;--surface2:#111;--border:#1a1a1a;}
+ 
+@media (prefers-reduced-motion: no-preference){
+  body{transition:background .3s,color .3s;}
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html,body{height:100%;overflow:hidden;}
@@ -63,7 +76,7 @@ header{background:var(--surface);border-bottom:1px solid var(--border);height:48
 .t-select:focus{outline:none;border-color:var(--accent);}
  
 .prompt-body{flex:1;padding:14px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;}
-.prompt-box{background:var(--surface2);border:1px solid var(--border);padding:12px;font-size:10px;line-height:1.8;color:var(--text);white-space:pre-wrap;word-break:break-word;flex:1;overflow-y:auto;max-height:360px;}
+.prompt-box{background:var(--surface2);border:1px solid var(--border);padding:12px;font-size:var(--read-size);line-height:var(--read-lh);color:var(--text);white-space:pre-wrap;word-break:break-word;flex:1;overflow-y:auto;max-height:360px;font-family:var(--read-font);}
 .prompt-box.empty{color:var(--muted);display:flex;align-items:center;justify-content:center;text-align:center;padding:30px;font-family:var(--font-read);font-size:12px;}
 .config-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
 .num-row{display:flex;align-items:center;gap:6px;}
@@ -86,7 +99,7 @@ header{background:var(--surface);border-bottom:1px solid var(--border);height:48
 .hint-box strong{color:var(--text);font-weight:700;}
  
 .paste-body{flex:1;padding:14px;display:flex;flex-direction:column;gap:10px;overflow-y:auto;}
-.paste-zone{background:var(--surface2);border:2px dashed var(--border);padding:14px;font-size:11px;resize:none;width:100%;color:var(--text);font-family:var(--font);line-height:1.7;flex:1;min-height:200px;}
+.paste-zone{background:var(--surface2);border:2px dashed var(--border);padding:14px;font-size:var(--read-size);resize:none;width:100%;color:var(--text);font-family:var(--read-font);line-height:var(--read-lh);flex:1;min-height:200px;}
 .paste-zone:focus{outline:none;border-color:var(--accent);}
 .paste-zone::placeholder{color:var(--dim);}
 .parse-result{background:var(--surface);border:1px solid var(--border);padding:12px;font-size:11px;max-height:280px;overflow-y:auto;}
@@ -125,6 +138,31 @@ header{background:var(--surface);border-bottom:1px solid var(--border);height:48
 .export-warn strong{display:block;margin-bottom:3px;font-family:var(--font);letter-spacing:0;}
  
 .cat-1{color:#c88a30;}.cat-2{color:#5088d8;}.cat-3{color:#3aa878;}.cat-4{color:#c8603c;}.cat-5{color:#a0a0a0;}
+ 
+/* SETTINGS FAB */
+.settings-fab{position:fixed;bottom:18px;right:18px;width:44px;height:44px;background:var(--surface);border:1px solid var(--border);color:var(--muted);border-radius:50%;cursor:pointer;font-family:'Space Mono',monospace;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;z-index:150;box-shadow:0 4px 12px rgba(0,0,0,.4);}
+.settings-fab:hover{color:var(--gold);border-color:var(--gold);}
+ 
+/* ACCESSIBILITY PANEL */
+.a11y-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;display:flex;align-items:flex-start;justify-content:flex-end;}
+.a11y-panel{background:var(--surface);border-left:1px solid var(--border);width:320px;height:100%;overflow-y:auto;padding:22px;}
+.a11y-title{font-size:12px;font-weight:700;color:var(--gold);margin-bottom:22px;display:flex;justify-content:space-between;align-items:center;}
+.a11y-section{margin-bottom:22px;}
+.a11y-label{font-size:11px;color:var(--muted);margin-bottom:8px;display:block;}
+.a11y-opts{display:flex;flex-wrap:wrap;gap:6px;}
+.a11y-opt{background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-family:'Space Mono',monospace;font-size:10px;padding:6px 12px;cursor:pointer;}
+.a11y-opt:hover{border-color:var(--gold);color:var(--text);}
+.a11y-opt.active{background:var(--gold-dim);border-color:var(--gold);color:var(--gold);}
+.a11y-slider{width:100%;accent-color:var(--gold);cursor:pointer;}
+.a11y-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+.a11y-val{font-size:10px;color:var(--gold);}
+.a11y-preset{background:var(--surface2);border:1px solid var(--border);padding:10px 12px;cursor:pointer;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;}
+.a11y-preset:hover{border-color:var(--gold);}
+.a11y-preset-name{font-size:11px;font-weight:700;color:var(--text);}
+.a11y-preset-desc{font-size:10px;color:var(--muted);font-family:'Atkinson Hyperlegible',sans-serif;margin-top:2px;}
+.a11y-hint{font-size:11px;color:var(--muted);margin-top:8px;line-height:1.7;font-family:'Atkinson Hyperlegible',sans-serif;}
+.btn-ghost{background:none;border-color:transparent;color:var(--muted);}
+.btn-ghost:hover{color:var(--text);border-color:var(--border);}
 </style>
 </head>
 <body>
@@ -134,6 +172,81 @@ header{background:var(--surface);border-bottom:1px solid var(--border);height:48
     <a href="index.html" class="hlink">← Engine</a>
   </div>
 </header>
+ 
+<!-- SETTINGS FAB -->
+<button class="settings-fab" title="Reading & accessibility settings" onclick="document.getElementById('a11y-overlay').style.display='flex'">Aa</button>
+ 
+<!-- ACCESSIBILITY PANEL -->
+<div class="a11y-overlay" id="a11y-overlay" style="display:none" onclick="closeA11y(event)">
+  <div class="a11y-panel" onclick="event.stopPropagation()">
+    <div class="a11y-title">Reading &amp; Display <button class="btn btn-ghost btn-sm" onclick="closeA11y()">✕</button></div>
+ 
+    <div class="a11y-section">
+      <label class="a11y-label">Quick Presets</label>
+      <div class="a11y-preset" onclick="applyPreset('default')">
+        <div><div class="a11y-preset-name">Default</div><div class="a11y-preset-desc">Dark, mono, 12px</div></div>
+        <span style="color:var(--gold);font-size:10px">→</span>
+      </div>
+      <div class="a11y-preset" onclick="applyPreset('dyslexia')">
+        <div><div class="a11y-preset-name">Dyslexia-friendly</div><div class="a11y-preset-desc">Atkinson Hyperlegible · 15px · wide spacing</div></div>
+        <span style="color:var(--gold);font-size:10px">→</span>
+      </div>
+      <div class="a11y-preset" onclick="applyPreset('calm')">
+        <div><div class="a11y-preset-name">Calm</div><div class="a11y-preset-desc">Paper background · serif · extra line height</div></div>
+        <span style="color:var(--gold);font-size:10px">→</span>
+      </div>
+      <div class="a11y-preset" onclick="applyPreset('lowvision')">
+        <div><div class="a11y-preset-name">Low vision</div><div class="a11y-preset-desc">High contrast · large text · sans</div></div>
+        <span style="color:var(--gold);font-size:10px">→</span>
+      </div>
+      <div class="a11y-preset" onclick="applyPreset('adhd')">
+        <div><div class="a11y-preset-name">ADHD focus</div><div class="a11y-preset-desc">Focus background · readable font · tight</div></div>
+        <span style="color:var(--gold);font-size:10px">→</span>
+      </div>
+    </div>
+ 
+    <div class="a11y-section">
+      <label class="a11y-label">Background</label>
+      <div class="a11y-opts">
+        <button class="a11y-opt" data-read="dark" onclick="setRead('bg','dark')">Dark</button>
+        <button class="a11y-opt" data-read="warm" onclick="setRead('bg','warm')">Warm</button>
+        <button class="a11y-opt" data-read="paper" onclick="setRead('bg','paper')">Paper</button>
+        <button class="a11y-opt" data-read="highcontrast" onclick="setRead('bg','highcontrast')">High Contrast</button>
+        <button class="a11y-opt" data-read="focus" onclick="setRead('bg','focus')">Focus</button>
+      </div>
+    </div>
+ 
+    <div class="a11y-section">
+      <label class="a11y-label">Font (paste area &amp; prompt)</label>
+      <div class="a11y-opts">
+        <button class="a11y-opt" data-font="mono" onclick="setRead('font','mono')">Mono</button>
+        <button class="a11y-opt" data-font="sans" onclick="setRead('font','sans')">Sans</button>
+        <button class="a11y-opt" data-font="serif" onclick="setRead('font','serif')">Serif</button>
+        <button class="a11y-opt" data-font="readable" onclick="setRead('font','readable')">Readable</button>
+      </div>
+      <div class="a11y-hint">"Readable" is Atkinson Hyperlegible, designed for low vision and dyslexia.</div>
+    </div>
+ 
+    <div class="a11y-section">
+      <div class="a11y-row">
+        <label class="a11y-label" style="margin-bottom:0">Text Size</label>
+        <span class="a11y-val" id="val-size">12px</span>
+      </div>
+      <input type="range" class="a11y-slider" id="sl-size" min="10" max="20" value="12" oninput="setRead('size',this.value)">
+    </div>
+ 
+    <div class="a11y-section">
+      <div class="a11y-row">
+        <label class="a11y-label" style="margin-bottom:0">Line Spacing</label>
+        <span class="a11y-val" id="val-lh">1.7</span>
+      </div>
+      <input type="range" class="a11y-slider" id="sl-lh" min="14" max="26" value="17" oninput="setRead('lh',this.value)">
+    </div>
+ 
+    <button class="btn btn-ghost btn-full" onclick="resetRead()" style="margin-top:8px">Reset to Defaults</button>
+    <div class="a11y-hint" style="margin-top:12px">Settings are shared with the main engine — changes here sync to the learner view.</div>
+  </div>
+</div>
  
 <div class="workspace">
   <!-- COL 1: GROUP SELECTOR -->
@@ -868,6 +981,100 @@ function loadBank(){
 loadBank();
 renderGroups();
 renderBank();
+ 
+// ═══════════════════════════════════════════════════════════════
+// ACCESSIBILITY — shared with engine via "25-100-read" localStorage key
+// ═══════════════════════════════════════════════════════════════
+const FONTS = {mono:"'Space Mono',monospace", sans:"'Inter',sans-serif", serif:"'Lora',serif", readable:"'Atkinson Hyperlegible',sans-serif"};
+const PRESETS = {
+  default: {bg:"dark", font:"mono", size:12, lh:17, width:"normal", ls:"normal"},
+  dyslexia: {bg:"dark", font:"readable", size:15, lh:20, width:"normal", ls:"wide"},
+  calm: {bg:"paper", font:"serif", size:14, lh:22, width:"normal", ls:"normal"},
+  lowvision: {bg:"highcontrast", font:"sans", size:18, lh:20, width:"wide", ls:"wide"},
+  adhd: {bg:"focus", font:"readable", size:14, lh:18, width:"narrow", ls:"normal"}
+};
+let readPrefs = {...PRESETS.default};
+ 
+function loadReadPrefs(){
+  try {
+    const r = localStorage.getItem("25-100-read");
+    if(r) readPrefs = {...readPrefs, ...JSON.parse(r)};
+  } catch(e){}
+}
+function saveReadPrefs(){
+  try { localStorage.setItem("25-100-read", JSON.stringify(readPrefs)); } catch(e){}
+}
+function applyReadPrefs(){
+  const {bg, font, size, lh} = readPrefs;
+  document.body.setAttribute("data-read", bg === "dark" ? "" : bg);
+  // Clamp size/lh to builder's narrower range — engine may set values outside it
+  const clampedSize = Math.max(10, Math.min(20, size));
+  const clampedLh = Math.max(14, Math.min(26, lh));
+  document.documentElement.style.setProperty("--read-font", FONTS[font] || FONTS.mono);
+  document.documentElement.style.setProperty("--read-size", clampedSize + "px");
+  document.documentElement.style.setProperty("--read-lh", (clampedLh / 10).toFixed(1));
+  // Update panel UI
+  document.querySelectorAll(".a11y-opt[data-read]").forEach(el => el.classList.toggle("active", el.dataset.read === (bg === "dark" ? "dark" : bg)));
+  document.querySelectorAll(".a11y-opt[data-font]").forEach(el => el.classList.toggle("active", el.dataset.font === font));
+  const sizeEl = document.getElementById("sl-size");
+  const lhEl = document.getElementById("sl-lh");
+  if(sizeEl){
+    sizeEl.value = clampedSize;
+    document.getElementById("val-size").textContent = clampedSize + "px";
+  }
+  if(lhEl){
+    lhEl.value = clampedLh;
+    document.getElementById("val-lh").textContent = (clampedLh / 10).toFixed(1);
+  }
+}
+function setRead(type, val){
+  if(type === "bg") readPrefs.bg = val;
+  else if(type === "font") readPrefs.font = val;
+  else if(type === "size"){
+    readPrefs.size = parseInt(val);
+    document.getElementById("val-size").textContent = val + "px";
+  }
+  else if(type === "lh"){
+    readPrefs.lh = parseInt(val);
+    document.getElementById("val-lh").textContent = (parseInt(val) / 10).toFixed(1);
+  }
+  applyReadPrefs();
+  saveReadPrefs();
+}
+function applyPreset(name){
+  if(!PRESETS[name]) return;
+  // Preserve width/ls from current prefs so engine settings aren't lost;
+  // only touch the keys builder uses.
+  readPrefs.bg = PRESETS[name].bg;
+  readPrefs.font = PRESETS[name].font;
+  readPrefs.size = PRESETS[name].size;
+  readPrefs.lh = PRESETS[name].lh;
+  applyReadPrefs();
+  saveReadPrefs();
+}
+function resetRead(){
+  readPrefs = {...readPrefs, ...PRESETS.default};
+  applyReadPrefs();
+  saveReadPrefs();
+}
+function closeA11y(e){
+  if(!e || e.target === document.getElementById("a11y-overlay")){
+    document.getElementById("a11y-overlay").style.display = "none";
+  }
+}
+ 
+// Live sync: if the user changes settings in another tab (engine), pick them up
+window.addEventListener("storage", e => {
+  if(e.key === "25-100-read" && e.newValue){
+    try {
+      readPrefs = {...readPrefs, ...JSON.parse(e.newValue)};
+      applyReadPrefs();
+    } catch(err){}
+  }
+});
+ 
+loadReadPrefs();
+applyReadPrefs();
 </script>
 </body>
 </html>
