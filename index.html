@@ -9,11 +9,12 @@
 <style>
 :root{
   --bg:#0c0c0c;--surface:#141414;--surface2:#1c1c1c;--border:#2a2a2a;--border2:#363636;
-  --text:#e0e0e0;--muted:#666;--dim:#2a2a2a;
+  --text:#e0e0e0;--muted:#8a8a8a;--dim:#3a3a3a;
   --gold:#c8960a;--gold-dim:#1a1200;
-  --cat1:#b87200;--cat2:#1a55bb;--cat3:#128550;--cat4:#a84000;
-  --ok:#128550;--ok-dim:#031508;--danger:#992020;
+  --cat1:#c88a30;--cat2:#5088d8;--cat3:#3aa878;--cat4:#c8603c;
+  --ok:#3aa878;--ok-dim:#031508;--danger:#c04040;--danger-dim:#1a0000;
   --accent:#ffaa22;--accent-dim:#1a0e00;
+  --warn:#c8960a;--warn-dim:#1a1200;
   /* reading vars — overridden by accessibility panel */
   --read-font:'Space Mono',monospace;
   --read-size:13px;
@@ -22,189 +23,223 @@
   --read-bg:var(--surface);
   --read-text:var(--text);
   --read-border:var(--border);
+  --read-ls:normal;
 }
 /* READING MODES */
-body[data-read="warm"]{--bg:#1a1410;--surface:#221a14;--surface2:#2a2018;--border:#3a2e24;--text:#f0e6d6;--muted:#7a6454;--read-bg:#221a14;--read-text:#f0e6d6;}
-body[data-read="paper"]{--bg:#f5f0e8;--surface:#faf7f0;--surface2:#f0ebe0;--border:#d8d0c0;--text:#2a2218;--muted:#8a7a6a;--gold:#8a6400;--read-bg:#faf7f0;--read-text:#2a2218;}
-body[data-read="highcontrast"]{--bg:#000;--surface:#000;--surface2:#111;--border:#fff;--text:#fff;--muted:#aaa;--gold:#ffff00;--read-bg:#000;--read-text:#fff;}
+body[data-read="warm"]{--bg:#1a1410;--surface:#221a14;--surface2:#2a2018;--border:#3a2e24;--text:#f0e6d6;--muted:#a08460;--read-bg:#221a14;--read-text:#f0e6d6;}
+body[data-read="paper"]{--bg:#f5f0e8;--surface:#faf7f0;--surface2:#f0ebe0;--border:#d8d0c0;--text:#2a2218;--muted:#6a5a4a;--gold:#8a6400;--read-bg:#faf7f0;--read-text:#2a2218;}
+body[data-read="highcontrast"]{--bg:#000;--surface:#000;--surface2:#111;--border:#fff;--text:#fff;--muted:#cccccc;--gold:#ffff00;--read-bg:#000;--read-text:#fff;}
 body[data-read="focus"]{--bg:#0a0a0a;--surface:#0a0a0a;--surface2:#111;--border:#1a1a1a;}
  
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html,body{height:100%;overflow:hidden;}
-body{background:var(--bg);color:var(--text);font-family:'Space Mono',monospace;font-size:12px;line-height:1.5;display:flex;flex-direction:column;transition:background .3s,color .3s;}
+body{background:var(--bg);color:var(--text);font-family:'Space Mono',monospace;font-size:13px;line-height:1.5;display:flex;flex-direction:column;}
+ 
+@media (prefers-reduced-motion: no-preference){
+  body{transition:background .3s,color .3s;}
+  header,.dash-right,.learn-header,.learn-tabs,.learn-scroll,.content-block,.quiz-q,.pyr-wrap{transition:background .3s,border-color .3s,color .3s;}
+}
  
 /* HEADER */
-header{background:var(--surface);border-bottom:1px solid var(--border);height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;flex-shrink:0;transition:background .3s;}
+header{background:var(--surface);border-bottom:1px solid var(--border);height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;flex-shrink:0;}
 .logo{display:flex;align-items:baseline;gap:8px;}
 .logo-mark{font-size:18px;font-weight:700;color:var(--gold);letter-spacing:-1px;}
 .logo-div{color:var(--dim);}
-.logo-tag{font-size:9px;color:var(--muted);letter-spacing:3px;text-transform:uppercase;}
+.logo-tag{font-size:10px;color:var(--muted);letter-spacing:2px;}
 .header-nav{display:flex;gap:2px;}
-.nav-btn{background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:5px 12px;cursor:pointer;transition:all .12s;}
+.nav-btn{background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0;padding:6px 12px;cursor:pointer;transition:all .12s;}
 .nav-btn:hover{color:var(--text);}
 .nav-btn.active{color:var(--gold);border-bottom-color:var(--gold);}
 .nav-btn.tbtn{color:#885500;}
-.nav-btn.tbtn.active{color:#ffaa22;border-bottom-color:#ffaa22;}
+.nav-btn.tbtn.active{color:var(--accent);border-bottom-color:var(--accent);}
 .header-right{display:flex;gap:6px;align-items:center;}
-.mode-badge{font-size:8px;letter-spacing:2px;text-transform:uppercase;padding:3px 8px;border:1px solid;}
+.mode-badge{font-size:10px;letter-spacing:0;padding:3px 10px;border:1px solid;}
 .mode-badge.learner{color:var(--cat3);border-color:var(--cat3);}
-.mode-badge.teacher{color:#ffaa22;border-color:#ffaa22;background:#1a0e00;}
-.btn{background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1px;padding:5px 12px;cursor:pointer;transition:all .12s;text-transform:uppercase;display:inline-block;}
+.mode-badge.teacher{color:var(--accent);border-color:var(--accent);background:var(--accent-dim);}
+.btn{background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0;padding:6px 12px;cursor:pointer;transition:all .12s;display:inline-block;}
 .btn:hover{border-color:var(--gold);color:var(--gold);}
 .btn-gold{background:var(--gold-dim);border-color:var(--gold);color:var(--gold);}
 .btn-gold:hover{background:var(--gold);color:#000;}
 .btn-full{width:100%;text-align:center;}
-.btn-sm{font-size:9px;padding:3px 8px;}
-.btn-danger{border-color:#602020;color:#c44;}
-.btn-danger:hover{background:#300;}
+.btn-sm{font-size:10px;padding:4px 8px;}
+.btn-danger{border-color:#602020;color:var(--danger);}
+.btn-danger:hover{background:var(--danger-dim);}
 .btn-ghost{background:none;border-color:transparent;color:var(--muted);}
 .btn-ghost:hover{color:var(--text);border-color:var(--border);}
+.btn-ok{background:var(--ok-dim);border-color:var(--ok);color:var(--ok);}
+.btn-ok:hover{background:var(--ok);color:#000;}
 input[type="file"]{display:none;}
+ 
+/* SETTINGS FAB — available on every view */
+.settings-fab{position:fixed;bottom:18px;right:18px;width:44px;height:44px;background:var(--surface);border:1px solid var(--border);color:var(--muted);border-radius:50%;cursor:pointer;font-family:'Space Mono',monospace;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;z-index:150;transition:all .15s;box-shadow:0 4px 12px rgba(0,0,0,.4);}
+.settings-fab:hover{color:var(--gold);border-color:var(--gold);transform:scale(1.05);}
  
 /* LAYOUT */
 .main{flex:1;overflow:hidden;display:flex;}
 .view{display:none;width:100%;overflow:hidden;}
 .view.active{display:flex;}
 .scroll{overflow-y:auto;}
-.scroll::-webkit-scrollbar{width:4px;}
+.scroll::-webkit-scrollbar{width:5px;}
 .scroll::-webkit-scrollbar-thumb{background:var(--border2);}
  
 /* ACCESSIBILITY PANEL */
 .a11y-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;display:flex;align-items:flex-start;justify-content:flex-end;}
-.a11y-panel{background:var(--surface);border-left:1px solid var(--border);width:300px;height:100%;overflow-y:auto;padding:20px;}
-.a11y-title{font-size:10px;text-transform:uppercase;letter-spacing:3px;color:var(--gold);margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;}
-.a11y-section{margin-bottom:20px;}
-.a11y-label{font-size:9px;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-bottom:8px;display:block;}
+.a11y-panel{background:var(--surface);border-left:1px solid var(--border);width:320px;height:100%;overflow-y:auto;padding:22px;}
+.a11y-title{font-size:12px;font-weight:700;color:var(--gold);margin-bottom:22px;display:flex;justify-content:space-between;align-items:center;}
+.a11y-section{margin-bottom:22px;}
+.a11y-label{font-size:11px;color:var(--muted);margin-bottom:8px;display:block;}
 .a11y-opts{display:flex;flex-wrap:wrap;gap:6px;}
-.a11y-opt{background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:5px 10px;cursor:pointer;transition:all .12s;}
+.a11y-opt{background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0;padding:6px 12px;cursor:pointer;transition:all .12s;}
 .a11y-opt:hover{border-color:var(--gold);color:var(--text);}
 .a11y-opt.active{background:var(--gold-dim);border-color:var(--gold);color:var(--gold);}
 .a11y-slider{width:100%;accent-color:var(--gold);cursor:pointer;}
 .a11y-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
-.a11y-val{font-size:9px;color:var(--gold);}
+.a11y-val{font-size:10px;color:var(--gold);}
+.a11y-preset{background:var(--surface2);border:1px solid var(--border);padding:10px 12px;cursor:pointer;margin-bottom:6px;transition:all .15s;display:flex;justify-content:space-between;align-items:center;}
+.a11y-preset:hover{border-color:var(--gold);}
+.a11y-preset-name{font-size:11px;font-weight:700;color:var(--text);}
+.a11y-preset-desc{font-size:10px;color:var(--muted);font-family:'Atkinson Hyperlegible',sans-serif;margin-top:2px;}
+.a11y-hint{font-size:11px;color:var(--muted);margin-top:8px;line-height:1.7;font-family:'Atkinson Hyperlegible',sans-serif;}
+ 
+/* IMPORT MODAL */
+.import-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:350;display:flex;align-items:center;justify-content:center;padding:20px;}
+.import-modal{background:var(--surface);border:1px solid var(--gold);max-width:540px;width:100%;padding:28px;}
+.import-title{font-size:14px;font-weight:700;color:var(--gold);margin-bottom:8px;}
+.import-sub{font-size:12px;color:var(--muted);margin-bottom:20px;font-family:'Atkinson Hyperlegible',sans-serif;line-height:1.7;}
+.import-stats{background:var(--surface2);border:1px solid var(--border);padding:14px;margin-bottom:20px;font-size:11px;font-family:'Atkinson Hyperlegible',sans-serif;line-height:1.9;}
+.import-stats strong{color:var(--text);font-family:'Space Mono',monospace;font-weight:700;}
+.import-opts{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
+.import-opt{background:var(--surface2);border:1px solid var(--border);padding:14px 16px;cursor:pointer;transition:all .15s;text-align:left;font-family:'Space Mono',monospace;}
+.import-opt:hover{border-color:var(--gold);}
+.import-opt-name{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.import-opt-desc{font-size:11px;color:var(--muted);font-family:'Atkinson Hyperlegible',sans-serif;line-height:1.6;}
+.import-opt.safe{border-left:3px solid var(--ok);}
+.import-opt.safe:hover{border-color:var(--ok);}
+.import-opt.danger{border-left:3px solid var(--danger);}
+.import-opt.danger:hover{border-color:var(--danger);}
+.import-opt.danger .import-opt-name{color:var(--danger);}
  
 /* DASH */
 #view-dash{flex-direction:row;}
-.dash-left{flex:1;padding:14px 18px;overflow-y:auto;}
-.dash-right{width:260px;border-left:1px solid var(--border);background:var(--surface);overflow-y:auto;padding:14px;transition:background .3s;}
-.dash-profile{margin-bottom:20px;}
-.dash-profile-name{font-size:18px;font-weight:700;cursor:pointer;display:inline-block;}
+.dash-left{flex:1;padding:16px 20px;overflow-y:auto;}
+.dash-right{width:280px;border-left:1px solid var(--border);background:var(--surface);overflow-y:auto;padding:16px;}
+.dash-profile{margin-bottom:22px;}
+.dash-profile-name{font-size:20px;font-weight:700;cursor:pointer;display:inline-block;}
 .dash-profile-name:hover{color:var(--gold);}
-.dash-profile-input{font-family:'Space Mono',monospace;font-size:18px;font-weight:700;background:var(--surface2);border:1px solid var(--gold);color:var(--text);padding:2px 6px;width:240px;}
+.dash-profile-input{font-family:'Space Mono',monospace;font-size:20px;font-weight:700;background:var(--surface2);border:1px solid var(--gold);color:var(--text);padding:2px 6px;width:260px;}
 .dash-profile-input:focus{outline:none;}
-.dash-profile-sub{font-size:10px;color:var(--muted);margin-top:3px;}
-.section-label{font-size:9px;text-transform:uppercase;letter-spacing:3px;color:var(--muted);margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--border);}
-.skill-card{background:var(--surface);border:1px solid var(--border);padding:10px 14px;margin-bottom:6px;cursor:pointer;transition:all .12s;}
+.dash-profile-sub{font-size:11px;color:var(--muted);margin-top:4px;}
+.section-label{font-size:11px;font-weight:700;color:var(--text);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border);letter-spacing:0;}
+.skill-card{background:var(--surface);border:1px solid var(--border);padding:12px 14px;margin-bottom:8px;cursor:pointer;transition:all .12s;}
 .skill-card:hover{border-color:var(--gold);}
 .skill-card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;}
-.skill-card-name{font-size:13px;font-weight:700;}
-.skill-card-cat{font-size:8px;letter-spacing:1px;text-transform:uppercase;}
-.skill-card-level{font-size:10px;font-weight:700;text-align:right;}
+.skill-card-name{font-size:14px;font-weight:700;}
+.skill-card-cat{font-size:10px;}
+.skill-card-level{font-size:11px;font-weight:700;text-align:right;}
 .skill-bar-track{height:2px;background:var(--border);margin-bottom:6px;}
 .skill-bar-fill{height:100%;transition:width .4s;}
-.skill-card-meta{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);}
-.skill-card.dashed{border-style:dashed;opacity:.7;}
-.skill-card.empty-state{cursor:default;opacity:.4;display:flex;align-items:center;justify-content:center;padding:24px;font-size:10px;color:var(--muted);}
+.skill-card-meta{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);}
+.skill-card.dashed{border-style:dashed;opacity:.75;}
+.skill-card.empty-state{cursor:default;opacity:.5;display:flex;align-items:center;justify-content:center;padding:24px;font-size:11px;color:var(--muted);font-family:'Atkinson Hyperlegible',sans-serif;}
 .skill-card.empty-state:hover{border-color:var(--border);}
-.skill-grid-mini{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;}
+.skill-grid-mini{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;}
 .mini-cell{aspect-ratio:1;border:1px solid var(--border);cursor:pointer;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;transition:all .12s;}
 .mini-cell:hover{border-color:var(--gold);}
 .mini-cell .mc-fill{position:absolute;inset:0;}
-.mini-cell .mc-label{position:relative;font-size:8px;font-weight:700;z-index:1;}
-.mini-cell::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 4px);left:50%;transform:translateX(-50%);background:#111;border:1px solid var(--border2);color:var(--text);font-size:9px;padding:3px 7px;white-space:nowrap;z-index:50;pointer-events:none;opacity:0;transition:opacity .1s;}
+.mini-cell .mc-label{position:relative;font-size:10px;font-weight:700;z-index:1;}
+.mini-cell::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 4px);left:50%;transform:translateX(-50%);background:#111;border:1px solid var(--border2);color:var(--text);font-size:10px;padding:4px 8px;white-space:nowrap;z-index:50;pointer-events:none;opacity:0;transition:opacity .1s;}
 .mini-cell:hover::after{opacity:1;}
 .mini-cell.nc{cursor:default;opacity:.35;}
 .mini-cell.nc:hover{border-color:var(--border);}
 .mini-cell.nc::after{display:none;}
-.recent-entry{padding:8px 0;border-bottom:1px solid var(--border);font-size:10px;}
+.recent-entry{padding:8px 0;border-bottom:1px solid var(--border);font-size:11px;}
 .recent-entry-skill{font-weight:700;margin-bottom:2px;}
-.recent-entry-meta{color:var(--muted);font-size:9px;}
-.empty-msg{color:var(--muted);font-size:10px;padding:12px 0;}
+.recent-entry-meta{color:var(--muted);font-size:10px;}
+.empty-msg{color:var(--muted);font-size:11px;padding:14px 0;font-family:'Atkinson Hyperlegible',sans-serif;}
 .sc{background:var(--surface);border:1px solid var(--border);padding:16px;}
-.sc .sn{font-size:24px;font-weight:700;line-height:1;}
-.sc .sl{font-size:8px;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-top:5px;}
+.sc .sn{font-size:26px;font-weight:700;line-height:1;}
+.sc .sl{font-size:10px;color:var(--muted);margin-top:6px;}
  
 /* LEARN */
 #view-learn{flex-direction:column;}
-.learn-header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 20px;display:flex;align-items:center;gap:12px;height:44px;flex-shrink:0;transition:background .3s;}
-.learn-back{background:none;border:none;color:var(--muted);cursor:pointer;font-family:'Space Mono',monospace;font-size:12px;}
+.learn-header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 20px;display:flex;align-items:center;gap:12px;height:46px;flex-shrink:0;}
+.learn-back{background:none;border:none;color:var(--muted);cursor:pointer;font-family:'Space Mono',monospace;font-size:13px;}
 .learn-back:hover{color:var(--gold);}
 .learn-skill-name{font-size:14px;font-weight:700;}
-.learn-skill-cat{font-size:9px;letter-spacing:1px;text-transform:uppercase;}
+.learn-skill-cat{font-size:11px;}
 .learn-header-right{margin-left:auto;display:flex;align-items:center;gap:8px;}
-.a11y-btn{background:none;border:1px solid var(--border);color:var(--muted);font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:4px 10px;cursor:pointer;transition:all .12s;}
-.a11y-btn:hover{border-color:var(--gold);color:var(--gold);}
-.learn-tabs{background:var(--surface);border-bottom:1px solid var(--border);display:flex;padding:0 20px;flex-shrink:0;transition:background .3s;}
-.learn-tab{background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:8px 14px;cursor:pointer;transition:all .12s;}
+.learn-tabs{background:var(--surface);border-bottom:1px solid var(--border);display:flex;padding:0 20px;flex-shrink:0;}
+.learn-tab{background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0;padding:9px 14px;cursor:pointer;transition:all .12s;}
 .learn-tab:hover{color:var(--text);}
 .learn-tab.active{color:var(--gold);border-bottom-color:var(--gold);}
  
 /* READING AREA */
-.learn-scroll{flex:1;overflow-y:auto;background:var(--bg);transition:background .3s;}
+.learn-scroll{flex:1;overflow-y:auto;background:var(--bg);}
 .learn-body{
   margin:0 auto;
-  padding:28px 24px 48px;
+  padding:28px 24px 80px;
   max-width:var(--read-width);
   font-family:var(--read-font);
   font-size:var(--read-size);
   line-height:var(--read-lh);
+  letter-spacing:var(--read-ls);
   transition:max-width .2s,font-size .2s,line-height .2s;
 }
-.content-block{background:var(--read-bg);border:1px solid var(--read-border);padding:24px 28px;margin-bottom:16px;transition:background .3s,border-color .3s;}
-.content-block-title{font-size:11px;font-weight:700;color:var(--gold);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);font-family:'Space Mono',monospace;letter-spacing:1px;text-transform:uppercase;}
-.content-body{color:var(--read-text);white-space:pre-wrap;transition:color .3s;}
-.content-empty{color:var(--muted);font-size:11px;font-style:italic;}
+.content-block{background:var(--read-bg);border:1px solid var(--read-border);padding:24px 28px;margin-bottom:16px;}
+.content-block-title{font-size:12px;font-weight:700;color:var(--gold);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);font-family:'Space Mono',monospace;letter-spacing:0;}
+.content-body{color:var(--read-text);white-space:pre-wrap;}
+.content-empty{color:var(--muted);font-size:12px;font-style:italic;}
  
 /* QUIZ */
-.quiz-q{background:var(--read-bg);border:1px solid var(--read-border);padding:20px;margin-bottom:14px;transition:background .3s;}
-.quiz-q-num{font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;font-family:'Space Mono',monospace;}
+.quiz-q{background:var(--read-bg);border:1px solid var(--read-border);padding:20px;margin-bottom:14px;}
+.quiz-q-num{font-size:11px;color:var(--muted);margin-bottom:8px;font-family:'Space Mono',monospace;}
 .quiz-q-text{font-size:var(--read-size);font-weight:700;margin-bottom:16px;line-height:1.5;color:var(--read-text);}
 .quiz-options{display:flex;flex-direction:column;gap:8px;}
-.quiz-option{background:var(--surface2);border:1px solid var(--border);padding:10px 16px;cursor:pointer;transition:all .12s;font-size:var(--read-size);text-align:left;font-family:var(--read-font);color:var(--text);line-height:1.5;}
+.quiz-option{background:var(--surface2);border:1px solid var(--border);padding:11px 16px;cursor:pointer;transition:all .12s;font-size:var(--read-size);text-align:left;font-family:var(--read-font);color:var(--text);line-height:1.5;}
 .quiz-option:hover:not(:disabled){border-color:var(--gold);}
 .quiz-option.selected{border-color:var(--gold);background:var(--gold-dim);}
-.quiz-option.correct{border-color:var(--cat3);background:var(--ok-dim);color:#1fc87a;}
-.quiz-option.wrong{border-color:var(--danger);background:#1a0000;color:#c44;}
+.quiz-option.correct{border-color:var(--cat3);background:var(--ok-dim);color:#6dd9a0;}
+.quiz-option.wrong{border-color:var(--danger);background:var(--danger-dim);color:#e88080;}
 .quiz-open-input{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:var(--read-font);font-size:var(--read-size);padding:12px;resize:vertical;min-height:100px;margin-top:8px;line-height:var(--read-lh);}
 .quiz-open-input:focus{outline:none;border-color:var(--gold);}
-.quiz-feedback{margin-top:10px;padding:8px 12px;font-size:10px;font-weight:700;letter-spacing:1px;}
-.quiz-feedback.correct{color:#1fc87a;border-left:3px solid var(--cat3);}
+.quiz-feedback{margin-top:10px;padding:8px 12px;font-size:11px;font-weight:700;}
+.quiz-feedback.correct{color:#6dd9a0;border-left:3px solid var(--cat3);}
 .quiz-score-bar{background:var(--surface);border:1px solid var(--gold);padding:24px;margin-bottom:16px;text-align:center;}
-.quiz-score-big{font-size:52px;font-weight:700;line-height:1;}
-.quiz-score-lbl{font-size:10px;color:var(--muted);margin-top:6px;}
+.quiz-score-big{font-size:54px;font-weight:700;line-height:1;}
+.quiz-score-lbl{font-size:11px;color:var(--muted);margin-top:8px;}
  
 /* PROGRESS */
-.pyr-wrap{background:var(--surface);border:1px solid var(--border);padding:18px;margin-bottom:14px;transition:background .3s;}
-.pyr-title{font-size:9px;text-transform:uppercase;letter-spacing:3px;color:var(--muted);margin-bottom:16px;text-align:center;}
+.pyr-wrap{background:var(--surface);border:1px solid var(--border);padding:20px;margin-bottom:14px;}
+.pyr-title{font-size:11px;font-weight:700;color:var(--muted);margin-bottom:16px;text-align:center;}
 .pyr-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
-.pyr-key{font-size:9px;font-weight:700;color:var(--muted);width:22px;text-align:right;flex-shrink:0;}
+.pyr-key{font-size:11px;font-weight:700;color:var(--muted);width:26px;text-align:right;flex-shrink:0;}
 .pyr-blocks{display:flex;gap:4px;}
-.pyr-block{width:26px;height:26px;border:1px solid var(--border2);transition:all .2s;}
+.pyr-block{width:28px;height:28px;border:1px solid var(--border2);transition:all .2s;}
 .pyr-block.filled{border-color:transparent;}
 .pyr-block.locked{opacity:.15;}
-.pyr-desc{font-size:9px;color:var(--muted);flex:1;}
+.pyr-desc{font-size:11px;color:var(--muted);flex:1;font-family:'Atkinson Hyperlegible',sans-serif;}
 .x-track{display:flex;gap:3px;flex:1;}
-.x-pip{height:8px;flex:1;background:var(--border2);}
-.log-note-area{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:var(--read-font);font-size:var(--read-size);padding:10px;resize:none;height:60px;margin-bottom:10px;display:block;}
+.x-pip{height:10px;flex:1;background:var(--border2);}
+.log-note-area{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:var(--read-font);font-size:var(--read-size);padding:10px;resize:none;height:68px;margin-bottom:10px;display:block;line-height:1.6;}
 .log-note-area:focus{outline:none;border-color:var(--gold);}
 .log-note-area::placeholder{color:var(--dim);}
-.log-entry{border-left:2px solid var(--border2);padding:6px 12px;margin-bottom:10px;}
-.log-entry-header{display:flex;justify-content:space-between;margin-bottom:2px;}
-.log-entry-level{font-size:9px;font-weight:700;}
-.log-entry-date{font-size:9px;color:var(--muted);}
-.log-entry-note{font-size:9px;color:var(--muted);font-style:italic;}
-.mastered-banner{border:1px solid var(--gold);color:var(--gold);text-align:center;padding:14px;font-size:11px;font-weight:700;letter-spacing:3px;margin-bottom:14px;background:var(--gold-dim);}
+.log-entry{border-left:2px solid var(--border2);padding:8px 12px;margin-bottom:10px;}
+.log-entry-header{display:flex;justify-content:space-between;margin-bottom:3px;}
+.log-entry-level{font-size:11px;font-weight:700;}
+.log-entry-date{font-size:10px;color:var(--muted);}
+.log-entry-note{font-size:11px;color:var(--muted);font-style:italic;font-family:'Atkinson Hyperlegible',sans-serif;}
+.mastered-banner{border:1px solid var(--gold);color:var(--gold);text-align:center;padding:14px;font-size:12px;font-weight:700;letter-spacing:2px;margin-bottom:14px;background:var(--gold-dim);}
 .progress-bar{height:3px;background:var(--border);margin:6px 0;}
 .progress-bar-fill{height:100%;transition:width .4s;}
-.progress-meta{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);}
+.progress-meta{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);}
  
-/* SESSION LIMIT INDICATOR */
+/* SESSION LIMIT */
 .session-limit{background:var(--surface);border:1px solid var(--border);padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;gap:12px;}
 .sl-pips{display:flex;gap:4px;}
-.sl-pip{width:12px;height:12px;border:1px solid var(--border2);}
+.sl-pip{width:14px;height:14px;border:1px solid var(--border2);}
 .sl-pip.used{background:var(--gold);border-color:var(--gold);}
-.sl-text{font-size:9px;color:var(--muted);flex:1;}
-.sl-text strong{color:var(--text);}
+.sl-text{font-size:11px;color:var(--muted);flex:1;font-family:'Atkinson Hyperlegible',sans-serif;}
+.sl-text strong{color:var(--text);font-family:'Space Mono',monospace;}
  
 /* GRID */
 #view-grid{flex-direction:column;overflow-y:auto;padding:20px;}
@@ -212,64 +247,63 @@ input[type="file"]{display:none;}
 .grid-cell{aspect-ratio:1.2;border:1px solid var(--border);cursor:pointer;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:all .12s;padding:8px;}
 .grid-cell:hover{border-color:var(--gold);z-index:5;}
 .grid-cell .gc-fill{position:absolute;inset:0;}
-.gc-num{font-size:8px;color:var(--muted);position:absolute;top:3px;left:5px;}
-.gc-level{font-size:16px;font-weight:700;position:relative;z-index:1;}
-.gc-name{font-size:8px;color:var(--muted);position:absolute;bottom:5px;text-align:center;overflow:hidden;width:90%;line-height:1.3;}
-.grid-cell::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 5px);left:50%;transform:translateX(-50%);background:#111;border:1px solid var(--border2);color:var(--text);font-size:9px;padding:3px 8px;white-space:nowrap;z-index:100;pointer-events:none;opacity:0;transition:opacity .1s;}
+.gc-num{font-size:10px;color:var(--muted);position:absolute;top:4px;left:6px;}
+.gc-level{font-size:18px;font-weight:700;position:relative;z-index:1;}
+.gc-name{font-size:10px;color:var(--muted);position:absolute;bottom:6px;text-align:center;overflow:hidden;width:90%;line-height:1.3;}
+.grid-cell::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 5px);left:50%;transform:translateX(-50%);background:#111;border:1px solid var(--border2);color:var(--text);font-size:10px;padding:4px 8px;white-space:nowrap;z-index:100;pointer-events:none;opacity:0;transition:opacity .1s;}
 .grid-cell:hover::after{opacity:1;}
 .grid-cell.nc{cursor:default;opacity:.35;}
 .grid-cell.nc:hover{border-color:var(--border);}
 .grid-cell.nc::after{display:none;}
-/* empty slot row — tiny dots */
 .grid-slots{display:flex;flex-wrap:wrap;gap:3px;max-width:900px;}
-.grid-slot{width:18px;height:18px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:7px;color:var(--dim);cursor:default;}
+.grid-slot{width:20px;height:20px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--dim);cursor:default;}
  
 /* STATS */
 #view-stats{flex-direction:column;overflow-y:auto;padding:20px;}
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px;}
 .cat-row{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:24px;}
 .cat-card{background:var(--surface);border:1px solid var(--border);padding:14px;}
-.cat-name{font-size:10px;font-weight:700;margin-bottom:8px;}
+.cat-name{font-size:12px;font-weight:700;margin-bottom:8px;}
 .cat-bar-t{height:2px;background:var(--border);margin-bottom:6px;}
 .cat-bar-f{height:100%;}
  
 /* TEACHER */
 #view-teacher{flex-direction:row;}
-.t-sidebar{width:240px;border-right:1px solid var(--border);background:var(--surface);overflow-y:auto;padding:16px;}
+.t-sidebar{width:260px;border-right:1px solid var(--border);background:var(--surface);overflow-y:auto;padding:16px;}
 .t-main{flex:1;overflow-y:auto;padding:20px;}
 .tsi{padding:10px 12px;border:1px solid var(--border);margin-bottom:6px;cursor:pointer;transition:all .12s;display:flex;align-items:center;gap:8px;}
-.tsi:hover{border-color:#ffaa22;}
-.tsi.active{border-color:#ffaa22;background:#1a0e00;}
-.tsi-name{font-size:11px;font-weight:700;flex:1;}
-.tsi-num{font-size:9px;color:var(--muted);}
+.tsi:hover{border-color:var(--accent);}
+.tsi.active{border-color:var(--accent);background:var(--accent-dim);}
+.tsi-name{font-size:12px;font-weight:700;flex:1;}
+.tsi-num{font-size:10px;color:var(--muted);}
 .ed-sec{background:var(--surface);border:1px solid var(--border);padding:16px;margin-bottom:14px;}
-.ed-title{font-size:9px;text-transform:uppercase;letter-spacing:3px;color:#ffaa22;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;}
-.t-input{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:'Space Mono',monospace;font-size:12px;padding:7px 10px;margin-bottom:8px;}
-.t-input:focus{outline:none;border-color:#ffaa22;}
-.t-ta{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:'Space Mono',monospace;font-size:11px;padding:8px;resize:vertical;min-height:120px;line-height:1.7;}
-.t-ta:focus{outline:none;border-color:#ffaa22;}
+.ed-title{font-size:12px;font-weight:700;color:var(--accent);margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;}
+.t-input{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:'Space Mono',monospace;font-size:12px;padding:8px 10px;margin-bottom:8px;}
+.t-input:focus{outline:none;border-color:var(--accent);}
+.t-ta{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:'Space Mono',monospace;font-size:12px;padding:8px;resize:vertical;min-height:120px;line-height:1.7;}
+.t-ta:focus{outline:none;border-color:var(--accent);}
 .t-ta::placeholder{color:var(--dim);}
 .qei{background:var(--surface2);border:1px solid var(--border);padding:12px;margin-bottom:10px;}
 .qei-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
-.qei-num{font-size:9px;font-weight:700;color:#ffaa22;}
-.lbl{font-size:9px;color:var(--muted);display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:1px;}
+.qei-num{font-size:11px;font-weight:700;color:var(--accent);}
+.lbl{font-size:10px;color:var(--muted);display:block;margin-bottom:4px;}
  
 /* PIN */
 .pin-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;z-index:200;}
-.pin-box{background:var(--surface);border:1px solid #ffaa22;padding:32px;text-align:center;width:320px;}
-.pin-title{font-size:12px;font-weight:700;color:#ffaa22;margin-bottom:8px;letter-spacing:2px;}
-.pin-hint{font-size:10px;color:var(--muted);margin-bottom:18px;}
-.pin-input{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:'Space Mono',monospace;font-size:18px;padding:10px;text-align:center;letter-spacing:8px;margin-bottom:14px;}
-.pin-input:focus{outline:none;border-color:#ffaa22;}
-.pin-err{color:#c44;font-size:10px;margin-bottom:10px;height:16px;}
+.pin-box{background:var(--surface);border:1px solid var(--accent);padding:32px;text-align:center;width:340px;}
+.pin-title{font-size:13px;font-weight:700;color:var(--accent);margin-bottom:8px;}
+.pin-hint{font-size:11px;color:var(--muted);margin-bottom:18px;font-family:'Atkinson Hyperlegible',sans-serif;}
+.pin-input{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:'Space Mono',monospace;font-size:18px;padding:11px;text-align:center;letter-spacing:8px;margin-bottom:14px;}
+.pin-input:focus{outline:none;border-color:var(--accent);}
+.pin-err{color:var(--danger);font-size:11px;margin-bottom:10px;height:16px;}
  
 /* MASTERY MODAL */
 .mastery-overlay{position:fixed;inset:0;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;z-index:400;}
 .mastery-box{background:var(--surface);border:1px solid var(--gold);padding:48px;text-align:center;max-width:440px;}
-.mastery-icon{font-size:64px;margin-bottom:16px;}
-.mastery-title{font-size:20px;font-weight:700;color:var(--gold);letter-spacing:4px;margin-bottom:12px;}
-.mastery-skill{font-size:14px;color:var(--text);margin-bottom:8px;}
-.mastery-sub{font-size:10px;color:var(--muted);line-height:1.8;margin-bottom:24px;}
+.mastery-icon{font-size:68px;margin-bottom:16px;}
+.mastery-title{font-size:22px;font-weight:700;color:var(--gold);letter-spacing:4px;margin-bottom:12px;}
+.mastery-skill{font-size:15px;color:var(--text);margin-bottom:10px;}
+.mastery-sub{font-size:11px;color:var(--muted);line-height:1.8;margin-bottom:24px;font-family:'Atkinson Hyperlegible',sans-serif;}
 </style>
 </head>
 <body>
@@ -282,7 +316,6 @@ input[type="file"]{display:none;}
     <button class="nav-btn" data-view="stats">Stats</button>
     <button class="nav-btn tbtn" id="nav-teacher" data-view="teacher">Teacher ⚙</button>
     <a href="builder.html" class="nav-btn" style="text-decoration:none">Builder</a>
-    <a href="creator.html" class="nav-btn" style="text-decoration:none">AI Creator</a>
   </div>
   <div class="header-right">
     <span class="mode-badge learner" id="mode-badge">Learner</span>
@@ -291,6 +324,9 @@ input[type="file"]{display:none;}
     <input type="file" id="hdr-import" accept=".json">
   </div>
 </header>
+ 
+<!-- SETTINGS FAB (floating, visible on every view) -->
+<button class="settings-fab" id="settings-fab" title="Reading & accessibility settings" onclick="document.getElementById('a11y-overlay').style.display='flex'">Aa</button>
  
 <!-- PIN -->
 <div class="pin-overlay" id="pin-overlay" style="display:none">
@@ -317,15 +353,52 @@ input[type="file"]{display:none;}
   </div>
 </div>
  
+<!-- IMPORT MODAL -->
+<div class="import-overlay" id="import-overlay" style="display:none">
+  <div class="import-modal">
+    <div class="import-title">Import File</div>
+    <div class="import-sub" id="import-sub"></div>
+    <div class="import-stats" id="import-stats"></div>
+    <div class="import-opts" id="import-opts"></div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;">
+      <button class="btn" onclick="closeImportModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+ 
 <!-- ACCESSIBILITY PANEL -->
 <div class="a11y-overlay" id="a11y-overlay" style="display:none" onclick="closeA11y(event)">
   <div class="a11y-panel" onclick="event.stopPropagation()">
-    <div class="a11y-title">Reading Settings <button class="btn btn-ghost btn-sm" onclick="closeA11y()">✕</button></div>
+    <div class="a11y-title">Reading &amp; Display <button class="btn btn-ghost btn-sm" onclick="closeA11y()">✕</button></div>
+ 
+    <div class="a11y-section">
+      <label class="a11y-label">Quick Presets</label>
+      <div class="a11y-preset" onclick="applyPreset('default')">
+        <div><div class="a11y-preset-name">Default</div><div class="a11y-preset-desc">Dark, mono, 13px</div></div>
+        <span style="color:var(--gold);font-size:10px">→</span>
+      </div>
+      <div class="a11y-preset" onclick="applyPreset('dyslexia')">
+        <div><div class="a11y-preset-name">Dyslexia-friendly</div><div class="a11y-preset-desc">Atkinson Hyperlegible · 16px · wide spacing</div></div>
+        <span style="color:var(--gold);font-size:10px">→</span>
+      </div>
+      <div class="a11y-preset" onclick="applyPreset('calm')">
+        <div><div class="a11y-preset-name">Calm</div><div class="a11y-preset-desc">Paper background · serif · extra line height</div></div>
+        <span style="color:var(--gold);font-size:10px">→</span>
+      </div>
+      <div class="a11y-preset" onclick="applyPreset('lowvision')">
+        <div><div class="a11y-preset-name">Low vision</div><div class="a11y-preset-desc">High contrast · large text · sans</div></div>
+        <span style="color:var(--gold);font-size:10px">→</span>
+      </div>
+      <div class="a11y-preset" onclick="applyPreset('adhd')">
+        <div><div class="a11y-preset-name">ADHD focus</div><div class="a11y-preset-desc">Narrow width · strong contrast · readable font</div></div>
+        <span style="color:var(--gold);font-size:10px">→</span>
+      </div>
+    </div>
  
     <div class="a11y-section">
       <label class="a11y-label">Background</label>
       <div class="a11y-opts">
-        <button class="a11y-opt active" data-read="dark" onclick="setRead('bg','dark')">Dark</button>
+        <button class="a11y-opt" data-read="dark" onclick="setRead('bg','dark')">Dark</button>
         <button class="a11y-opt" data-read="warm" onclick="setRead('bg','warm')">Warm</button>
         <button class="a11y-opt" data-read="paper" onclick="setRead('bg','paper')">Paper</button>
         <button class="a11y-opt" data-read="highcontrast" onclick="setRead('bg','highcontrast')">High Contrast</button>
@@ -334,16 +407,14 @@ input[type="file"]{display:none;}
     </div>
  
     <div class="a11y-section">
-      <label class="a11y-label">Font</label>
+      <label class="a11y-label">Font (reading area)</label>
       <div class="a11y-opts">
-        <button class="a11y-opt active" data-font="mono" onclick="setRead('font','mono')">Mono</button>
+        <button class="a11y-opt" data-font="mono" onclick="setRead('font','mono')">Mono</button>
         <button class="a11y-opt" data-font="sans" onclick="setRead('font','sans')">Sans</button>
         <button class="a11y-opt" data-font="serif" onclick="setRead('font','serif')">Serif</button>
         <button class="a11y-opt" data-font="readable" onclick="setRead('font','readable')">Readable</button>
       </div>
-      <div style="font-size:9px;color:var(--muted);margin-top:6px;line-height:1.6">
-        Readable = Atkinson Hyperlegible, designed for low vision and dyslexia.
-      </div>
+      <div class="a11y-hint">"Readable" is Atkinson Hyperlegible, designed for low vision and dyslexia.</div>
     </div>
  
     <div class="a11y-section">
@@ -366,7 +437,7 @@ input[type="file"]{display:none;}
       <label class="a11y-label">Reading Width</label>
       <div class="a11y-opts">
         <button class="a11y-opt" data-width="narrow" onclick="setRead('width','narrow')">Narrow</button>
-        <button class="a11y-opt active" data-width="normal" onclick="setRead('width','normal')">Normal</button>
+        <button class="a11y-opt" data-width="normal" onclick="setRead('width','normal')">Normal</button>
         <button class="a11y-opt" data-width="wide" onclick="setRead('width','wide')">Wide</button>
         <button class="a11y-opt" data-width="full" onclick="setRead('width','full')">Full</button>
       </div>
@@ -375,7 +446,7 @@ input[type="file"]{display:none;}
     <div class="a11y-section">
       <label class="a11y-label">Letter Spacing</label>
       <div class="a11y-opts">
-        <button class="a11y-opt active" data-ls="normal" onclick="setRead('ls','normal')">Normal</button>
+        <button class="a11y-opt" data-ls="normal" onclick="setRead('ls','normal')">Normal</button>
         <button class="a11y-opt" data-ls="wide" onclick="setRead('ls','wide')">Wide</button>
         <button class="a11y-opt" data-ls="wider" onclick="setRead('ls','wider')">Wider</button>
       </div>
@@ -394,13 +465,13 @@ input[type="file"]{display:none;}
         <input type="text" id="dp-input" class="dash-profile-input" style="display:none">
         <div class="dash-profile-sub" id="dp-sub"></div>
       </div>
-      <div style="margin-bottom:16px;"><div class="section-label">Continue Learning</div><div id="active-list"></div></div>
+      <div style="margin-bottom:18px;"><div class="section-label">Continue Learning</div><div id="active-list"></div></div>
       <div><div class="section-label">All Skills</div><div class="skill-grid-mini" id="mini-grid"></div></div>
     </div>
     <div class="dash-right scroll">
       <div class="section-label" style="margin-bottom:10px;">Recent Activity</div>
       <div id="dash-recent"></div>
-      <div style="margin-top:14px;" class="section-label">Stats</div>
+      <div style="margin-top:16px;" class="section-label">Stats</div>
       <div id="dash-stats" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;"></div>
     </div>
   </div>
@@ -412,7 +483,6 @@ input[type="file"]{display:none;}
       <div class="learn-skill-name" id="learn-title"></div>
       <div class="learn-header-right">
         <div class="learn-skill-cat" id="learn-cat"></div>
-        <button class="a11y-btn" onclick="document.getElementById('a11y-overlay').style.display='flex'">Aa Settings</button>
       </div>
     </div>
     <div class="learn-tabs">
@@ -447,7 +517,7 @@ input[type="file"]{display:none;}
   <!-- TEACHER -->
   <div id="view-teacher" class="view">
     <div class="t-sidebar scroll">
-      <div class="section-label" style="color:#ffaa22;margin-bottom:12px;">Skills</div>
+      <div class="section-label" style="color:var(--accent);margin-bottom:12px;">Skills</div>
       <div id="t-skill-list"></div>
       <div style="margin-top:10px;display:flex;flex-direction:column;gap:6px;">
         <button class="btn btn-sm btn-full" id="btn-add-skill">+ Add Skill</button>
@@ -455,7 +525,7 @@ input[type="file"]{display:none;}
         <button class="btn btn-sm btn-danger" id="btn-exit-teacher">Exit Teacher Mode</button>
       </div>
     </div>
-    <div class="t-main scroll" id="t-main"><div style="color:var(--muted);font-size:11px;padding:40px;text-align:center;">Select a skill to edit</div></div>
+    <div class="t-main scroll" id="t-main"><div style="color:var(--muted);font-size:12px;padding:40px;text-align:center;font-family:'Atkinson Hyperlegible',sans-serif;">Select a skill to edit</div></div>
   </div>
 </div>
  
@@ -463,120 +533,92 @@ input[type="file"]{display:none;}
 // ═══════════════════════════════════
 // CONSTANTS
 // ═══════════════════════════════════
-const CATS=[{id:1,name:"Cognitive",color:"#b87200"},{id:2,name:"Communication",color:"#1a55bb"},{id:3,name:"Emotional",color:"#128550"},{id:4,name:"Practical",color:"#a84000"},{id:5,name:"Custom",color:"#888"}];
-const MAX_SKILLS=25,MAX_ATT=160;
-const DAILY_SESSION_LIMIT=3; // max manual sessions per skill per day
+const CATS=[{id:1,name:"Cognitive",color:"#c88a30"},{id:2,name:"Communication",color:"#5088d8"},{id:3,name:"Emotional",color:"#3aa878"},{id:4,name:"Practical",color:"#c8603c"},{id:5,name:"Custom",color:"#a0a0a0"}];
+const MAX_SKILLS=25, MAX_ATT=160;
+const DAILY_SESSION_LIMIT=3;
  
 // ═══════════════════════════════════
-// STARTER CURRICULUM — FULL SKILLS
+// STARTER CURRICULUM
+// (unchanged — same 5 skills as original)
 // ═══════════════════════════════════
 function starterCurriculum(){return[
 {id:1,name:"Critical Thinking",description:"Analysing and evaluating information objectively before accepting it or acting on it.",catId:1,locked:false,content:{
 lessons:[
 {id:"l1",title:"What Is Critical Thinking?",body:"Critical thinking is the disciplined process of actively analysing, evaluating, and synthesising information before accepting it as true or acting on it.\n\nMost people believe they think critically. Most don't. The default human mode is reactive: information arrives, it matches or clashes with existing beliefs, and we accept or reject it on that basis. Critical thinking interrupts that reflex. It inserts a gap between receiving information and responding to it.\n\nWHY IT MATTERS\n\nEvery important decision you make — about money, relationships, career, health, politics — is based on information and reasoning. If your reasoning is flawed, your decisions will be too. This is not an academic skill. It is a practical one with real consequences.\n\nTHE CORE HABITS\n\n1. Question assumptions — especially your own. Most beliefs we hold were never examined; they were absorbed.\n2. Seek evidence before accepting claims. Opinions are not evidence. Anecdotes are not evidence. Repetition is not evidence.\n3. Consider multiple perspectives. The first explanation that makes sense is rarely the complete one.\n4. Stay comfortable with uncertainty. Not everything has a clear answer yet. Tolerating 'I don't know' is a sign of intellectual strength.\n5. Change your mind when evidence warrants it. The goal is accuracy, not consistency.\n\nWHAT IT IS NOT\n\nCritical thinking is not cynicism. It is not rejecting everything. It is not endless debate for its own sake. A critical thinker can arrive at firm, confident conclusions — they simply know how they got there and can explain the reasoning."},
-{id:"l2",title:"Evaluating Claims and Evidence",body:"Every claim you encounter deserves evaluation. Most people judge claims by how they feel rather than by the quality of evidence behind them. Developing a systematic approach changes that.\n\nTHE FIVE QUESTIONS\n\n1. WHO is making this claim?\nAre they qualified to make it? Do they have a conflict of interest — financial, political, ideological? A pharmaceutical company funding research into their own drug is not a neutral source. Neither is a politician interpreting statistics that favour their party.\n\n2. WHAT evidence is provided?\nIs it anecdotal (one person's story) or systematic (many cases, controlled conditions)? A friend who recovered from illness after a particular treatment is not evidence the treatment works — it may have been coincidence, placebo effect, or natural recovery.\n\n3. WHERE does the evidence come from?\nIs it from the original study, or from someone reporting on it? Secondary sources introduce error, simplification, and sometimes deliberate distortion. When possible, trace claims to their source.\n\n4. HOW was the evidence gathered?\nSample size matters. Methodology matters. Were variables controlled? A study of 12 people is different from one of 12,000. Was the study pre-registered? Was it replicated?\n\n5. WHAT alternative explanations exist?\nCorrelation does not equal causation. Ice cream sales and drowning rates both rise in summer — they are correlated, but ice cream does not cause drowning. Both are caused by a third factor: hot weather. Always ask whether another explanation fits the data as well or better.\n\nSTRONG VS WEAK EVIDENCE\n\nStrong: large controlled studies, peer-reviewed, replicated by independent researchers, no significant conflict of interest.\nWeak: anecdotes, testimonials, small samples, studies with no control group, unreplicated findings, research funded by interested parties."},
-{id:"l3",title:"Logical Fallacies",body:"A logical fallacy is an error in reasoning that makes an argument invalid — even if the conclusion happens to be true. Learning to identify them protects you from being misled and from misleading others.\n\nAD HOMINEM\nAttacking the person making the argument instead of the argument itself.\n'You can't trust his views on climate change — he drives a car.'\nThe source's personal choices do not affect whether the argument is sound.\n\nSTRAW MAN\nMisrepresenting someone's position to make it easier to attack.\n'You want to reduce military spending? So you want us to have no defence at all.'\nRespond to what was actually argued, not a distorted version of it.\n\nFALSE DICHOTOMY\nPresenting two options as if they're the only possibilities.\n'You're either with us or against us.'\nMost real situations have more than two options.\n\nAPPEAL TO AUTHORITY\nUsing someone's expertise or status as proof of a claim.\n'A Nobel Prize winner agrees with me.'\nAuthorities can be wrong, especially outside their area of expertise. Check the evidence they're citing.\n\nSLIPPERY SLOPE\nClaiming one event will inevitably lead to an extreme outcome without justifying the chain.\n'If we allow this small policy change, within five years we'll have total government control.'\n\nCONFIRMATION BIAS\nSeeking only information that confirms what you already believe, and dismissing what challenges it.\nThis is the most dangerous fallacy because it usually operates below conscious awareness.\n\nAPPEAL TO POPULARITY\nAssuming something is true because many people believe it.\nMajority belief has been wrong throughout history — about the shape of the earth, about who deserves rights, about medical treatments.\n\nFinding a fallacy in someone's argument does not automatically mean their conclusion is wrong. It means their argument doesn't prove their conclusion. The conclusion might still be true — it just needs a better argument."},
-{id:"l4",title:"Thinking About Your Own Thinking",body:"The most sophisticated form of critical thinking is metacognition — thinking about your own thinking. Knowing that you can reason doesn't mean you always do. Understanding the conditions under which your reasoning breaks down is essential.\n\nCOGNITIVE BIASES ARE UNIVERSAL\n\nEvery human brain runs on shortcuts — heuristics — that work well most of the time and produce systematic errors some of the time. These are not character flaws. They are features of how human cognition evolved. But knowing they exist lets you compensate.\n\nAnchoring: Your first piece of information disproportionately influences your final judgement. If you hear a high price first, subsequent prices seem more reasonable by comparison.\n\nAvailability heuristic: You judge probability by how easily examples come to mind. Dramatic, recent, or emotional events seem more common than statistics suggest because they're vivid in memory.\n\nDunning-Kruger: People with limited knowledge in an area tend to overestimate their competence. Deep expertise tends to increase awareness of how much you don't know.\n\nIn-group bias: You evaluate evidence differently depending on whether it supports or challenges your group's position. This operates in politics, sport, religion, and any other domain where identity is involved.\n\nHOW TO PARTIALLY COUNTERACT BIAS\n\nSlow down on important decisions. Biases thrive when you're thinking fast.\nActively seek out strong versions of opposing views — not weak versions that are easy to dismiss.\nAsk someone who disagrees to explain their reasoning. Actually listen.\nConsider how you would evaluate the same evidence if it supported the other side.\n\nINTELLECTUAL HUMILITY\n\nThe most accurate thinkers are not necessarily the most confident ones. Intellectual humility means holding beliefs with appropriate strength — strongly when evidence is strong, tentatively when it isn't. It means updating your views without shame when new evidence appears."},
-{id:"l5",title:"Applying Critical Thinking in Daily Life",body:"Critical thinking is not just for formal debates or academic papers. It is most valuable in ordinary situations: evaluating news, making decisions, having conversations, spending money, and forming opinions.\n\nEVALUATING NEWS AND MEDIA\n\nBefore sharing or accepting a news story, check: Who published it? What is their track record? Is the headline accurate to the actual story? Are multiple independent sources reporting the same thing? Is this story being covered only by outlets with a clear agenda? Primary sources (official reports, original studies, transcripts) are almost always more reliable than commentary.\n\nIN CONVERSATIONS\n\nListen for the actual claim being made, not your interpretation of it. Ask for specifics: 'What evidence are you basing that on?' and 'What would change your mind?' These questions are not aggressive if asked calmly — they are respectful requests for clarity.\n\nIN DECISIONS\n\nFor important decisions, write out: what you know for certain, what you're assuming, what you don't know, and what the strongest counterargument is. This forces the reasoning to become explicit rather than remaining as vague intuition.\n\nON YOUR OWN BELIEFS\n\nPeriodically ask yourself about beliefs you hold strongly: What evidence convinced me of this? When did I last seriously examine it? What would it take to change my mind? If you cannot answer the third question, you may be holding that belief as identity rather than as conclusion.\n\nTHE LONG GAME\n\nCritical thinking improves with practice. Each time you catch a fallacy, question an assumption, or change your mind on the basis of evidence, you are building the habit. The goal is not to become a professional sceptic who trusts nothing. The goal is to become someone whose beliefs are more likely to be accurate because they were tested."}
+{id:"l2",title:"Evaluating Claims and Evidence",body:"Every claim you encounter deserves evaluation. Most people judge claims by how they feel rather than by the quality of evidence behind them. Developing a systematic approach changes that.\n\nTHE FIVE QUESTIONS\n\n1. WHO is making this claim?\nAre they qualified to make it? Do they have a conflict of interest — financial, political, ideological?\n\n2. WHAT evidence is provided?\nIs it anecdotal or systematic? A friend's recovery story is not evidence of treatment efficacy.\n\n3. WHERE does the evidence come from?\nIs it from the original study, or a report on it? Trace claims to their source when possible.\n\n4. HOW was the evidence gathered?\nSample size matters. Methodology matters. Was the study pre-registered? Was it replicated?\n\n5. WHAT alternative explanations exist?\nCorrelation does not equal causation. Always ask whether another explanation fits the data."}
 ],
 exercises:[
-{id:"e1",title:"Claim Audit",body:"Find three claims from three different sources today — a news article, a social media post, an advertisement, or a conversation.\n\nFor each claim:\n1. Write the claim exactly as stated\n2. Identify who is making it and whether they have a conflict of interest\n3. List the evidence provided\n4. Rate the evidence quality (Strong / Moderate / Weak / None) and explain why\n5. Identify any logical fallacies present\n6. Write a more accurate or more cautious version of the claim\n7. Rate your confidence in the original claim (0-100%) before and after the audit\n\nAim to find at least one claim where your confidence changed significantly after examining the evidence."},
-{id:"e2",title:"Fallacy Hunt",body:"Read any opinion article, editorial, political speech transcript, or social media argument.\n\n1. Identify at least THREE logical fallacies\n2. For each one: name the fallacy, quote the relevant passage, explain why it qualifies\n3. Ask: does the overall argument survive without these fallacies? If the fallacies were removed, would the remaining argument be convincing?\n4. Write one paragraph summarising the actual strongest version of the argument — free of fallacies\n\nIf you genuinely cannot find three fallacies, write about why the argument holds up and what makes it well-reasoned."},
-{id:"e3",title:"Steel-Manning Practice",body:"Choose a position you currently disagree with — a political view, a lifestyle choice, a belief you think is wrong.\n\n1. Write your own position in one paragraph\n2. Write the STRONGEST possible version of the opposing position — not a weak version you can easily dismiss, but the best argument someone intelligent and well-informed would make\n3. Identify any points in the opposing argument that are genuinely valid\n4. Write what evidence or argument would be needed to move you toward their position\n5. Reflect: has this exercise changed your view at all, even slightly?\n\nThe goal is not to abandon your position. The goal is to hold it more honestly."},
-{id:"e4",title:"Decision Audit",body:"Take a significant decision you have made in the past — something that had real consequences.\n\n1. What did you decide?\n2. What information did you have at the time?\n3. What did you assume without verifying?\n4. What information did you not look for that you should have?\n5. Were any cognitive biases operating? (List them)\n6. What would you do differently with the same information?\n7. What would you do differently now that you have more information?\n\nThis is not about blame. It is about building awareness of your own reasoning patterns."}
+{id:"e1",title:"Claim Audit",body:"Find three claims from three different sources today.\n\nFor each: write the claim, identify the source's interests, list the evidence, rate evidence quality, identify fallacies, rewrite more cautiously.\n\nAim for at least one claim where your confidence changed after examining the evidence."},
+{id:"e2",title:"Steel-Manning Practice",body:"Choose a position you disagree with.\n\n1. Write your own position in one paragraph\n2. Write the STRONGEST version of the opposing position\n3. Identify points in the opposing argument that are genuinely valid\n4. Write what evidence would move you toward their position\n5. Reflect: has this changed your view at all?"}
 ],
 quiz:[
-{id:"q1",question:"Which of the following best describes critical thinking?",type:"mc",options:["Rejecting all claims until proven with absolute certainty","Analysing and evaluating information before accepting it","Being sceptical of everything and trusting no one","Forming strong opinions and defending them under pressure"],correct:"Analysing and evaluating information before accepting it"},
-{id:"q2",question:"An ad hominem argument is a valid way to challenge someone's reasoning.",type:"tf",options:[],correct:"False"},
-{id:"q3",question:"A large correlation study shows that people who eat breakfast regularly earn higher salaries. The most accurate conclusion is:",type:"mc",options:["Eating breakfast causes higher earning potential","There is a correlation that may have many explanations","Skipping breakfast reduces productivity significantly","The data proves that breakfast is the most important meal"],correct:"There is a correlation that may have many explanations"},
-{id:"q4",question:"Which fallacy is present in: 'If we allow same-sex marriage, next people will want to marry animals'?",type:"mc",options:["Ad hominem","Straw man","Slippery slope","Appeal to authority"],correct:"Slippery slope"},
-{id:"q5",question:"Confirmation bias means we tend to seek out evidence that supports our existing beliefs.",type:"tf",options:[],correct:"True"},
-{id:"q6",question:"What does the Dunning-Kruger effect describe?",type:"mc",options:["Experts overestimating how much non-experts understand","People with limited knowledge overestimating their competence","The tendency to trust authority figures too readily","The effect of stress on decision-making quality"],correct:"People with limited knowledge overestimating their competence"},
-{id:"q7",question:"Which type of evidence is generally strongest?",type:"mc",options:["A personal testimonial from a trusted friend","A large peer-reviewed study replicated by independent researchers","An expert's opinion on a topic outside their speciality","A widely shared statistic with no cited source"],correct:"A large peer-reviewed study replicated by independent researchers"},
-{id:"q8",question:"Steel-manning an argument means finding the weakest version of the opposing view to make it easier to refute.",type:"tf",options:[],correct:"False"},
-{id:"q9",question:"You read a news story with a dramatic headline. What is the first step in evaluating it critically?",type:"mc",options:["Share it immediately if it matches your existing beliefs","Check whether the headline accurately reflects the actual article content","Assume it is false if it comes from an unfamiliar source","Only read news from sources you already trust"],correct:"Check whether the headline accurately reflects the actual article content"},
-{id:"q10",question:"Which question is most useful for testing whether you hold a belief as identity rather than as conclusion?",type:"mc",options:["How long have I held this belief?","What would it take to change my mind?","Do other intelligent people share this belief?","Has this belief served me well in the past?"],correct:"What would it take to change my mind?"},
-{id:"q11",question:"Finding a logical fallacy in someone's argument proves their conclusion is wrong.",type:"tf",options:[],correct:"False"},
-{id:"q12",question:"Describe a belief you hold that you have never seriously examined. What evidence supports it? What would change your mind?",type:"open",options:[],correct:""}
+{id:"q1",question:"Which best describes critical thinking?",type:"mc",options:["Rejecting all claims until proven","Analysing information before accepting it","Being sceptical of everything","Forming strong opinions and defending them"],correct:"Analysing information before accepting it"},
+{id:"q2",question:"An ad hominem is a valid way to challenge reasoning.",type:"tf",options:[],correct:"False"},
+{id:"q3",question:"Confirmation bias is seeking evidence that supports existing beliefs.",type:"tf",options:[],correct:"True"},
+{id:"q4",question:"Describe a belief you hold that you've never examined. What would change your mind?",type:"open",options:[],correct:""}
 ]},x:0,vPieces:0,vAtt:0,ivPieces:0,ivAtt:0,iiiPieces:0,iiiAtt:0,iiPieces:0,iiAtt:0,iPieces:0,iAtt:0,log:[],lastActivity:null},
  
 {id:2,name:"Active Listening",description:"Fully concentrating on and understanding a speaker rather than waiting for your turn to talk.",catId:2,locked:false,content:{
 lessons:[
-{id:"l1",title:"Hearing vs. Listening",body:"You hear with your ears. You listen with your mind.\n\nHearing is automatic — it happens whether you want it to or not. Listening is a choice. It requires attention, effort, and the suspension of your own agenda.\n\nResearch consistently shows that people retain only 25–50% of what they hear in a conversation. We think we are listening. We are mostly waiting to speak, evaluating what we are hearing against our own views, or planning our response before the other person has finished.\n\nWHY LISTENING IS RARE\n\nWhen someone speaks, our brains simultaneously process the words, form responses, judge what is being said, and get distracted by environment or emotion. Genuine listening requires overriding most of those processes.\n\nWHY IT MATTERS\n\nGood listeners are rare. When someone feels truly heard, trust increases, openness increases, and the quality of the relationship improves — often without the listener having said very much at all. In professional settings, poor listening leads to misaligned expectations, errors, and conflict. In personal relationships, it leads to disconnection.\n\nListening is not passive. It is an active form of attention that requires conscious effort."},
-{id:"l2",title:"The Six Elements of Active Listening",body:"Active listening has specific, learnable components. Knowing them allows you to practise deliberately rather than hoping listening happens naturally.\n\n1. PHYSICAL PRESENCE\nFace the speaker. Remove distractions — phone face-down or away, not just silenced. Make comfortable eye contact. Your body communicates whether you are engaged before you say a word.\n\n2. WITHHOLD JUDGEMENT\nDo not evaluate, advise, or form conclusions while the person is still speaking. Let them finish completely. Many 'conversations' involve two people making successive speeches rather than one person actually responding to what the other said.\n\n3. REFLECT AND PARAPHRASE\nAfter they finish: 'So if I understand correctly...' and restate what you heard in your own words. This confirms you were listening, gives them a chance to correct misunderstanding, and signals that what they said mattered enough for you to have taken it in.\n\n4. ASK GENUINE QUESTIONS\nGenuine questions are asked to understand more, not to redirect the conversation toward yourself. 'What happened next?' 'How did that feel?' 'What do you think caused it?' These are different from questions that are actually statements: 'Don't you think you should have...?'\n\n5. NOTICE THE UNSPOKEN\nTone, pace, word choice, and body language often communicate more than the literal words. When someone says 'I'm fine' in a flat tone, 'fine' may not be the real message.\n\n6. MANAGE YOUR OWN REACTIONS\nIf something triggers an emotional response in you, notice it and set it aside. Your reaction to what they say is a separate conversation. Bring your attention back to understanding them first."}
+{id:"l1",title:"Hearing vs. Listening",body:"You hear with your ears. You listen with your mind.\n\nHearing is automatic. Listening is a choice. It requires attention, effort, and the suspension of your own agenda.\n\nResearch shows people retain only 25–50% of what they hear. We think we are listening. We are mostly waiting to speak, evaluating, or planning our response.\n\nWHY IT MATTERS\n\nGood listeners are rare. When someone feels truly heard, trust increases, and relationship quality improves — often without the listener saying much at all."},
+{id:"l2",title:"The Six Elements of Active Listening",body:"1. PHYSICAL PRESENCE — Face the speaker. Remove distractions.\n\n2. WITHHOLD JUDGEMENT — Don't evaluate while they're still speaking.\n\n3. REFLECT AND PARAPHRASE — 'So if I understand correctly...' restating in your own words.\n\n4. ASK GENUINE QUESTIONS — To understand more, not redirect the conversation.\n\n5. NOTICE THE UNSPOKEN — Tone, pace, and body language often communicate more than words.\n\n6. MANAGE YOUR OWN REACTIONS — Set aside your reaction to listen first."}
 ],
 exercises:[
-{id:"e1",title:"The Pure Listen",body:"Have a conversation where you set one rule: for the first five minutes, you only ask questions and reflect back what you heard. No personal stories. No advice. No 'I know exactly what you mean because...' Just questions and paraphrasing.\n\nAfterwards write:\n1. What was difficult about maintaining this?\n2. What did you learn about the other person that you might have missed otherwise?\n3. Did they seem more engaged, more open, or share more than usual?\n4. What was your strongest impulse to break the rule?"},
-{id:"e2",title:"Recall Test",body:"After your next significant conversation, within 30 minutes write from memory:\n1. Three specific things the other person said\n2. One thing they seemed to care most about\n3. One question they asked you\n4. Their emotional tone during the conversation\n5. Anything they left unfinished or unexplained\n\nThen check your recall with them if possible. Do this three times this week. Notice whether recall improves as you start listening more deliberately."}
+{id:"e1",title:"The Pure Listen",body:"Have a conversation where for five minutes you only ask questions and reflect back. No stories. No advice.\n\nAfterwards: What was difficult? What did you learn? Did they share more than usual?"}
 ],
 quiz:[
 {id:"q1",question:"People typically retain what percentage of what they hear in conversation?",type:"mc",options:["75–90%","50–75%","25–50%","Less than 10%"],correct:"25–50%"},
-{id:"q2",question:"Active listening means staying completely silent until the other person finishes speaking.",type:"tf",options:[],correct:"False"},
-{id:"q3",question:"Paraphrasing what someone said serves what primary purpose?",type:"mc",options:["Demonstrates your vocabulary","Confirms understanding and allows correction of misinterpretation","Signals that you want to speak next","Is a polite way to change the subject"],correct:"Confirms understanding and allows correction of misinterpretation"},
-{id:"q4",question:"Your phone being present on the table (even face-down) has no measurable effect on conversation quality.",type:"tf",options:[],correct:"False"},
-{id:"q5",question:"Which is an example of a genuine follow-up question?",type:"mc",options:["'Have you tried just not thinking about it?'","'I had the exact same experience last year.'","'That sounds hard. What happened next?'","'You should probably talk to someone about that.'"],correct:"'That sounds hard. What happened next?'"},
-{id:"q6",question:"Describe one specific conversation from the past week where you were not fully listening. What were you doing instead, and what might you have missed?",type:"open",options:[],correct:""}
+{id:"q2",question:"Active listening means staying silent until the other person finishes.",type:"tf",options:[],correct:"False"},
+{id:"q3",question:"Describe one recent conversation where you weren't fully listening. What might you have missed?",type:"open",options:[],correct:""}
 ]},x:0,vPieces:0,vAtt:0,ivPieces:0,ivAtt:0,iiiPieces:0,iiiAtt:0,iiPieces:0,iiAtt:0,iPieces:0,iAtt:0,log:[],lastActivity:null},
  
 {id:3,name:"Emotional Regulation",description:"Understanding and managing your emotional responses so they serve rather than control you.",catId:3,locked:false,content:{
 lessons:[
-{id:"l1",title:"Emotions Are Information, Not Problems",body:"The first thing to understand: emotions are not your enemy.\n\nEmotions are biological signals — rapid, often unconscious responses that evolved to help you navigate your environment. Fear warns of danger. Anger signals boundary violations. Sadness marks loss. Joy reinforces what is working.\n\nThe problem is not that we have strong emotions. Modern life triggers ancient emotional systems constantly, and our instinctive responses — designed for immediate physical threats — are often counterproductive in workplaces and relationships.\n\nTHE MISUNDERSTANDING\n\nMany people think regulation means suppression: don't feel it, push it down, project calm regardless. This does not work. Suppressed emotions do not disappear — they surface later, harder, in situations where the costs are higher.\n\nEmotional regulation means:\n— Recognising what you are feeling and why\n— Deciding how to respond rather than reacting automatically\n— Expressing emotions in ways that serve your goals and relationships\n\nTHE BODY CONNECTION\n\nEmotions are physical before they are mental. Before you consciously feel angry, your heart rate has already increased. Learning to read body signals gives you a few seconds of warning — exactly the window you need to choose a response rather than just react."},
-{id:"l2",title:"The Regulation Toolkit",body:"Emotional regulation is not one technique — it is a set of tools. Different situations call for different approaches.\n\nTOOL 1: NAMING\nLabelling an emotion reduces its intensity. 'I am feeling anxious' activates the prefrontal cortex (reasoning brain) and partially quiets the amygdala (threat-response brain). Be specific. 'Frustrated' is more useful than 'bad.' 'Embarrassed' is more useful than 'upset.'\n\nTOOL 2: THE PAUSE — 6-SECOND RULE\nThe physiological peak of an emotional response lasts approximately six seconds. If you avoid acting during those seconds, you are no longer reacting — you are choosing. Breathe. Count. Create space.\n\nTOOL 3: BOX BREATHING\n4 counts in → 4 hold → 4 out → 4 hold. Repeat 4 cycles. This directly activates the parasympathetic nervous system. Use before difficult conversations, when you notice physical stress signals, or as a daily practice.\n\nTOOL 4: REFRAMING\nAsk: is my interpretation of this situation the only possible one? 'They are ignoring me' versus 'They are probably distracted.' Different interpretation produces a different emotional response.\n\nTOOL 5: CONTEXTUAL RELEASE\nSome emotions need processing, not management. Physical exercise, writing, talking to someone you trust, or simply sitting with a difficult feeling are all valid. The goal is not to eliminate emotions — it is to prevent them from driving your behaviour against your own interests."}
+{id:"l1",title:"Emotions Are Information, Not Problems",body:"Emotions are biological signals that evolved to help you navigate your environment. Fear warns of danger. Anger signals boundary violations.\n\nSuppression doesn't work — suppressed emotions surface later, harder. Regulation means recognising what you're feeling, deciding how to respond, and expressing emotions in ways that serve your goals."},
+{id:"l2",title:"The Regulation Toolkit",body:"NAMING — Labelling an emotion reduces its intensity.\n\nTHE PAUSE — The physiological peak lasts ~6 seconds. Breathe. Count.\n\nBOX BREATHING — 4 in → 4 hold → 4 out → 4 hold. 4 cycles.\n\nREFRAMING — Ask if your interpretation is the only possible one.\n\nCONTEXTUAL RELEASE — Some emotions need processing, not management."}
 ],
 exercises:[
-{id:"e1",title:"3-Day Emotion Log",body:"For three consecutive days, log every significant emotional response.\n\nFor each entry:\n— Time and situation\n— Emotion (name it precisely — not just 'bad')\n— Body sensation (where did you feel it?)\n— What triggered it\n— What you did in response\n— In retrospect: was that response effective?\n\nAfter three days: What are your most common emotions? What triggers them? Are there times of day when you are more reactive? What patterns are you noticing?"},
-{id:"e2",title:"Box Breathing Habit",body:"Practise box breathing every day this week. At minimum once per day, ideally twice.\n\nTHE TECHNIQUE:\nBreath IN for 4 counts → HOLD for 4 counts → OUT for 4 counts → HOLD for 4 counts. Repeat 4 cycles.\n\nUse it:\n— First thing in the morning before the day starts\n— Before any difficult conversation\n— When you notice physical signs of stress\n— As a transition between work and home\n\nAfter each session: what was your state before? What was it after? Note any change, even minor. By the end of the week, assess whether the practice is affecting your baseline."}
+{id:"e1",title:"3-Day Emotion Log",body:"Log every significant emotional response for 3 days: time, situation, emotion, body sensation, trigger, response, effectiveness."}
 ],
 quiz:[
-{id:"q1",question:"Emotional regulation primarily means suppressing emotions so they do not show.",type:"tf",options:[],correct:"False"},
-{id:"q2",question:"Naming an emotion precisely tends to:",type:"mc",options:["Intensify it by focusing attention on it","Reduce its intensity through cortical engagement","Have no measurable effect on emotional state","Make you appear emotionally unstable"],correct:"Reduce its intensity through cortical engagement"},
-{id:"q3",question:"The physiological peak of an emotional response lasts approximately:",type:"mc",options:["1–2 seconds","6 seconds","30 seconds","Several minutes"],correct:"6 seconds"},
-{id:"q4",question:"A 'trigger' in emotional regulation terms refers to:",type:"mc",options:["Any stimulus that produces any emotional response","A stimulus that produces a response disproportionate to the situation","A traumatic memory that causes flashbacks","A physical sensation that precedes emotional awareness"],correct:"A stimulus that produces a response disproportionate to the situation"},
-{id:"q5",question:"Chronic sleep deprivation has little effect on emotional regulation capacity.",type:"tf",options:[],correct:"False"},
-{id:"q6",question:"Describe a recent situation where your emotional response felt disproportionate. Using what you have learned, what was probably happening and what would a regulated response have looked like?",type:"open",options:[],correct:""}
+{id:"q1",question:"Emotional regulation primarily means suppressing emotions.",type:"tf",options:[],correct:"False"},
+{id:"q2",question:"The physiological peak of an emotional response lasts approximately:",type:"mc",options:["1–2 seconds","6 seconds","30 seconds","Several minutes"],correct:"6 seconds"},
+{id:"q3",question:"Describe a recent situation where your emotional response felt disproportionate.",type:"open",options:[],correct:""}
 ]},x:0,vPieces:0,vAtt:0,ivPieces:0,ivAtt:0,iiiPieces:0,iiiAtt:0,iiPieces:0,iiAtt:0,iPieces:0,iAtt:0,log:[],lastActivity:null},
  
 {id:4,name:"Time Management",description:"Planning and protecting your time so what matters most actually gets done.",catId:4,locked:false,content:{
 lessons:[
-{id:"l1",title:"Why Time Management Fails",body:"Most time management advice fails because it treats a cognitive and motivational problem as a scheduling problem.\n\nYou do not have a time problem. You have a priority problem and an attention problem.\n\nTime is fixed. Every person has 24 hours. What differs is what they do with those hours and why. Poor time managers are not lazy — they are typically very busy. They are busy with the wrong things, or unable to protect time for the right ones.\n\nTHE TWO REAL PROBLEMS\n\n1. Priority confusion: We treat urgency as importance. Something urgent feels pressing, demands immediate attention, and rewards us with a small hit of satisfaction when complete. Something important is often less visible, rarely urgent, and requires sustained focus. Most of what drives long-term success — deep work, relationships, health, learning — is important but rarely urgent, and it consistently loses to what merely feels pressing.\n\n2. Attention fragmentation: Modern environments are engineered to fragment your attention. Research shows that after an interruption, it takes an average of 23 minutes to return to the same level of focused work. Notifications, messages, and other people's requests are not minor inconveniences — they destroy the conditions required for your most important work.\n\nTHE COST\n\nTime spent on one thing cannot be spent on another. The decision of what to do with your time is, at its core, the decision of what kind of life to build."},
-{id:"l2",title:"Prioritisation and Time Blocking",body:"THE EISENHOWER MATRIX\n\nDivide tasks into four quadrants:\n\nQ1 — URGENT + IMPORTANT: Crises, real deadlines, genuine emergencies. Act immediately. But if you live here constantly, planning has failed.\n\nQ2 — NOT URGENT + IMPORTANT: Planning, learning, relationships, health, strategic thinking. This is where all long-term success is built. Most people chronically under-invest here because nothing forces them to act. Deliberately expand time in Q2.\n\nQ3 — URGENT + NOT IMPORTANT: Other people's priorities imposed on you. Many meetings, many emails, many interruptions that feel important but are not your highest work. Minimise or delegate.\n\nQ4 — NOT URGENT + NOT IMPORTANT: Mindless consumption, low-value activity. Some genuine rest is necessary. Passive scrolling is rarely restorative.\n\nTIME BLOCKING\n\nAssign specific tasks to specific blocks of time. 'I will work on the report from 9–11am' is vastly more effective than 'I will get to the report today.' The block is a commitment.\n\nProtect your best hours for your most important work. For most people, focus peaks in the morning. Do not spend peak focus hours on email.\n\nTHE 2-MINUTE RULE\n\nIf a task takes less than 2 minutes, do it immediately. If it takes longer, schedule it. This prevents small tasks from accumulating into a psychological backlog that consumes disproportionate mental energy."}
+{id:"l1",title:"Why Time Management Fails",body:"You don't have a time problem. You have a priority problem and an attention problem.\n\nPRIORITY CONFUSION — We treat urgency as importance. Important but not urgent work (deep work, relationships, health) loses to what merely feels pressing.\n\nATTENTION FRAGMENTATION — After an interruption, it takes ~23 minutes to return to focused work."},
+{id:"l2",title:"Prioritisation and Time Blocking",body:"THE EISENHOWER MATRIX\n\nQ1: Urgent + Important (act)\nQ2: Not Urgent + Important (schedule) — where long-term success is built\nQ3: Urgent + Not Important (delegate)\nQ4: Neither (eliminate)\n\nTIME BLOCKING — Assign tasks to specific time blocks. Protect your best hours for your most important work.\n\nTHE 2-MINUTE RULE — If a task takes under 2 min, do it now. Otherwise schedule it."}
 ],
 exercises:[
-{id:"e1",title:"Priority Matrix Audit",body:"Take your current task list — everything you need or want to do in the next two weeks — and place each item into one of the four Eisenhower quadrants.\n\nThen ask:\n— What percentage of your time is currently spent in each quadrant?\n— What are you doing in Q3 and Q4 that you could eliminate, delegate, or reduce?\n— What Q2 activities have you been postponing that actually matter most to you?\n\nWrite a short reflection on what this reveals. Then identify one Q2 task you have been avoiding and schedule it for this week."},
-{id:"e2",title:"One Week Time Blocking",body:"For the coming week, plan your time in advance using time blocks.\n\nStep 1: Identify 3 outcomes you want to achieve this week.\nStep 2: Block specific 90-minute to 2-hour windows in your calendar for each outcome.\nStep 3: Protect those blocks — treat them as non-negotiable appointments.\nStep 4: At the end of the week, review: Did you protect your blocks? If not, what overrode them? What does that tell you about how your time is actually being controlled?"}
+{id:"e1",title:"Priority Matrix Audit",body:"Put your current task list into the four Eisenhower quadrants. What % is in each? What can you eliminate in Q3/Q4? What have you been postponing in Q2?"}
 ],
 quiz:[
-{id:"q1",question:"In the Eisenhower Matrix, Q2 tasks are defined as:",type:"mc",options:["Urgent and important — to be done immediately","Important but not urgent — to be scheduled and protected","Urgent but not important — to be delegated or minimised","Neither urgent nor important — to be eliminated"],correct:"Important but not urgent — to be scheduled and protected"},
-{id:"q2",question:"Multitasking has been shown to significantly increase productivity for complex work.",type:"tf",options:[],correct:"False"},
-{id:"q3",question:"After an interruption, research shows it takes on average how long to return to fully focused work?",type:"mc",options:["2–3 minutes","5–10 minutes","23 minutes","Over an hour"],correct:"23 minutes"},
-{id:"q4",question:"The 2-minute rule states that if a task takes less than 2 minutes:",type:"mc",options:["Schedule it for later to maintain flow","Do it immediately","Delegate it to someone else","Write it on a list and review weekly"],correct:"Do it immediately"},
-{id:"q5",question:"Spending most of your time in Q1 (urgent + important) is a sign of effective time management.",type:"tf",options:[],correct:"False"},
-{id:"q6",question:"What is the most significant time management challenge you personally face? What one specific change, based on what you have learned, could you make this week?",type:"open",options:[],correct:""}
+{id:"q1",question:"In the Eisenhower Matrix, Q2 tasks are:",type:"mc",options:["Urgent and important","Important but not urgent — to be scheduled","Urgent but not important","Neither"],correct:"Important but not urgent — to be scheduled"},
+{id:"q2",question:"After an interruption, average return-to-focus time is:",type:"mc",options:["2–3 min","5–10 min","23 minutes","Over an hour"],correct:"23 minutes"},
+{id:"q3",question:"What is your biggest time management challenge, and what one change could you try this week?",type:"open",options:[],correct:""}
 ]},x:0,vPieces:0,vAtt:0,ivPieces:0,ivAtt:0,iiiPieces:0,iiiAtt:0,iiPieces:0,iiAtt:0,iPieces:0,iAtt:0,log:[],lastActivity:null},
  
 {id:5,name:"Financial Literacy",description:"Understanding how money works — income, expenses, saving, debt, and building long-term security.",catId:4,locked:false,content:{
 lessons:[
-{id:"l1",title:"The Gap Equation",body:"All personal finance rests on one equation:\n\nINCOME − EXPENSES = GAP\n\nYour gap is everything. If it is positive, you have money to save, invest, or pay down debt. If it is zero or negative, you are running in place or falling behind — regardless of how much you earn.\n\nThis is where most financial education fails: it focuses on investment strategies when the foundational problem is that people do not know their gap. Many high earners have a zero gap. Many people with modest incomes build significant wealth because they manage their gap deliberately.\n\nKNOW YOUR ACTUAL INCOME\n\nYour income is not your salary. It is your take-home pay after taxes and all deductions. Know this number precisely. If your income varies, use a conservative average based on the last six months.\n\nEXPENSES: THREE CATEGORIES\n\nFixed: same every month — rent, mortgage, subscriptions, loan payments. Predictable and easy to track.\nVariable: change monthly — food, transport, entertainment, clothing. This is where most people underestimate real spending.\nIrregular: annual or quarterly — car maintenance, insurance renewals, gifts, holidays. These are where budgets most commonly fail because they are not included in monthly calculations.\n\nTHE PRACTICE: Know your gap. Track it monthly. Grow it deliberately over time."},
-{id:"l2",title:"Saving, Debt, and Compound Interest",body:"Two forces work on your money simultaneously. Understanding both changes everything.\n\nCOMPOUND INTEREST\n\nEarning interest on your interest. Exponential growth that requires only one thing: time.\n\n£1,000 invested at 7% average annual return:\nAfter 10 years: £1,967\nAfter 20 years: £3,870\nAfter 30 years: £7,612\n\nThe same principle applies in reverse to debt. Credit card debt at 20% interest grows against you at the same rate.\n\nTHE EMERGENCY FUND: FIRST\n\nBefore any ambitious financial move, build 3–6 months of essential expenses in an easy-access account. This eliminates the most common cause of financial disaster: an unexpected cost that forces high-interest debt.\n\nDEBT PRIORITY\n\nHigh-interest debt should be paid off before investing. The guaranteed return from eliminating 20% credit card debt exceeds most investment returns. Pay minimum on low-interest debt, attack high-interest debt aggressively.\n\nTHE 50/30/20 FRAMEWORK\n\n50% of take-home for needs (essentials)\n30% for wants (lifestyle)\n20% for savings and debt repayment\n\nThis is a starting point, not a rigid rule. But the 20% category is the one most people sacrifice first when under pressure — and it is the category that determines long-term financial security.\n\nTHE START RULE: The best time to start was ten years ago. The second best time is today."}
+{id:"l1",title:"The Gap Equation",body:"INCOME − EXPENSES = GAP\n\nYour gap is everything. Positive gap = money to save, invest, or pay down debt. Zero or negative = running in place, regardless of income.\n\nKnow your actual take-home income. Track three expense categories: Fixed (rent, subs), Variable (food, transport), Irregular (annual costs ÷ 12)."},
+{id:"l2",title:"Saving, Debt, and Compound Interest",body:"COMPOUND INTEREST — £1,000 at 7% becomes £7,612 in 30 years. Same principle works against you with credit card debt.\n\nEMERGENCY FUND FIRST — 3–6 months of essential expenses in easy-access account.\n\nDEBT PRIORITY — High-interest debt before investing. 20% credit card debt exceeds most investment returns.\n\n50/30/20 — 50% needs, 30% wants, 20% savings and debt repayment."}
 ],
 exercises:[
-{id:"e1",title:"Know Your Gap",body:"Calculate your actual financial gap this week.\n\n1. Find your exact monthly take-home income\n2. List every fixed expense — rent, utilities, subscriptions, minimum loan payments\n3. Estimate last month's variable expenses: all food (groceries + eating out + coffee), transport, clothing, entertainment. Check your bank statement.\n4. Calculate monthly irregular expenses: annual costs ÷ 12\n5. Total all expenses. Calculate: Income − Expenses = Gap\n\nWrite what you find. Is the gap what you expected? What surprised you? What is the single largest category you could reduce?"},
-{id:"e2",title:"50/30/20 Audit",body:"Take last month's actual spending and categorise every expense:\n— Needs (target: 50%)\n— Wants (target: 30%)\n— Savings and debt repayment (target: 20%)\n\nCalculate your actual percentages.\n\nWrite:\n— Where are you significantly over or under the targets?\n— What would it take to reach 20% savings?\n— Identify one want you could reduce this month without significantly affecting quality of life\n— What would you do with an extra £50/month if you had it?"}
+{id:"e1",title:"Know Your Gap",body:"Calculate your actual monthly gap this week. Is it what you expected? What's the single largest category you could reduce?"}
 ],
 quiz:[
-{id:"q1",question:"Your financial 'gap' is defined as:",type:"mc",options:["The difference between what you earn and what you want to earn","Income minus all expenses","The difference between your savings goal and current savings","Your total debt amount"],correct:"Income minus all expenses"},
-{id:"q2",question:"In the 50/30/20 framework, the 20% allocation is for:",type:"mc",options:["Needs","Wants","Savings and debt repayment","Discretionary spending"],correct:"Savings and debt repayment"},
-{id:"q3",question:"Compound interest only applies to savings and has no effect on debt.",type:"tf",options:[],correct:"False"},
-{id:"q4",question:"An emergency fund should cover:",type:"mc",options:["One month of income","One month of essential expenses","3–6 months of essential expenses","One year of total spending"],correct:"3–6 months of essential expenses"},
-{id:"q5",question:"You have £3,000 in savings earning 3% interest and £3,000 in credit card debt at 22% interest. The mathematically optimal choice is:",type:"mc",options:["Keep savings and pay minimum on the card","Use savings to eliminate the credit card debt","Split evenly between paying debt and investing","Wait until you have more information before deciding"],correct:"Use savings to eliminate the credit card debt"},
-{id:"q6",question:"What is one specific financial habit — however small — that you could commit to starting this month? Why that one?",type:"open",options:[],correct:""}
+{id:"q1",question:"In the 50/30/20 framework, 20% is for:",type:"mc",options:["Needs","Wants","Savings and debt repayment","Discretionary"],correct:"Savings and debt repayment"},
+{id:"q2",question:"Compound interest only applies to savings.",type:"tf",options:[],correct:"False"},
+{id:"q3",question:"What is one financial habit — however small — that you could commit to this month?",type:"open",options:[],correct:""}
 ]},x:0,vPieces:0,vAtt:0,ivPieces:0,ivAtt:0,iiiPieces:0,iiiAtt:0,iiPieces:0,iiAtt:0,iPieces:0,iAtt:0,log:[],lastActivity:null}
 ];}
  
 function blankSkill(id){return{id,name:`Skill ${id}`,description:"",catId:5,locked:false,content:{lessons:[],exercises:[],quiz:[]},x:0,vPieces:0,vAtt:0,ivPieces:0,ivAtt:0,iiiPieces:0,iiiAtt:0,iiPieces:0,iiAtt:0,iPieces:0,iAtt:0,log:[],lastActivity:null};}
 function freshState(){return{version:3,profileName:"My Journey",teacherPin:null,skills:starterCurriculum()};}
  
-let state=null,isTeacher=false,learnIdx=null,learnTab="lessons",qAnswers={},qSubmitted=false,editIdx=null,pinCb=null;
+let state=null, isTeacher=false, learnIdx=null, learnTab="lessons", qAnswers={}, qSubmitted=false, editIdx=null, pinCb=null;
  
 function save(){try{localStorage.setItem("25-100-v3",JSON.stringify(state));}catch(e){}}
 function load(){
@@ -585,14 +627,205 @@ function load(){
     if(r){
       state=JSON.parse(r);
       const hasContent=state.skills&&state.skills.some(s=>s.content&&(s.content.lessons.length>0||s.content.quiz.length>0));
-      if(!hasContent){const curr=starterCurriculum();curr.forEach((cs,i)=>{if(i<state.skills.length){const ex=state.skills[i];state.skills[i]={...cs,x:ex.x||0,vPieces:ex.vPieces||0,vAtt:ex.vAtt||0,ivPieces:ex.ivPieces||0,ivAtt:ex.ivAtt||0,iiiPieces:ex.iiiPieces||0,iiiAtt:ex.iiiAtt||0,iiPieces:ex.iiPieces||0,iiAtt:ex.iiAtt||0,iPieces:ex.iPieces||0,iAtt:ex.iAtt||0,log:ex.log||[],lastActivity:ex.lastActivity||null};}else state.skills.push(cs);});save();}
+      if(!hasContent){
+        const curr=starterCurriculum();
+        curr.forEach((cs,i)=>{
+          if(i<state.skills.length){
+            const ex=state.skills[i];
+            state.skills[i]={...cs,x:ex.x||0,vPieces:ex.vPieces||0,vAtt:ex.vAtt||0,ivPieces:ex.ivPieces||0,ivAtt:ex.ivAtt||0,iiiPieces:ex.iiiPieces||0,iiiAtt:ex.iiiAtt||0,iiPieces:ex.iiPieces||0,iiAtt:ex.iiAtt||0,iPieces:ex.iPieces||0,iAtt:ex.iAtt||0,log:ex.log||[],lastActivity:ex.lastActivity||null};
+          } else state.skills.push(cs);
+        });
+        save();
+      }
       return;
     }
   }catch(e){}
   state=freshState();
 }
-function exportData(){const b=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});const u=URL.createObjectURL(b);const a=document.createElement("a");a.href=u;a.download=`25-100_${state.profileName.replace(/\s+/g,"_")}_${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(u);}
-function importData(file){if(!file)return;const r=new FileReader();r.onload=e=>{try{const d=JSON.parse(e.target.result);if(d.skills){state=d;save();learnIdx=null;editIdx=null;renderAll();}else alert("Invalid file.");}catch{alert("Could not parse JSON.");}};r.readAsText(file);}
+ 
+function exportData(){
+  const b=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});
+  const u=URL.createObjectURL(b);
+  const a=document.createElement("a");
+  a.href=u;
+  a.download=`25-100_${state.profileName.replace(/\s+/g,"_")}_${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(u);
+}
+ 
+// ═══════════════════════════════════
+// IMPORT — smart detection + 3-way modal
+// ═══════════════════════════════════
+let pendingImport=null;  // parsed data waiting for user decision
+ 
+function normName(s){return String(s||"").toLowerCase().replace(/[-\s]+/g,"");}
+ 
+function analyzeImport(data){
+  // Classify what kind of file this is
+  const hasSkills = Array.isArray(data?.skills);
+  const isFullState = hasSkills && ("profileName" in data || "teacherPin" in data || data.version >= 2);
+  const isSkillsOnly = hasSkills && !isFullState;
+  const isLoneSkill = data?.name && data?.content;
+  
+  if(isLoneSkill) return {kind:"loneSkill", skills:[data]};
+  if(hasSkills) return {kind: isFullState ? "fullState" : "skillsOnly", skills: data.skills, raw: data};
+  return {kind:"invalid"};
+}
+ 
+function importData(file){
+  if(!file)return;
+  const r=new FileReader();
+  r.onload=e=>{
+    try{
+      const d=JSON.parse(e.target.result);
+      const analysis = analyzeImport(d);
+      if(analysis.kind === "invalid"){
+        alert("File doesn't look like a valid 25/100 skills file. It should contain a 'skills' array or be a single skill object.");
+        return;
+      }
+      pendingImport = {analysis, data: d};
+      showImportModal(analysis);
+    } catch(err){
+      alert("Could not parse JSON: " + err.message);
+    }
+  };
+  r.readAsText(file);
+  // Reset the input so the same file can be re-selected
+  document.getElementById("hdr-import").value = "";
+}
+ 
+function showImportModal(analysis){
+  const nSkills = analysis.skills.length;
+  const existingNames = new Set(state.skills.map(s => normName(s.name)));
+  const incomingNames = analysis.skills.map(s => s.name);
+  const matches = incomingNames.filter(n => existingNames.has(normName(n)));
+  const newSkills = incomingNames.filter(n => !existingNames.has(normName(n)));
+  
+  let subtitle = "";
+  if(analysis.kind === "fullState"){
+    subtitle = `This is a <strong>full engine bundle</strong> — contains a profile name and ${nSkills} skills. It can replace your entire engine or add its skills to your current one.`;
+  } else if(analysis.kind === "skillsOnly"){
+    subtitle = `This is a <strong>skills-only bundle</strong> — ${nSkills} skills, no profile data. Safest to merge into your existing engine.`;
+  } else {
+    subtitle = `This is a <strong>single skill</strong>. It can be added to your engine.`;
+  }
+  
+  const statsHtml = `
+    <div><strong>${nSkills}</strong> skill${nSkills!==1?"s":""} in file</div>
+    <div><strong>${newSkills.length}</strong> new to your engine${newSkills.length > 0 ? `: ${newSkills.slice(0,5).map(n => esc(n)).join(", ")}${newSkills.length > 5 ? ` …and ${newSkills.length - 5} more` : ""}` : ""}</div>
+    <div><strong>${matches.length}</strong> name match${matches.length!==1?"es":""} existing skill${matches.length!==1?"s":""}${matches.length > 0 ? ` — will update content, preserve progress` : ""}</div>
+    ${state.skills.length > 0 ? `<div style="margin-top:6px;color:var(--muted)">You currently have ${state.skills.filter(s => s.log && s.log.length > 0).length} skill${state.skills.filter(s => s.log && s.log.length > 0).length!==1?"s":""} with logged progress.</div>` : ""}
+  `;
+  
+  const optsEl = document.getElementById("import-opts");
+  const options = [];
+  
+  // Option 1: ADD SKILLS — always safe, always available
+  options.push(`
+    <button class="import-opt safe" onclick="doImport('merge')">
+      <div class="import-opt-name">✓ Add Skills to Current Engine</div>
+      <div class="import-opt-desc">Preserves all your progress, log entries, and profile name. New skills are appended. Matching skills have their content updated (lessons, exercises, quiz) but progress stays yours. <strong>Safe default.</strong></div>
+    </button>
+  `);
+  
+  // Option 2: REPLACE — only for full state, and clearly dangerous
+  if(analysis.kind === "fullState"){
+    const loggedCount = state.skills.filter(s => s.log && s.log.length > 0).length;
+    const warning = loggedCount > 0 
+      ? `<strong style="color:var(--danger)">⚠ Will erase progress on ${loggedCount} skill${loggedCount!==1?"s":""}.</strong> `
+      : "";
+    options.push(`
+      <button class="import-opt danger" onclick="doImport('replace')">
+        <div class="import-opt-name">⚠ Replace Entire Engine</div>
+        <div class="import-opt-desc">${warning}Overwrites everything: profile name, all skills, all progress, all log entries. Only use for a clean reset or restoring a backup.</div>
+      </button>
+    `);
+  }
+  
+  optsEl.innerHTML = options.join("");
+  document.getElementById("import-sub").innerHTML = subtitle;
+  document.getElementById("import-stats").innerHTML = statsHtml;
+  document.getElementById("import-overlay").style.display = "flex";
+}
+ 
+function closeImportModal(){
+  document.getElementById("import-overlay").style.display = "none";
+  pendingImport = null;
+}
+ 
+function doImport(mode){
+  if(!pendingImport) return;
+  const {analysis, data} = pendingImport;
+  
+  if(mode === "replace"){
+    // Full overwrite — only available for fullState imports
+    state = {
+      version: data.version || 3,
+      profileName: data.profileName || "Imported Journey",
+      teacherPin: data.teacherPin || null,
+      skills: analysis.skills.map((s, i) => ({...s, id: i+1}))
+    };
+    save();
+    learnIdx=null; editIdx=null;
+    closeImportModal();
+    renderAll();
+    return;
+  }
+  
+  // MERGE mode: preserve progress, update/append content
+  const existingByName = new Map();
+  state.skills.forEach(s => existingByName.set(normName(s.name), s));
+  
+  let updated = 0, added = 0, skipped = 0;
+  
+  for(const incoming of analysis.skills){
+    const key = normName(incoming.name);
+    if(existingByName.has(key)){
+      // Name match: update content, preserve progress
+      const existing = existingByName.get(key);
+      existing.name = incoming.name;  // allow name re-casing
+      existing.description = incoming.description || existing.description;
+      existing.catId = incoming.catId || existing.catId;
+      existing.content = incoming.content;  // replace content entirely
+      // Progress fields (x, vPieces, log, etc.) are left untouched
+      updated++;
+    } else {
+      // New skill: add at end, assign next id
+      if(state.skills.length >= MAX_SKILLS){
+        skipped++;
+        continue;
+      }
+      const fresh = {
+        id: state.skills.length + 1,
+        name: incoming.name,
+        description: incoming.description || "",
+        catId: incoming.catId || 5,
+        locked: false,
+        content: incoming.content || {lessons:[], exercises:[], quiz:[]},
+        x:0, vPieces:0, vAtt:0, ivPieces:0, ivAtt:0, iiiPieces:0, iiiAtt:0,
+        iiPieces:0, iiAtt:0, iPieces:0, iAtt:0,
+        log:[], lastActivity:null
+      };
+      state.skills.push(fresh);
+      existingByName.set(key, fresh);
+      added++;
+    }
+  }
+  
+  save();
+  closeImportModal();
+  renderAll();
+  
+  // Status feedback
+  let msg = [];
+  if(added) msg.push(`+${added} new`);
+  if(updated) msg.push(`${updated} updated`);
+  if(skipped) msg.push(`${skipped} skipped (max 25 reached)`);
+  if(msg.length){
+    // Non-modal feedback — brief flash via alert is acceptable here
+    setTimeout(() => alert(`Imported: ${msg.join(", ")}`), 50);
+  }
+}
  
 // ═══════════════════════════════════
 // PROGRESS
@@ -600,11 +833,10 @@ function importData(file){if(!file)return;const r=new FileReader();r.onload=e=>{
 function totalAtt(s){return s.x+s.vAtt+s.vPieces*10+s.ivAtt+s.ivPieces*10+s.iiiAtt+s.iiiPieces*10+s.iiAtt+s.iiPieces*10+s.iAtt+s.iPieces*10;}
 function pct(s){return Math.min(100,Math.round(totalAtt(s)/MAX_ATT*100));}
 function mastered(s){return s.iPieces>=1;}
-function hasContent(s){return s.content.lessons.length>0||s.content.exercises.length>0||s.content.quiz.length>0;}
+function hasContent(s){return s.content && (s.content.lessons.length>0||s.content.exercises.length>0||s.content.quiz.length>0);}
 function currentLevel(s){if(s.iPieces>=1)return"I";if(s.iiPieces>=2)return"II";if(s.iiiPieces>=3)return"III";if(s.ivPieces>=4)return"IV";if(s.vPieces>=5)return"V";if(s.x>=10)return"V→";if(s.x>0)return"X";return"—";}
 function currentPhase(s){if(s.iPieces>=1)return"done";if(s.iiPieces>=2)return"i";if(s.iiiPieces>=3)return"ii";if(s.ivPieces>=4)return"iii";if(s.vPieces>=5)return"iv";if(s.x>=10)return"v";return"x";}
  
-// Session limit — max DAILY_SESSION_LIMIT manual sessions per skill per day
 function todayStr(){return new Date().toISOString().slice(0,10);}
 function sessionsToday(s){return(s.log||[]).filter(e=>e.ts&&e.ts.slice(0,10)===todayStr()&&!e.fromQuiz).length;}
 function canLogManual(s){return!mastered(s)&&sessionsToday(s)<DAILY_SESSION_LIMIT;}
@@ -643,10 +875,20 @@ let _uid=Date.now();function uid(){return(++_uid).toString(36);}
 const FONTS={mono:"'Space Mono',monospace",sans:"'Inter',sans-serif",serif:"'Lora',serif",readable:"'Atkinson Hyperlegible',sans-serif"};
 const WIDTHS={narrow:"520px",normal:"720px",wide:"920px",full:"100%"};
 const LS={normal:"normal",wide:"0.03em",wider:"0.06em"};
-let readPrefs={bg:"dark",font:"mono",size:13,lh:19,width:"normal",ls:"normal"};
+ 
+const PRESETS={
+  default:{bg:"dark",font:"mono",size:13,lh:19,width:"normal",ls:"normal"},
+  dyslexia:{bg:"dark",font:"readable",size:16,lh:22,width:"normal",ls:"wide"},
+  calm:{bg:"paper",font:"serif",size:15,lh:24,width:"normal",ls:"normal"},
+  lowvision:{bg:"highcontrast",font:"sans",size:19,lh:22,width:"wide",ls:"wide"},
+  adhd:{bg:"focus",font:"readable",size:15,lh:20,width:"narrow",ls:"normal"}
+};
+ 
+let readPrefs={...PRESETS.default};
  
 function loadReadPrefs(){try{const r=localStorage.getItem("25-100-read");if(r)readPrefs={...readPrefs,...JSON.parse(r)};}catch(e){}}
 function saveReadPrefs(){try{localStorage.setItem("25-100-read",JSON.stringify(readPrefs));}catch(e){}}
+ 
 function applyReadPrefs(){
   const {bg,font,size,lh,width,ls}=readPrefs;
   document.body.setAttribute("data-read",bg==="dark"?"":bg);
@@ -655,7 +897,6 @@ function applyReadPrefs(){
   document.documentElement.style.setProperty("--read-lh",(lh/10).toFixed(1));
   document.documentElement.style.setProperty("--read-width",WIDTHS[width]||WIDTHS.normal);
   document.documentElement.style.setProperty("--read-ls",LS[ls]||"normal");
-  // update panel UI
   document.querySelectorAll(".a11y-opt[data-read]").forEach(el=>el.classList.toggle("active",el.dataset.read===(bg==="dark"?"dark":bg)));
   document.querySelectorAll(".a11y-opt[data-font]").forEach(el=>el.classList.toggle("active",el.dataset.font===font));
   document.querySelectorAll(".a11y-opt[data-width]").forEach(el=>el.classList.toggle("active",el.dataset.width===width));
@@ -673,7 +914,13 @@ function setRead(type,val){
   else if(type==="ls")readPrefs.ls=val;
   applyReadPrefs();saveReadPrefs();
 }
-function resetRead(){readPrefs={bg:"dark",font:"mono",size:13,lh:19,width:"normal",ls:"normal"};applyReadPrefs();saveReadPrefs();}
+function applyPreset(name){
+  if(!PRESETS[name]) return;
+  readPrefs = {...PRESETS[name]};
+  applyReadPrefs();
+  saveReadPrefs();
+}
+function resetRead(){readPrefs={...PRESETS.default};applyReadPrefs();saveReadPrefs();}
 function closeA11y(e){if(!e||e.target===document.getElementById("a11y-overlay"))document.getElementById("a11y-overlay").style.display="none";}
  
 // ═══════════════════════════════════
@@ -687,32 +934,40 @@ function renderDash(){
   const next=state.skills.find(s=>totalAtt(s)===0&&hasContent(s));
   let ah="";
   if(!active.length&&!next)ah=`<div class="skill-card empty-state">Select a skill below to begin</div>`;
-  active.forEach(s=>{const i=state.skills.indexOf(s),c=catOf(s),p=pct(s);ah+=`<div class="skill-card" onclick="openLearn(${i})"><div class="skill-card-top"><div><div class="skill-card-cat" style="color:${c.color}">${c.name}</div><div class="skill-card-name">${esc(s.name)}</div></div><div class="skill-card-level" style="color:${c.color}">${currentLevel(s)}<br><span style="font-size:9px;color:var(--muted)">${p}%</span></div></div><div class="skill-bar-track"><div class="skill-bar-fill" style="width:${p}%;background:${c.color}"></div></div><div class="skill-card-meta"><span>${totalAtt(s)} sessions</span><span>${s.lastActivity?relTime(s.lastActivity):"never"}</span></div></div>`;});
-  if(next){const i=state.skills.indexOf(next),c=catOf(next);ah+=`<div class="skill-card dashed" onclick="openLearn(${i})"><div class="skill-card-top"><div><div class="skill-card-cat" style="color:${c.color}">${c.name}</div><div class="skill-card-name">${esc(next.name)}</div></div><div class="skill-card-level" style="color:var(--muted)">Start →</div></div><div style="font-size:9px;color:var(--muted);margin-top:4px">${next.content.lessons.length} lessons · ${next.content.quiz.length} quiz questions</div></div>`;}
+  active.forEach(s=>{
+    const i=state.skills.indexOf(s),c=catOf(s),p=pct(s);
+    ah+=`<div class="skill-card" onclick="openLearn(${i})"><div class="skill-card-top"><div><div class="skill-card-cat" style="color:${c.color}">${c.name}</div><div class="skill-card-name">${esc(s.name)}</div></div><div class="skill-card-level" style="color:${c.color}">${currentLevel(s)}<br><span style="font-size:10px;color:var(--muted)">${p}%</span></div></div><div class="skill-bar-track"><div class="skill-bar-fill" style="width:${p}%;background:${c.color}"></div></div><div class="skill-card-meta"><span>${totalAtt(s)} sessions</span><span>${s.lastActivity?relTime(s.lastActivity):"never"}</span></div></div>`;
+  });
+  if(next){
+    const i=state.skills.indexOf(next),c=catOf(next);
+    ah+=`<div class="skill-card dashed" onclick="openLearn(${i})"><div class="skill-card-top"><div><div class="skill-card-cat" style="color:${c.color}">${c.name}</div><div class="skill-card-name">${esc(next.name)}</div></div><div class="skill-card-level" style="color:var(--muted)">Start →</div></div><div style="font-size:10px;color:var(--muted);margin-top:4px">${next.content.lessons.length} lessons · ${next.content.quiz.length} quiz questions</div></div>`;
+  }
   document.getElementById("active-list").innerHTML=ah;
   let mg="";
-  // Only show defined skills as proper cells in dashboard mini-grid
-  state.skills.forEach((s,i)=>{const c=catOf(s),p=pct(s),m=mastered(s),nc=!hasContent(s);const op=nc?0:(m?.6:p>0?.1+p/100*.3:0);mg+=`<div class="mini-cell${nc?" nc":""}" data-tip="${i+1}. ${s.name}" ${nc?"":`onclick="openLearn(${i})"`}><div class="mc-fill" style="background:${c.color};opacity:${op}"></div><div class="mc-label" style="color:${p>0||m?c.color:"var(--dim)"}">${m?"✓":p>0?currentLevel(s):(i+1)}</div></div>`;});
-  // Remaining empty slots as tiny indicators
-  for(let i=state.skills.length;i<MAX_SKILLS;i++)mg+=`<div class="mini-cell nc" style="opacity:.15;"><div class="mc-label" style="color:var(--dim);font-size:7px">${i+1}</div></div>`;
+  state.skills.forEach((s,i)=>{
+    const c=catOf(s),p=pct(s),m=mastered(s),nc=!hasContent(s);
+    const op=nc?0:(m?.6:p>0?.1+p/100*.3:0);
+    mg+=`<div class="mini-cell${nc?" nc":""}" data-tip="${i+1}. ${esc(s.name)}" ${nc?"":`onclick="openLearn(${i})"`}><div class="mc-fill" style="background:${c.color};opacity:${op}"></div><div class="mc-label" style="color:${p>0||m?c.color:"var(--dim)"}">${m?"✓":p>0?currentLevel(s):(i+1)}</div></div>`;
+  });
+  for(let i=state.skills.length;i<MAX_SKILLS;i++)mg+=`<div class="mini-cell nc" style="opacity:.15;"><div class="mc-label" style="color:var(--dim);font-size:9px">${i+1}</div></div>`;
   document.getElementById("mini-grid").innerHTML=mg;
-  const all=[];state.skills.forEach((s,i)=>s.log.forEach(e=>all.push({...e,sn:s.name,ci:i,cc:catOf(s).color})));all.sort((a,b)=>b.ts.localeCompare(a.ts));
-  document.getElementById("dash-recent").innerHTML=all.length?all.slice(0,8).map(e=>`<div class="recent-entry"><div class="recent-entry-skill" style="color:${e.cc}">${esc(e.sn)}${e.quizScore!=null?` <span style="float:right;color:var(--gold)">${e.quizScore}/${e.quizTotal}</span>`:""}</div><div class="recent-entry-meta">${e.level} · ${relTime(e.ts)}${e.note?` — "${esc(e.note)}"`:""}</div></div>`).join(""):` <div class="empty-msg">No activity yet.</div>`;
+  const all=[];state.skills.forEach((s,i)=>(s.log||[]).forEach(e=>all.push({...e,sn:s.name,ci:i,cc:catOf(s).color})));all.sort((a,b)=>b.ts.localeCompare(a.ts));
+  document.getElementById("dash-recent").innerHTML=all.length?all.slice(0,8).map(e=>`<div class="recent-entry"><div class="recent-entry-skill" style="color:${e.cc}">${esc(e.sn)}${e.quizScore!=null?` <span style="float:right;color:var(--gold)">${e.quizScore}/${e.quizTotal}</span>`:""}</div><div class="recent-entry-meta">${e.level} · ${relTime(e.ts)}${e.note?` — "${esc(e.note)}"`:""}</div></div>`).join(""):`<div class="empty-msg">No activity yet.</div>`;
   document.getElementById("dash-stats").innerHTML=`<div class="sc"><div class="sn" style="color:var(--gold)">${mc}</div><div class="sl">Mastered</div></div><div class="sc"><div class="sn" style="color:var(--cat2)">${state.skills.filter(s=>totalAtt(s)>0&&!mastered(s)).length}</div><div class="sl">Active</div></div><div class="sc"><div class="sn" style="color:var(--muted)">${state.skills.reduce((s,sk)=>s+totalAtt(sk),0)}</div><div class="sl">Sessions</div></div><div class="sc"><div class="sn" style="color:var(--cat3)">${state.skills.filter(hasContent).length}</div><div class="sl">Ready</div></div>`;
 }
  
 // ═══════════════════════════════════
-// RENDER: LEARN
+// LEARN
 // ═══════════════════════════════════
 function openLearn(i){learnIdx=i;learnTab="lessons";qAnswers={};qSubmitted=false;showView("learn");renderLearnHeader();renderLearnBody();}
 function renderLearnHeader(){const s=state.skills[learnIdx],c=catOf(s);document.getElementById("learn-title").textContent=s.name;document.getElementById("learn-cat").textContent=c.name;document.getElementById("learn-cat").style.color=c.color;document.querySelectorAll(".learn-tab").forEach(t=>t.classList.toggle("active",t.dataset.tab===learnTab));}
-function renderLearnBody(){const s=state.skills[learnIdx],c=catOf(s),b=document.getElementById("learn-body");
+function renderLearnBody(){
+  const s=state.skills[learnIdx],c=catOf(s),b=document.getElementById("learn-body");
   if(learnTab==="lessons"){b.innerHTML=!s.content.lessons.length?`<div class="content-block"><div class="content-empty">No lessons yet.</div></div>`:s.content.lessons.map((l,i)=>`<div class="content-block"><div class="content-block-title">${i+1}. ${esc(l.title)}</div><div class="content-body">${esc(l.body)}</div></div>`).join("");}
   else if(learnTab==="exercises"){b.innerHTML=!s.content.exercises.length?`<div class="content-block"><div class="content-empty">No exercises yet.</div></div>`:s.content.exercises.map((e,i)=>`<div class="content-block"><div class="content-block-title">Exercise ${i+1}: ${esc(e.title)}</div><div class="content-body">${esc(e.body)}</div></div>`).join("");}
   else if(learnTab==="quiz"){renderQuizTab(s,c,b);}
   else{renderProgressTab(s,c,b);}
 }
- 
 function renderQuizTab(s,c,b){
   if(!s.content.quiz.length){b.innerHTML=`<div class="content-block"><div class="content-empty">No quiz questions yet.</div></div>`;return;}
   let h="";
@@ -720,14 +975,26 @@ function renderQuizTab(s,c,b){
     let score=0,auto=0;s.content.quiz.forEach(q=>{if(q.type!=="open"){auto++;if(qAnswers[q.id]===q.correct)score++;}});
     const op=s.content.quiz.filter(q=>q.type==="open").length;
     const ps=auto>0?Math.round(score/auto*100):null;
-    const col=ps==null?"var(--gold)":ps>=80?"#1fc87a":ps>=60?"var(--gold)":"#c44";
+    const col=ps==null?"var(--gold)":ps>=80?"#6dd9a0":ps>=60?"var(--gold)":"#e88080";
     h+=`<div class="quiz-score-bar"><div class="quiz-score-big" style="color:${col}">${ps!=null?ps+"%":"✓"}</div><div class="quiz-score-lbl">${ps!=null?`${score}/${auto} auto-scored correct`:""} ${op?`· ${op} open question${op>1?"s":""} — self assess`:""}</div><div style="display:flex;gap:8px;justify-content:center;margin-top:16px;"><button class="btn btn-gold" onclick="logQuizSession(${state.skills.indexOf(s)},${score},${auto+op})">Log as Session</button><button class="btn btn-ghost" onclick="qAnswers={};qSubmitted=false;renderLearnBody()">Retry</button></div></div>`;
   }
   s.content.quiz.forEach((q,qi)=>{
     const ans=qAnswers[q.id];
     h+=`<div class="quiz-q"><div class="quiz-q-num">Question ${qi+1} of ${s.content.quiz.length} — ${q.type==="mc"?"Multiple Choice":q.type==="tf"?"True / False":"Open Reflection"}</div><div class="quiz-q-text">${esc(q.question)}</div>`;
-    if(q.type==="mc"||q.type==="tf"){const opts=q.type==="tf"?["True","False"]:(q.options||[]);h+=`<div class="quiz-options">`;opts.forEach(opt=>{let cls="quiz-option";if(qSubmitted){if(opt===q.correct)cls+=" correct";else if(opt===ans&&ans!==q.correct)cls+=" wrong";}else if(opt===ans)cls+=" selected";h+=`<button class="${cls}" ${qSubmitted?"disabled":""} onclick="selAns('${q.id}','${ea(opt)}')">${esc(opt)}</button>`;});h+=`</div>`;}
-    else{h+=`<textarea class="quiz-open-input" placeholder="Take your time — write a genuine reflection…" id="oa-${q.id}" oninput="qAnswers['${q.id}']=this.value">${esc(ans||"")}</textarea>`;if(qSubmitted)h+=`<div class="quiz-feedback correct">↑ Self-assess: did you answer this honestly and thoughtfully?</div>`;}
+    if(q.type==="mc"||q.type==="tf"){
+      const opts=q.type==="tf"?["True","False"]:(q.options||[]);
+      h+=`<div class="quiz-options">`;
+      opts.forEach(opt=>{
+        let cls="quiz-option";
+        if(qSubmitted){if(opt===q.correct)cls+=" correct";else if(opt===ans&&ans!==q.correct)cls+=" wrong";}
+        else if(opt===ans)cls+=" selected";
+        h+=`<button class="${cls}" ${qSubmitted?"disabled":""} onclick="selAns('${q.id}','${ea(opt)}')">${esc(opt)}</button>`;
+      });
+      h+=`</div>`;
+    } else {
+      h+=`<textarea class="quiz-open-input" placeholder="Take your time — write a genuine reflection…" id="oa-${q.id}" oninput="qAnswers['${q.id}']=this.value">${esc(ans||"")}</textarea>`;
+      if(qSubmitted)h+=`<div class="quiz-feedback correct">↑ Self-assess: did you answer this honestly and thoughtfully?</div>`;
+    }
     h+=`</div>`;
   });
   if(!qSubmitted)h+=`<button class="btn btn-gold btn-full" style="margin-top:8px" onclick="submitQuiz()">Submit Answers</button>`;
@@ -744,49 +1011,44 @@ function renderProgressTab(s,c,b){
   const attLeft=MAX_ATT-totalAtt(s);
   const today=sessionsToday(s);
   const canLog=canLogManual(s);
- 
   let h=`<div class="progress-bar"><div class="progress-bar-fill" style="width:${p}%;background:${c.color}"></div></div>
   <div class="progress-meta"><span style="color:${c.color};font-weight:700">${currentLevel(s)} · ${p}%</span><span>${totalAtt(s)}/${MAX_ATT} sessions to mastery</span></div>`;
- 
-  if(m){h+=`<div class="mastered-banner" style="margin-top:12px">✦ MASTERED — ${s.name} ✦</div>`;}
-  else{h+=`<div style="font-size:10px;color:var(--muted);margin-top:6px;margin-bottom:14px">~${attLeft} more sessions to mastery · ~${Math.ceil(attLeft/DAILY_SESSION_LIMIT)} days at full pace</div>`;}
- 
-  // Pyramid
+  if(m){h+=`<div class="mastered-banner" style="margin-top:12px">✦ MASTERED — ${esc(s.name)} ✦</div>`;}
+  else{h+=`<div style="font-size:11px;color:var(--muted);margin-top:6px;margin-bottom:14px;font-family:'Atkinson Hyperlegible',sans-serif">~${attLeft} more sessions to mastery · ~${Math.ceil(attLeft/DAILY_SESSION_LIMIT)} days at full pace</div>`;}
   h+=`<div class="pyr-wrap"><div class="pyr-title">Skill Pyramid</div>`;
   const levels=[{k:"I",p:s.iPieces,m:1,a:s.iAtt},{k:"II",p:s.iiPieces,m:2,a:s.iiAtt},{k:"III",p:s.iiiPieces,m:3,a:s.iiiAtt},{k:"IV",p:s.ivPieces,m:4,a:s.ivAtt},{k:"V",p:s.vPieces,m:5,a:s.vAtt}];
   const descs={I:"Mastery — can teach and mentor",II:"High proficiency — handles edge cases",III:"Advanced — applies in new contexts",IV:"Developing — consistent application",V:"Foundation — basic understanding"};
-  levels.forEach(lv=>{const isAct=phMap[ph]===lv.k;h+=`<div class="pyr-row"><div class="pyr-key">${lv.k}</div><div class="pyr-blocks">`;for(let b2=0;b2<lv.m;b2++){const f=b2<lv.p,lk=!unlocked[lv.k];h+=`<div class="pyr-block${f?" filled":""} ${lk&&!f?"locked":""}" style="${f?`background:${c.color};`:""}"></div>`;}h+=`</div><div class="pyr-desc" style="${isAct?`color:${c.color};font-weight:700`:""}"> ${isAct?`${lv.a}/10 → next piece`:descs[lv.k]}</div></div>`;});
+  levels.forEach(lv=>{
+    const isAct=phMap[ph]===lv.k;
+    h+=`<div class="pyr-row"><div class="pyr-key">${lv.k}</div><div class="pyr-blocks">`;
+    for(let b2=0;b2<lv.m;b2++){const f=b2<lv.p,lk=!unlocked[lv.k];h+=`<div class="pyr-block${f?" filled":""} ${lk&&!f?"locked":""}" style="${f?`background:${c.color};`:""}"></div>`;}
+    h+=`</div><div class="pyr-desc" style="${isAct?`color:${c.color};font-weight:700`:""}"> ${isAct?`${lv.a}/10 → next piece`:descs[lv.k]}</div></div>`;
+  });
   h+=`<div class="pyr-row" style="padding-top:10px;border-top:1px solid var(--border);margin-top:4px"><div class="pyr-key">X</div><div class="x-track">`;
   for(let i=0;i<10;i++)h+=`<div class="x-pip" style="${i<s.x?`background:${c.color};`:""}"></div>`;
   h+=`</div><div class="pyr-desc">${s.x>=10?"Foundation complete — pyramid unlocked":`${s.x}/10 foundation sessions`}</div></div></div>`;
- 
-  // Session limit display
   if(!m){
     h+=`<div class="session-limit"><div class="sl-pips">`;
     for(let i=0;i<DAILY_SESSION_LIMIT;i++)h+=`<div class="sl-pip${i<today?" used":""}"></div>`;
     h+=`</div><div class="sl-text">${today}/${DAILY_SESSION_LIMIT} <strong>manual sessions today</strong>${!canLog?" — limit reached, resets tomorrow":""}</div></div>`;
-    h+=`<div style="margin-top:4px;font-size:9px;color:var(--muted);margin-bottom:14px;line-height:1.7">
-      Each session = one real practice, study, or application of this skill in your life.<br>
-      Quiz completions log separately and always count.
-    </div>`;
+    h+=`<div style="margin-top:4px;font-size:11px;color:var(--muted);margin-bottom:14px;line-height:1.7;font-family:'Atkinson Hyperlegible',sans-serif">Each session = one real practice, study, or application of this skill in your life.<br>Quiz completions log separately and always count.</div>`;
   }
- 
-  // Log session
   if(!m){
     if(canLog){
       h+=`<div style="margin-bottom:14px"><div class="section-label" style="margin-bottom:8px">Log a Practice Session</div>
       <textarea class="log-note-area" id="log-note" placeholder="What did you practise, read, apply, or reflect on today?"></textarea>
       <button class="btn btn-gold btn-full" onclick="doLog(${state.skills.indexOf(s)})">+ Log Session</button></div>`;
-    }else{
-      h+=`<div class="content-block" style="text-align:center;padding:16px;margin-bottom:14px"><div style="font-size:10px;color:var(--muted)">Daily manual session limit reached.<br>Complete the quiz to log an additional session, or return tomorrow.</div></div>`;
+    } else {
+      h+=`<div class="content-block" style="text-align:center;padding:16px;margin-bottom:14px"><div style="font-size:11px;color:var(--muted);font-family:'Atkinson Hyperlegible',sans-serif">Daily manual session limit reached.<br>Complete the quiz to log an additional session, or return tomorrow.</div></div>`;
     }
   }
- 
-  // Log entries
-  if(s.log.length){
+  if((s.log||[]).length){
     h+=`<div><div class="section-label" style="margin-bottom:8px">Activity Log</div>`;
-    s.log.slice(0,12).forEach(e=>{const d=new Date(e.ts);h+=`<div class="log-entry"><div class="log-entry-header"><span class="log-entry-level" style="color:${c.color}">${e.level}${e.fromQuiz?" ◈":""}</span><span class="log-entry-date">${d.toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric"})} ${d.toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"})}</span></div>${e.quizScore!=null?`<div style="font-size:9px;color:var(--gold)">Quiz: ${e.quizScore}/${e.quizTotal}</div>`:""}${e.note?`<div class="log-entry-note">"${esc(e.note)}"</div>`:""}</div>`;});
-    if(s.log.length>12)h+=`<div style="font-size:9px;color:var(--muted);padding-left:12px">+${s.log.length-12} more entries</div>`;
+    s.log.slice(0,12).forEach(e=>{
+      const d=new Date(e.ts);
+      h+=`<div class="log-entry"><div class="log-entry-header"><span class="log-entry-level" style="color:${c.color}">${e.level}${e.fromQuiz?" ◈":""}</span><span class="log-entry-date">${d.toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric"})} ${d.toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"})}</span></div>${e.quizScore!=null?`<div style="font-size:10px;color:var(--gold)">Quiz: ${e.quizScore}/${e.quizTotal}</div>`:""}${e.note?`<div class="log-entry-note">"${esc(e.note)}"</div>`:""}</div>`;
+    });
+    if(s.log.length>12)h+=`<div style="font-size:10px;color:var(--muted);padding-left:12px">+${s.log.length-12} more entries</div>`;
     h+=`</div>`;
   }
   b.innerHTML=h;
@@ -802,13 +1064,13 @@ function renderGrid(){
     if(i<state.skills.length){
       const s=state.skills[i],c=catOf(s),p=pct(s),m=mastered(s),nc=!hasContent(s);
       const op=nc?0:(m?.6:p>0?.15+p/100*.3:0);
-      h+=`<div class="grid-cell${nc?" nc":""}" data-tip="${i+1}. ${s.name}" ${nc?"":`onclick="openLearn(${i})"`}>
-        <div class="gc-fill" style="background:${c.color};opacity:${op}"></div>
-        <div class="gc-num">${i+1}</div>
-        <div class="gc-level" style="color:${p>0||m?c.color:"var(--dim)"}">${m?"✓":p>0?currentLevel(s):""}</div>
-        <div class="gc-name" style="color:${p>0?c.color:"var(--muted)"}">${esc(s.name)}</div>
+      h+=`<div class="grid-cell${nc?" nc":""}" data-tip="${i+1}. ${esc(s.name)}" ${nc?"":`onclick="openLearn(${i})"`}>
+      <div class="gc-fill" style="background:${c.color};opacity:${op}"></div>
+      <div class="gc-num">${i+1}</div>
+      <div class="gc-level" style="color:${p>0||m?c.color:"var(--dim)"}">${m?"✓":p>0?currentLevel(s):""}</div>
+      <div class="gc-name" style="color:${p>0?c.color:"var(--muted)"}">${esc(s.name)}</div>
       </div>`;
-    }else{
+    } else {
       slots+=`<div class="grid-slot">${i+1}</div>`;
     }
   }
@@ -816,17 +1078,48 @@ function renderGrid(){
   const slotEl=document.getElementById("slot-grid");
   if(slotEl){slotEl.innerHTML=slots;const slotSection=slotEl.previousElementSibling;if(slotSection)slotSection.style.display=slots?"":"none";slotEl.style.display=slots?"flex":"none";}
 }
-function renderStats(){const sk=state.skills,mc=sk.filter(mastered).length,st=sk.filter(s=>totalAtt(s)>0&&!mastered(s)).length,sess=sk.reduce((s,sk2)=>s+totalAtt(sk2),0);document.getElementById("stats-row").innerHTML=`<div class="sc"><div class="sn" style="color:var(--gold)">${mc}</div><div class="sl">Mastered</div></div><div class="sc"><div class="sn" style="color:var(--cat2)">${st}</div><div class="sl">In Progress</div></div><div class="sc"><div class="sn" style="color:var(--muted)">${sk.length-mc-st}</div><div class="sl">Not Started</div></div><div class="sc"><div class="sn" style="color:var(--cat3)">${sess}</div><div class="sl">Sessions</div></div>`;const cm={};sk.forEach(s=>{if(!cm[s.catId])cm[s.catId]=[];cm[s.catId].push(s);});document.getElementById("cat-row").innerHTML=Object.entries(cm).map(([cid,cs])=>{const c=CATS[Math.max(0,Math.min(4,(cid||4)-1))],m2=cs.filter(mastered).length,s2=cs.filter(s=>totalAtt(s)>0&&!mastered(s)).length,avg=Math.round(cs.reduce((s,sk2)=>s+pct(sk2),0)/cs.length);return`<div class="cat-card"><div class="cat-name" style="color:${c.color}">${c.name}</div><div class="cat-bar-t"><div class="cat-bar-f" style="width:${avg}%;background:${c.color}"></div></div><div style="font-size:9px;color:var(--muted)">${m2} mastered · ${s2} active · ${avg}% avg</div></div>`;}).join("");document.getElementById("all-skills-list").innerHTML=sk.map((s,i)=>{const c=catOf(s),p=pct(s);return`<div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--border);cursor:pointer" onclick="openLearn(${i})"><div style="width:24px;font-size:9px;color:var(--muted);text-align:right">${i+1}</div><div style="flex:1;font-size:11px;font-weight:700">${esc(s.name)}</div><div style="width:80px;height:2px;background:var(--border)"><div style="width:${p}%;height:100%;background:${c.color}"></div></div><div style="width:30px;text-align:right;font-size:9px;font-weight:700;color:${p>0?c.color:"var(--muted)"}">${currentLevel(s)}</div><div style="width:30px;text-align:right;font-size:9px;color:var(--muted)">${p}%</div></div>`;}).join("");}
+ 
+function renderStats(){
+  const sk=state.skills,mc=sk.filter(mastered).length,st=sk.filter(s=>totalAtt(s)>0&&!mastered(s)).length,sess=sk.reduce((s,sk2)=>s+totalAtt(sk2),0);
+  document.getElementById("stats-row").innerHTML=`<div class="sc"><div class="sn" style="color:var(--gold)">${mc}</div><div class="sl">Mastered</div></div><div class="sc"><div class="sn" style="color:var(--cat2)">${st}</div><div class="sl">In Progress</div></div><div class="sc"><div class="sn" style="color:var(--muted)">${sk.length-mc-st}</div><div class="sl">Not Started</div></div><div class="sc"><div class="sn" style="color:var(--cat3)">${sess}</div><div class="sl">Sessions</div></div>`;
+  const cm={};sk.forEach(s=>{if(!cm[s.catId])cm[s.catId]=[];cm[s.catId].push(s);});
+  document.getElementById("cat-row").innerHTML=Object.entries(cm).map(([cid,cs])=>{
+    const c=CATS[Math.max(0,Math.min(4,(parseInt(cid)||4)-1))],m2=cs.filter(mastered).length,s2=cs.filter(s=>totalAtt(s)>0&&!mastered(s)).length,avg=Math.round(cs.reduce((s,sk2)=>s+pct(sk2),0)/cs.length);
+    return`<div class="cat-card"><div class="cat-name" style="color:${c.color}">${c.name}</div><div class="cat-bar-t"><div class="cat-bar-f" style="width:${avg}%;background:${c.color}"></div></div><div style="font-size:10px;color:var(--muted)">${m2} mastered · ${s2} active · ${avg}% avg</div></div>`;
+  }).join("");
+  document.getElementById("all-skills-list").innerHTML=sk.map((s,i)=>{
+    const c=catOf(s),p=pct(s);
+    return`<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer" onclick="openLearn(${i})"><div style="width:26px;font-size:10px;color:var(--muted);text-align:right">${i+1}</div><div style="flex:1;font-size:12px;font-weight:700">${esc(s.name)}</div><div style="width:80px;height:2px;background:var(--border)"><div style="width:${p}%;height:100%;background:${c.color}"></div></div><div style="width:36px;text-align:right;font-size:10px;font-weight:700;color:${p>0?c.color:"var(--muted)"}">${currentLevel(s)}</div><div style="width:36px;text-align:right;font-size:10px;color:var(--muted)">${p}%</div></div>`;
+  }).join("");
+}
  
 // ═══════════════════════════════════
 // TEACHER
 // ═══════════════════════════════════
 function renderTeacher(){if(!isTeacher)return;renderTList();if(editIdx!==null)renderTEditor();}
 function renderTList(){document.getElementById("t-skill-list").innerHTML=state.skills.map((s,i)=>`<div class="tsi${editIdx===i?" active":""}" onclick="editIdx=${i};renderTList();renderTEditor()"><div class="tsi-num">${i+1}</div><div class="tsi-name">${esc(s.name)}</div><div>${s.locked?"🔒":""}</div></div>`).join("");}
-function renderTEditor(){const i=editIdx;if(i===null||i>=state.skills.length)return;const s=state.skills[i];document.getElementById("t-main").innerHTML=`<div class="ed-sec"><div class="ed-title"><span>Skill ${i+1}</span><div style="display:flex;gap:6px"><button class="btn btn-sm ${s.locked?"btn-gold":""}" onclick="toggleLock(${i})">${s.locked?"🔒 Locked":"🔓 Lock"}</button><button class="btn btn-sm btn-danger" onclick="delSkill(${i})">Delete</button></div></div><label class="lbl">Name</label><input class="t-input" value="${esc(s.name)}" oninput="upSkill(${i},'name',this.value)"><label class="lbl">Description</label><textarea class="t-ta" style="min-height:54px" oninput="upSkill(${i},'description',this.value)">${esc(s.description)}</textarea><label class="lbl">Category</label><select class="t-input" style="width:auto" onchange="upSkill(${i},'catId',parseInt(this.value))">${CATS.map(c=>`<option value="${c.id}" ${s.catId===c.id?"selected":""}>${c.name}</option>`).join("")}</select></div><div class="ed-sec"><div class="ed-title"><span>Lessons (${s.content.lessons.length})</span><button class="btn btn-sm" onclick="addLesson(${i})">+ Add</button></div>${s.content.lessons.map((l,li)=>`<div style="background:var(--surface2);border:1px solid var(--border);padding:12px;margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-size:9px;color:#ffaa22">Lesson ${li+1}</span><button class="btn btn-sm btn-danger" onclick="rmLesson(${i},${li})">Remove</button></div><input class="t-input" value="${esc(l.title)}" oninput="upLesson(${i},${li},'title',this.value)" placeholder="Title"><textarea class="t-ta" oninput="upLesson(${i},${li},'body',this.value)" placeholder="Content…">${esc(l.body)}</textarea></div>`).join("")}</div><div class="ed-sec"><div class="ed-title"><span>Exercises (${s.content.exercises.length})</span><button class="btn btn-sm" onclick="addEx(${i})">+ Add</button></div>${s.content.exercises.map((e,ei)=>`<div style="background:var(--surface2);border:1px solid var(--border);padding:12px;margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-size:9px;color:#ffaa22">Exercise ${ei+1}</span><button class="btn btn-sm btn-danger" onclick="rmEx(${i},${ei})">Remove</button></div><input class="t-input" value="${esc(e.title)}" oninput="upEx(${i},${ei},'title',this.value)" placeholder="Title"><textarea class="t-ta" oninput="upEx(${i},${ei},'body',this.value)" placeholder="Instructions…">${esc(e.body)}</textarea></div>`).join("")}</div><div class="ed-sec"><div class="ed-title"><span>Quiz (${s.content.quiz.length})</span><div style="display:flex;gap:5px"><button class="btn btn-sm" onclick="addQ(${i},'mc')">+MC</button><button class="btn btn-sm" onclick="addQ(${i},'tf')">+T/F</button><button class="btn btn-sm" onclick="addQ(${i},'open')">+Open</button></div></div>${s.content.quiz.map((q,qi)=>renderQEditor(i,qi,q)).join("")}</div>`;}
-function renderQEditor(si,qi,q){const tl=q.type==="mc"?"Multiple Choice":q.type==="tf"?"True / False":"Open";let oh="";if(q.type==="mc"){oh=`<div style="margin-top:8px"><label class="lbl">Options</label>`;(q.options||["","","",""]).forEach((o,oi)=>{oh+=`<div style="display:flex;gap:6px;align-items:center;margin-bottom:5px"><span style="font-size:9px;color:var(--muted);width:16px">${String.fromCharCode(65+oi)}.</span><input class="t-input" style="flex:1;margin-bottom:0" value="${esc(o)}" oninput="upQOpt(${si},${qi},${oi},this.value)"></div>`;});oh+=`</div><div style="margin-top:8px"><label class="lbl">Correct Answer</label><select class="t-input" style="width:auto" onchange="upQF(${si},${qi},'correct',this.value)">${(q.options||["","","",""]).map((o,oi)=>`<option value="${esc(o)}" ${q.correct===o?"selected":""}>${String.fromCharCode(65+oi)}. ${o||"(empty)"}</option>`).join("")}</select></div>`;}else if(q.type==="tf"){oh=`<div style="margin-top:8px"><label class="lbl">Correct Answer</label><select class="t-input" style="width:auto" onchange="upQF(${si},${qi},'correct',this.value)"><option value="True" ${q.correct==="True"?"selected":""}>True</option><option value="False" ${q.correct==="False"?"selected":""}>False</option></select></div>`;}else{oh=`<div style="margin-top:4px;font-size:9px;color:var(--muted)">Open — self-assessed by learner.</div>`;}return`<div class="qei"><div class="qei-hdr"><span class="qei-num">Q${qi+1} · ${tl}</span><button class="btn btn-sm btn-danger" onclick="rmQ(${si},${qi})">Remove</button></div><textarea class="t-ta" style="min-height:54px" oninput="upQF(${si},${qi},'question',this.value)">${esc(q.question)}</textarea>${oh}</div>`;}
+function renderTEditor(){
+  const i=editIdx;if(i===null||i>=state.skills.length)return;const s=state.skills[i];
+  document.getElementById("t-main").innerHTML=`<div class="ed-sec"><div class="ed-title"><span>Skill ${i+1}</span><div style="display:flex;gap:6px"><button class="btn btn-sm ${s.locked?"btn-gold":""}" onclick="toggleLock(${i})">${s.locked?"🔒 Locked":"🔓 Lock"}</button><button class="btn btn-sm btn-danger" onclick="delSkill(${i})">Delete</button></div></div><label class="lbl">Name</label><input class="t-input" value="${esc(s.name)}" oninput="upSkill(${i},'name',this.value)"><label class="lbl">Description</label><textarea class="t-ta" style="min-height:60px" oninput="upSkill(${i},'description',this.value)">${esc(s.description)}</textarea><label class="lbl">Category</label><select class="t-input" style="width:auto" onchange="upSkill(${i},'catId',parseInt(this.value))">${CATS.map(c=>`<option value="${c.id}" ${s.catId===c.id?"selected":""}>${c.name}</option>`).join("")}</select></div><div class="ed-sec"><div class="ed-title"><span>Lessons (${s.content.lessons.length})</span><button class="btn btn-sm" onclick="addLesson(${i})">+ Add</button></div>${s.content.lessons.map((l,li)=>`<div style="background:var(--surface2);border:1px solid var(--border);padding:12px;margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-size:10px;color:var(--accent);font-weight:700">Lesson ${li+1}</span><button class="btn btn-sm btn-danger" onclick="rmLesson(${i},${li})">Remove</button></div><input class="t-input" value="${esc(l.title)}" oninput="upLesson(${i},${li},'title',this.value)" placeholder="Title"><textarea class="t-ta" oninput="upLesson(${i},${li},'body',this.value)" placeholder="Content…">${esc(l.body)}</textarea></div>`).join("")}</div><div class="ed-sec"><div class="ed-title"><span>Exercises (${s.content.exercises.length})</span><button class="btn btn-sm" onclick="addEx(${i})">+ Add</button></div>${s.content.exercises.map((e,ei)=>`<div style="background:var(--surface2);border:1px solid var(--border);padding:12px;margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-size:10px;color:var(--accent);font-weight:700">Exercise ${ei+1}</span><button class="btn btn-sm btn-danger" onclick="rmEx(${i},${ei})">Remove</button></div><input class="t-input" value="${esc(e.title)}" oninput="upEx(${i},${ei},'title',this.value)" placeholder="Title"><textarea class="t-ta" oninput="upEx(${i},${ei},'body',this.value)" placeholder="Instructions…">${esc(e.body)}</textarea></div>`).join("")}</div><div class="ed-sec"><div class="ed-title"><span>Quiz (${s.content.quiz.length})</span><div style="display:flex;gap:5px"><button class="btn btn-sm" onclick="addQ(${i},'mc')">+MC</button><button class="btn btn-sm" onclick="addQ(${i},'tf')">+T/F</button><button class="btn btn-sm" onclick="addQ(${i},'open')">+Open</button></div></div>${s.content.quiz.map((q,qi)=>renderQEditor(i,qi,q)).join("")}</div>`;
+}
+ 
+function renderQEditor(si,qi,q){
+  const tl=q.type==="mc"?"Multiple Choice":q.type==="tf"?"True / False":"Open";
+  let oh="";
+  if(q.type==="mc"){
+    oh=`<div style="margin-top:8px"><label class="lbl">Options</label>`;
+    (q.options||["","","",""]).forEach((o,oi)=>{oh+=`<div style="display:flex;gap:6px;align-items:center;margin-bottom:5px"><span style="font-size:10px;color:var(--muted);width:18px">${String.fromCharCode(65+oi)}.</span><input class="t-input" style="flex:1;margin-bottom:0" value="${esc(o)}" oninput="upQOpt(${si},${qi},${oi},this.value)"></div>`;});
+    oh+=`</div><div style="margin-top:8px"><label class="lbl">Correct Answer</label><select class="t-input" style="width:auto" onchange="upQF(${si},${qi},'correct',this.value)">${(q.options||["","","",""]).map((o,oi)=>`<option value="${esc(o)}" ${q.correct===o?"selected":""}>${String.fromCharCode(65+oi)}. ${o||"(empty)"}</option>`).join("")}</select></div>`;
+  } else if(q.type==="tf"){
+    oh=`<div style="margin-top:8px"><label class="lbl">Correct Answer</label><select class="t-input" style="width:auto" onchange="upQF(${si},${qi},'correct',this.value)"><option value="True" ${q.correct==="True"?"selected":""}>True</option><option value="False" ${q.correct==="False"?"selected":""}>False</option></select></div>`;
+  } else {
+    oh=`<div style="margin-top:4px;font-size:10px;color:var(--muted)">Open — self-assessed by learner.</div>`;
+  }
+  return`<div class="qei"><div class="qei-hdr"><span class="qei-num">Q${qi+1} · ${tl}</span><button class="btn btn-sm btn-danger" onclick="rmQ(${si},${qi})">Remove</button></div><textarea class="t-ta" style="min-height:60px" oninput="upQF(${si},${qi},'question',this.value)">${esc(q.question)}</textarea>${oh}</div>`;
+}
+ 
 function toggleLock(i){state.skills[i].locked=!state.skills[i].locked;save();renderTList();renderTEditor();}
-function delSkill(i){if(!confirm(`Delete "${state.skills[i].name}"?`))return;state.skills.splice(i,1);state.skills.forEach((s,j)=>s.id=j+1);editIdx=null;save();renderTList();document.getElementById("t-main").innerHTML=`<div style="color:var(--muted);font-size:11px;padding:40px;text-align:center">Select a skill</div>`;}
+function delSkill(i){if(!confirm(`Delete "${state.skills[i].name}"?`))return;state.skills.splice(i,1);state.skills.forEach((s,j)=>s.id=j+1);editIdx=null;save();renderTList();document.getElementById("t-main").innerHTML=`<div style="color:var(--muted);font-size:12px;padding:40px;text-align:center;font-family:'Atkinson Hyperlegible',sans-serif">Select a skill</div>`;}
 function upSkill(i,f,v){state.skills[i][f]=f==="catId"?parseInt(v):v;save();if(f==="name")renderTList();}
 function addLesson(i){state.skills[i].content.lessons.push({id:uid(),title:"New Lesson",body:""});save();renderTEditor();}
 function rmLesson(i,li){state.skills[i].content.lessons.splice(li,1);save();renderTEditor();}
@@ -834,7 +1127,7 @@ function upLesson(i,li,f,v){state.skills[i].content.lessons[li][f]=v;save();}
 function addEx(i){state.skills[i].content.exercises.push({id:uid(),title:"New Exercise",body:""});save();renderTEditor();}
 function rmEx(i,ei){state.skills[i].content.exercises.splice(ei,1);save();renderTEditor();}
 function upEx(i,ei,f,v){state.skills[i].content.exercises[ei][f]=v;save();}
-function addQ(i,t){const q={id:uid(),question:"",type:t,options:t==="mc"?["","","",""]:[], correct:t==="tf"?"True":"",points:1};state.skills[i].content.quiz.push(q);save();renderTEditor();}
+function addQ(i,t){const q={id:uid(),question:"",type:t,options:t==="mc"?["","","",""]:[],correct:t==="tf"?"True":"",points:1};state.skills[i].content.quiz.push(q);save();renderTEditor();}
 function rmQ(i,qi){state.skills[i].content.quiz.splice(qi,1);save();renderTEditor();}
 function upQF(i,qi,f,v){state.skills[i].content.quiz[qi][f]=v;save();}
 function upQOpt(i,qi,oi,v){if(!state.skills[i].content.quiz[qi].options)state.skills[i].content.quiz[qi].options=["","","",""];state.skills[i].content.quiz[qi].options[oi]=v;save();}
