@@ -1,0 +1,684 @@
+{
+  "id": "critical-thinking",
+  "schemaVersion": 2,
+  "name": "Critical Thinking",
+  "description": "Analysing and evaluating information before accepting it or acting on it.",
+  "catId": 1,
+  "author": "EMVY CHECK",
+  "version": "1.0.0",
+  "updated": "2026-04-21",
+  "tags": [
+    "cognitive",
+    "reasoning",
+    "logic",
+    "decision-making"
+  ],
+  "resources": {
+    "overview": {
+      "title": "Critical Thinking — Overview",
+      "body": "Critical thinking is the disciplined process of actively analysing, evaluating, and synthesising information before accepting it as true or acting on it.\n\nMost people believe they think critically. Most don't. The default human mode is reactive: information arrives, it matches or clashes with existing beliefs, and we accept or reject it on that basis. Critical thinking interrupts that reflex. It inserts a gap between receiving information and responding to it.\n\nWHY IT MATTERS\n\nEvery important decision you make — about money, relationships, career, health, politics — is based on information and reasoning. If your reasoning is flawed, your decisions will be too. This is not an academic skill. It is a practical one with real consequences.\n\nWHAT IT IS NOT\n\nCritical thinking is not cynicism. It is not rejecting everything. It is not endless debate. A critical thinker can arrive at firm, confident conclusions — they simply know how they got there and can explain the reasoning."
+    },
+    "core-habits": {
+      "title": "The Five Core Habits",
+      "body": "These are the habits that separate reactive thinking from critical thinking. Return to this list regularly — at first you'll recognise them, later you'll catch yourself applying them automatically.\n\n1. QUESTION ASSUMPTIONS — especially your own. Most beliefs we hold were never examined; they were absorbed from our environment, family, media, and peer group.\n\n2. SEEK EVIDENCE. Opinions are not evidence. Anecdotes are not evidence. Popularity is not evidence. Ask: what would actually prove this?\n\n3. CONSIDER MULTIPLE PERSPECTIVES. The first explanation that makes sense is rarely the complete one. Actively look for how someone with different experience might see the same situation.\n\n4. STAY COMFORTABLE WITH UNCERTAINTY. Not everything has a clear answer. 'I don't know' is an intellectually strong position when you genuinely don't. False certainty is more dangerous than honest doubt.\n\n5. CHANGE YOUR MIND WHEN EVIDENCE WARRANTS IT. The goal is accuracy, not consistency. People who never update their views are not principled — they are stuck."
+    },
+    "five-questions": {
+      "title": "The Five Questions for Evaluating Any Claim",
+      "body": "Use these five questions whenever you encounter a claim — in a news article, an advertisement, a conversation, or your own thoughts.\n\n1. WHO is making this claim?\nAre they qualified to make it? Do they have a conflict of interest — financial, political, ideological? A pharmaceutical company funding research into their own drug is not a neutral source. Neither is a politician interpreting statistics that favour their party.\n\n2. WHAT evidence is provided?\nIs it anecdotal (one person's story) or systematic (many cases, controlled conditions)? A friend who recovered from illness after a particular treatment is not evidence the treatment works — it may have been coincidence, placebo effect, or natural recovery.\n\n3. WHERE does the evidence come from?\nIs it from the original study, or from someone reporting on it? Secondary sources introduce error, simplification, and sometimes deliberate distortion. When possible, trace claims to their source.\n\n4. HOW was the evidence gathered?\nSample size matters. Methodology matters. Were variables controlled? A study of 12 people is different from one of 12,000. Was the study pre-registered? Was it replicated by independent researchers?\n\n5. WHAT alternative explanations exist?\nCorrelation is not causation. Ice cream sales and drowning rates both rise in summer — they are correlated but ice cream does not cause drowning. Always ask whether another explanation fits the data as well or better."
+    },
+    "evidence-quality": {
+      "title": "Evidence Quality — A Practical Scale",
+      "body": "Not all evidence is equal. Here is a rough scale from strongest to weakest.\n\nSTRONGEST\n— Systematic reviews and meta-analyses of multiple independent studies\n— Large randomised controlled trials, pre-registered, peer-reviewed\n— Multiple independent replications of the same finding\n\nMODERATE\n— Single peer-reviewed studies with reasonable methodology\n— Expert consensus statements from professional bodies\n— Well-documented case studies with clear methodology\n\nWEAK\n— Expert opinion without cited evidence\n— Small studies, studies with no control group, or unreplicated findings\n— Research funded by parties with a direct financial interest\n\nVERY WEAK\n— Anecdotes and personal testimonials\n— 'Everyone knows...' or 'It's obvious that...'\n— Sources that cannot be traced to an original study\n— Statistics without a cited source\n\nA practical note: weak evidence can still point in useful directions. The question is not 'is this evidence worthless?' but 'how much should this update my belief?'"
+    },
+    "fallacies-cheatsheet": {
+      "title": "Logical Fallacies — Quick Reference",
+      "body": "A logical fallacy is an error in reasoning that makes an argument invalid — even if the conclusion happens to be true. Here are the most common ones.\n\nAD HOMINEM\nAttacking the person making the argument instead of the argument itself.\nExample: 'You can't trust his views on climate — he drives a car.'\n\nSTRAW MAN\nMisrepresenting someone's position to make it easier to attack.\nExample: 'You want to reduce military spending? So you want us defenceless.'\n\nFALSE DICHOTOMY\nPresenting two options as if they are the only possibilities.\nExample: 'You're either with us or against us.'\n\nAPPEAL TO AUTHORITY\nUsing someone's status as proof of a claim.\nExample: 'A Nobel Prize winner agrees with me.' Authorities can be wrong, especially outside their area of expertise.\n\nSLIPPERY SLOPE\nClaiming one event inevitably leads to an extreme outcome without justifying the chain.\nExample: 'If we allow this policy, within a decade we'll have total government control.'\n\nCONFIRMATION BIAS\nSeeking only information that confirms what you already believe. This is the most dangerous fallacy because it usually operates below conscious awareness.\n\nAPPEAL TO POPULARITY\nAssuming something is true because many people believe it.\nExample: 'Millions of people can't be wrong.' History says otherwise.\n\nCIRCULAR REASONING\nUsing the conclusion as a premise.\nExample: 'The Bible is true because the Bible says it is true.'\n\nIMPORTANT: Finding a fallacy does not automatically mean the conclusion is wrong. It means the argument doesn't prove the conclusion. The conclusion might still be true — it just needs a better argument."
+    },
+    "cognitive-biases": {
+      "title": "Cognitive Biases — How Your Brain Misleads You",
+      "body": "Every human brain runs on shortcuts — heuristics — that work well most of the time and produce systematic errors some of the time. These are not character flaws. They are features of how human cognition evolved. Knowing they exist lets you compensate.\n\nANCHORING\nYour first piece of information disproportionately influences your final judgement. If you hear a high price first, subsequent prices seem more reasonable by comparison.\n\nAVAILABILITY HEURISTIC\nYou judge probability by how easily examples come to mind. Dramatic, recent, or emotional events seem more common than they are because they're vivid.\n\nDUNNING-KRUGER EFFECT\nPeople with limited knowledge in an area tend to overestimate their competence. Deep expertise typically increases awareness of how much you don't know.\n\nIN-GROUP BIAS\nYou evaluate evidence differently depending on whether it supports or challenges your group's position. This operates in politics, sport, religion, and any domain where identity is involved.\n\nSUNK COST FALLACY\nContinuing to invest in something because of what you've already put in, not because of its future value. The past cost is gone regardless of what you do next.\n\nFUNDAMENTAL ATTRIBUTION ERROR\nOverestimating the role of character in others' behaviour and underestimating the role of circumstances. When you do something bad, it's the situation; when others do something bad, it's who they are.\n\nHOW TO PARTIALLY COUNTERACT BIAS\n— Slow down on important decisions. Biases thrive under time pressure.\n— Actively seek out strong versions of opposing views.\n— Ask: how would I evaluate this evidence if it supported the other side?\n— Consider your own conflicts of interest honestly."
+    },
+    "metacognition": {
+      "title": "Thinking About Your Own Thinking",
+      "body": "Metacognition means thinking about your own thinking. It is the most sophisticated form of critical thinking because it turns the analytical lens on yourself.\n\nWHAT ARE YOUR BLIND SPOTS?\nEvery person has topics where their reasoning is compromised — where beliefs are identity rather than conclusion. These are usually the topics you feel most strongly about. Strong feelings are a signal to think more carefully, not less.\n\nTEST YOUR BELIEFS\nFor any belief you hold strongly, ask three questions:\n1. What evidence convinced me of this?\n2. When did I last seriously examine it?\n3. What would it take to change my mind?\n\nIf you cannot answer question 3, you may be holding that belief as identity rather than as conclusion. That is worth noticing.\n\nINTELLECTUAL HUMILITY\nThe most accurate thinkers are not necessarily the most confident ones. Intellectual humility means holding beliefs with appropriate strength — strongly when evidence is strong, tentatively when it isn't. It means updating your views without shame when new evidence appears.\n\nTHE LONG GAME\nCritical thinking improves with practice. The goal is not to become a professional sceptic who trusts nothing. The goal is to become someone whose beliefs are more likely to be accurate because they were tested."
+    }
+  },
+  "levels": {
+    "X": {
+      "summary": "Orientation: what critical thinking actually is, why it matters, and the core habits you will be building. Before you work through the pyramid, this level ensures you understand what you are training.",
+      "attemptsRequired": 10,
+      "sequential": false,
+      "sessions": [
+        {
+          "id": "x1",
+          "type": "read",
+          "title": "What is critical thinking?",
+          "resourceId": "overview",
+          "estimatedMinutes": 4,
+          "repeatable": true
+        },
+        {
+          "id": "x2",
+          "type": "read",
+          "title": "The five core habits",
+          "resourceId": "core-habits",
+          "estimatedMinutes": 4,
+          "repeatable": true
+        },
+        {
+          "id": "x3",
+          "type": "quiz",
+          "title": "Orientation check",
+          "questions": [
+            {
+              "id": "q1",
+              "prompt": "Critical thinking is primarily about rejecting claims you disagree with.",
+              "kind": "tf",
+              "correct": "False"
+            },
+            {
+              "id": "q2",
+              "prompt": "Which of the following best describes what critical thinking inserts?",
+              "kind": "mc",
+              "options": [
+                "A longer time before you respond to anyone",
+                "A gap between receiving information and responding to it",
+                "An automatic rejection of new ideas",
+                "A requirement to always find opposing evidence"
+              ],
+              "correct": "A gap between receiving information and responding to it"
+            },
+            {
+              "id": "q3",
+              "prompt": "From the five core habits, which one do you think you currently do least well? Describe one situation where you could have applied it.",
+              "kind": "open"
+            }
+          ],
+          "passThreshold": 1,
+          "repeatable": true
+        },
+        {
+          "id": "x4",
+          "type": "practice",
+          "title": "Notice your assumptions today",
+          "prompt": "For the rest of today, pay attention to moments when you accept something as true without questioning it. These can be small things — a news headline you scroll past, something a friend says, a belief you catch yourself holding.\n\nFind three examples. For each, write what the claim was and what evidence (if any) you actually had for it.",
+          "reflectionTemplate": "What were the three claims? On reflection, how strong was your actual evidence for each?",
+          "minReflectionLength": 60,
+          "repeatable": true
+        },
+        {
+          "id": "x5",
+          "type": "solve",
+          "title": "Identify the type of claim",
+          "problem": "Your friend says: 'I started taking vitamin D and my energy improved — it definitely works.' What type of evidence is this?",
+          "accepted": [
+            "anecdote",
+            "anecdotal",
+            "anecdotal evidence",
+            "personal anecdote",
+            "personal testimony",
+            "testimonial"
+          ],
+          "hint": "Think about whether one person's experience, however genuine, can prove a general claim.",
+          "solution": "This is anecdotal evidence — a genuine personal experience that cannot establish cause and effect. The improvement may have been coincidence, placebo effect, or due to other factors that changed at the same time.",
+          "repeatable": false
+        }
+      ]
+    },
+    "V": {
+      "summary": "Foundation: evaluating claims systematically using the five questions, understanding what makes evidence strong or weak.",
+      "pieces": 5,
+      "attemptsPerPiece": 10,
+      "sequential": false,
+      "sessions": [
+        {
+          "id": "v1",
+          "type": "read",
+          "title": "The five questions",
+          "resourceId": "five-questions",
+          "estimatedMinutes": 6,
+          "repeatable": true
+        },
+        {
+          "id": "v2",
+          "type": "read",
+          "title": "Evidence quality scale",
+          "resourceId": "evidence-quality",
+          "estimatedMinutes": 4,
+          "repeatable": true
+        },
+        {
+          "id": "v3",
+          "type": "quiz",
+          "title": "The five questions — check",
+          "questions": [
+            {
+              "id": "q1",
+              "prompt": "The first of the five questions to ask about any claim is about the person making it.",
+              "kind": "tf",
+              "correct": "True"
+            },
+            {
+              "id": "q2",
+              "prompt": "Which best describes why a pharmaceutical company funding its own drug research is a concern?",
+              "kind": "mc",
+              "options": [
+                "The researchers will have made deliberate errors",
+                "The company has a financial interest in a particular result",
+                "Corporate research is never peer-reviewed",
+                "The drug is likely unsafe"
+              ],
+              "correct": "The company has a financial interest in a particular result"
+            },
+            {
+              "id": "q3",
+              "prompt": "Ice cream sales and drowning rates are correlated. The correct conclusion is:",
+              "kind": "mc",
+              "options": [
+                "Eating ice cream increases drowning risk",
+                "Swimming increases ice cream consumption",
+                "Both are caused by a third factor: hot weather",
+                "The correlation is meaningless"
+              ],
+              "correct": "Both are caused by a third factor: hot weather"
+            },
+            {
+              "id": "q4",
+              "prompt": "Describe what the fifth question ('What alternative explanations exist?') guards against.",
+              "kind": "open"
+            }
+          ],
+          "passThreshold": 0.67,
+          "repeatable": true
+        },
+        {
+          "id": "v4",
+          "type": "quiz",
+          "title": "Evidence quality — check",
+          "questions": [
+            {
+              "id": "q1",
+              "prompt": "A single peer-reviewed study is stronger evidence than a systematic review of multiple studies.",
+              "kind": "tf",
+              "correct": "False"
+            },
+            {
+              "id": "q2",
+              "prompt": "A statistic shared on social media with no cited source falls into which evidence category?",
+              "kind": "mc",
+              "options": [
+                "Moderate — it may be true",
+                "Strong — statistics don't lie",
+                "Very weak — the source cannot be verified",
+                "Weak but acceptable for casual decisions"
+              ],
+              "correct": "Very weak — the source cannot be verified"
+            },
+            {
+              "id": "q3",
+              "prompt": "You read that 'experts say' a new diet works, with no further citation. Rate this evidence and explain your rating.",
+              "kind": "open"
+            }
+          ],
+          "passThreshold": 1,
+          "repeatable": true
+        },
+        {
+          "id": "v5",
+          "type": "solve",
+          "title": "Rate this evidence",
+          "problem": "A celebrity posts that a supplement cured their chronic fatigue. The supplement company shares the post. What is the evidence quality?",
+          "accepted": [
+            "very weak",
+            "weak",
+            "anecdotal",
+            "very weak anecdotal",
+            "very weak - anecdotal"
+          ],
+          "hint": "Consider: who is sharing it, do they have a financial interest, is this one person's experience or systematic data?",
+          "solution": "Very weak — anecdotal at best (one person's experience), amplified by a party with a direct financial interest. No methodology, no control group, no replication. This should not update your beliefs significantly.",
+          "repeatable": false
+        },
+        {
+          "id": "v6",
+          "type": "solve",
+          "title": "Who has the conflict of interest?",
+          "problem": "A study concludes that moderate wine consumption is healthy. The study was funded by a wine industry trade body. What concern does this raise about the evidence?",
+          "accepted": [
+            "conflict of interest",
+            "financial conflict",
+            "funding bias",
+            "industry funding bias",
+            "the funder has a financial interest in the result"
+          ],
+          "hint": "Think about question 1 of the five questions: who is making this claim and what interests do they have?",
+          "solution": "Conflict of interest / funding bias. The trade body has a financial incentive for a positive result. This doesn't mean the study is wrong, but it is a serious reason to seek independent replication before accepting the conclusion.",
+          "repeatable": false
+        },
+        {
+          "id": "v7",
+          "type": "practice",
+          "title": "Audit a claim in the wild",
+          "prompt": "Find one claim in the news, on social media, or in a conversation today. Apply all five questions to it:\n\n1. Who is making the claim — and what are their interests?\n2. What evidence is actually provided?\n3. Where does the evidence come from — primary or secondary source?\n4. How was the evidence gathered — sample size, methodology, replication?\n5. What alternative explanations could fit the same facts?\n\nBe honest about what you don't know.",
+          "reflectionTemplate": "What was the claim? Walk through all five questions. What is your confidence in the claim after the audit, compared to before?",
+          "minReflectionLength": 120,
+          "repeatable": true
+        },
+        {
+          "id": "v8",
+          "type": "practice",
+          "title": "Trace a claim to its source",
+          "prompt": "Find one statistic or factual claim that is being shared online or in the media today. Try to trace it all the way back to its original source — the actual study, report, or dataset it came from.\n\nNote: you may not always succeed. That is useful information too.",
+          "reflectionTemplate": "What was the claim? Were you able to find the original source? If not, where did the trail go cold? What did this tell you about how information spreads?",
+          "minReflectionLength": 80,
+          "repeatable": true
+        }
+      ]
+    },
+    "IV": {
+      "summary": "Developing: recognising logical fallacies in arguments, including in arguments you agree with.",
+      "pieces": 4,
+      "attemptsPerPiece": 10,
+      "sequential": false,
+      "sessions": [
+        {
+          "id": "iv1",
+          "type": "read",
+          "title": "Logical fallacies — full reference",
+          "resourceId": "fallacies-cheatsheet",
+          "estimatedMinutes": 8,
+          "repeatable": true
+        },
+        {
+          "id": "iv2",
+          "type": "quiz",
+          "title": "Fallacy identification",
+          "questions": [
+            {
+              "id": "q1",
+              "prompt": "'You can't trust his economic views — he's never run a business.' This is:",
+              "kind": "mc",
+              "options": [
+                "Straw man",
+                "Ad hominem",
+                "False dichotomy",
+                "Appeal to authority"
+              ],
+              "correct": "Ad hominem"
+            },
+            {
+              "id": "q2",
+              "prompt": "'If we allow same-sex marriage, within a decade people will be marrying animals.' This is:",
+              "kind": "mc",
+              "options": [
+                "Appeal to popularity",
+                "False dichotomy",
+                "Slippery slope",
+                "Circular reasoning"
+              ],
+              "correct": "Slippery slope"
+            },
+            {
+              "id": "q3",
+              "prompt": "'Millions of people use this remedy, so it must work.' This is:",
+              "kind": "mc",
+              "options": [
+                "Ad hominem",
+                "Confirmation bias",
+                "Appeal to popularity",
+                "Straw man"
+              ],
+              "correct": "Appeal to popularity"
+            },
+            {
+              "id": "q4",
+              "prompt": "Finding a logical fallacy in someone's argument proves their conclusion is false.",
+              "kind": "tf",
+              "correct": "False"
+            },
+            {
+              "id": "q5",
+              "prompt": "Why is confirmation bias considered the most dangerous fallacy? Answer in your own words.",
+              "kind": "open"
+            }
+          ],
+          "passThreshold": 0.75,
+          "repeatable": true
+        },
+        {
+          "id": "iv3",
+          "type": "solve",
+          "title": "Name the fallacy (1)",
+          "problem": "'You say you care about human rights, but you own a smartphone made in a country with poor labour conditions. Your argument is therefore invalid.'",
+          "accepted": [
+            "ad hominem",
+            "tu quoque",
+            "hypocrisy fallacy",
+            "appeal to hypocrisy"
+          ],
+          "hint": "Is this attacking the argument, or attacking the person's consistency?",
+          "solution": "Ad hominem (specifically tu quoque — 'you too'). The person's behaviour may be inconsistent with their argument, but it does not make the argument itself wrong. The logic has to be engaged on its own terms.",
+          "repeatable": false
+        },
+        {
+          "id": "iv4",
+          "type": "solve",
+          "title": "Name the fallacy (2)",
+          "problem": "'Either you support this new law completely, or you're against protecting children.'",
+          "accepted": [
+            "false dichotomy",
+            "false dilemma",
+            "black and white thinking",
+            "either-or fallacy"
+          ],
+          "hint": "How many real options actually exist?",
+          "solution": "False dichotomy. The argument presents two options as if they are the only ones, excluding the large middle ground (partial support, alternative policies, questioning the premise, etc.).",
+          "repeatable": false
+        },
+        {
+          "id": "iv5",
+          "type": "solve",
+          "title": "Name the fallacy (3)",
+          "problem": "'The Bible is the word of God because the Bible tells us it is the word of God.'",
+          "accepted": [
+            "circular reasoning",
+            "circular argument",
+            "begging the question",
+            "circularity"
+          ],
+          "hint": "What is being used as both premise and conclusion?",
+          "solution": "Circular reasoning (also called begging the question). The conclusion is smuggled in as a premise. The argument provides no independent evidence for its claim — it just reasserts it in a loop.",
+          "repeatable": false
+        },
+        {
+          "id": "iv6",
+          "type": "practice",
+          "title": "Fallacy hunt in the wild",
+          "prompt": "Read one opinion article, editorial, political speech transcript, or social media argument. Find at least two logical fallacies.\n\nFor each:\n1. Quote the relevant sentence or passage\n2. Name the fallacy\n3. Explain why it qualifies\n\nThen: does the argument survive without these fallacies? Write the strongest possible version of the argument — free of fallacies.",
+          "reflectionTemplate": "What fallacies did you find? What was the source? Does the argument survive when the fallacies are removed? What is the strongest version of it?",
+          "minReflectionLength": 150,
+          "repeatable": true
+        },
+        {
+          "id": "iv7",
+          "type": "practice",
+          "title": "Find a fallacy in an argument you agree with",
+          "prompt": "This is harder than finding fallacies in arguments you already dislike.\n\nChoose a position you hold — political, social, personal, anything. Find one piece of writing that argues for your position. Look for logical fallacies in how the argument is made.\n\nNote: finding a fallacy in an argument you agree with does not mean the conclusion is wrong. It means the argument needs to be made better.",
+          "reflectionTemplate": "What position did you choose? What fallacy or weak argument did you find in its defence? How did it feel to find it? What is the stronger version of the argument?",
+          "minReflectionLength": 100,
+          "repeatable": true
+        }
+      ]
+    },
+    "III": {
+      "summary": "Advanced: understanding cognitive biases in your own reasoning, not just others'. Identifying when your thinking is being compromised.",
+      "pieces": 3,
+      "attemptsPerPiece": 10,
+      "sequential": false,
+      "sessions": [
+        {
+          "id": "iii1",
+          "type": "read",
+          "title": "Cognitive biases — how your brain misleads you",
+          "resourceId": "cognitive-biases",
+          "estimatedMinutes": 8,
+          "repeatable": true
+        },
+        {
+          "id": "iii2",
+          "type": "quiz",
+          "title": "Cognitive biases — check",
+          "questions": [
+            {
+              "id": "q1",
+              "prompt": "The availability heuristic causes you to judge probability by:",
+              "kind": "mc",
+              "options": [
+                "The opinion of available experts",
+                "How easily examples come to mind",
+                "The number of sources you can find",
+                "Your emotional state at the time"
+              ],
+              "correct": "How easily examples come to mind"
+            },
+            {
+              "id": "q2",
+              "prompt": "You spent £800 on a concert ticket. The show is tonight but you feel unwell. The sunk cost fallacy would lead you to:",
+              "kind": "mc",
+              "options": [
+                "Stay home because health matters more",
+                "Go anyway because you already paid",
+                "Sell the ticket if possible",
+                "Ask a friend whether to go"
+              ],
+              "correct": "Go anyway because you already paid"
+            },
+            {
+              "id": "q3",
+              "prompt": "The Dunning-Kruger effect describes which relationship between knowledge and confidence?",
+              "kind": "mc",
+              "options": [
+                "More knowledge always produces more confidence",
+                "Limited knowledge often produces overconfidence; deeper expertise reveals how much you don't know",
+                "High confidence reliably predicts high competence",
+                "Experts are always more confident than novices"
+              ],
+              "correct": "Limited knowledge often produces overconfidence; deeper expertise reveals how much you don't know"
+            },
+            {
+              "id": "q4",
+              "prompt": "Cognitive biases are character flaws that careful, intelligent people avoid.",
+              "kind": "tf",
+              "correct": "False"
+            },
+            {
+              "id": "q5",
+              "prompt": "Which cognitive bias are you most vulnerable to in your own thinking, and why? Be honest — there is no correct answer here.",
+              "kind": "open"
+            }
+          ],
+          "passThreshold": 0.75,
+          "repeatable": true
+        },
+        {
+          "id": "iii3",
+          "type": "solve",
+          "title": "Name the bias",
+          "problem": "After a plane crash gets heavy news coverage, people dramatically increase their fear of flying — even though flying becomes statistically no less safe than it was the day before. Which bias is operating?",
+          "accepted": [
+            "availability heuristic",
+            "availability bias",
+            "availability",
+            "media availability heuristic"
+          ],
+          "hint": "The crash is now very easy to bring to mind. How does that affect probability judgements?",
+          "solution": "The availability heuristic. The crash is cognitively available — vivid, recent, emotional — so it feels more probable than statistics support. Mundane deaths from car journeys, which are more numerous, attract no coverage and therefore feel less dangerous.",
+          "repeatable": false
+        },
+        {
+          "id": "iii4",
+          "type": "solve",
+          "title": "Sunk cost in the wild",
+          "problem": "A company has spent three years and £5 million developing a product. Market research now clearly shows the product will not succeed. The CEO says 'We've come too far to stop now.' What fallacy is driving this decision?",
+          "accepted": [
+            "sunk cost fallacy",
+            "sunk cost",
+            "sunk cost bias",
+            "escalation of commitment"
+          ],
+          "hint": "The money is already gone regardless of the decision. What is the rational question to ask now?",
+          "solution": "Sunk cost fallacy. The £5 million is gone whether they continue or stop. The only rational question is: given what we know now, does continuing generate more value than stopping? The past investment is irrelevant to that calculation.",
+          "repeatable": false
+        },
+        {
+          "id": "iii5",
+          "type": "practice",
+          "title": "Audit a past decision for biases",
+          "prompt": "Choose a significant decision you made in the past that did not go well. Spend 20 minutes on this exercise.\n\n1. What was the decision?\n2. What information did you have at the time?\n3. What did you assume without verifying?\n4. Looking at the list of cognitive biases, which ones were operating?\n5. What would a decision made without those biases have looked like?",
+          "reflectionTemplate": "What was the decision? Which biases were operating? What would the bias-free version have looked like? What does this tell you about your own vulnerability patterns?",
+          "minReflectionLength": 150,
+          "repeatable": true
+        },
+        {
+          "id": "iii6",
+          "type": "practice",
+          "title": "Catch yourself in real time",
+          "prompt": "For the next three days, keep a short log. Each time you notice yourself making a quick judgement or feeling certain about something, pause and ask: which bias might be operating here?\n\nYou don't need to record everything. Aim for two to three genuine catches — moments where you catch a bias before it drives your behaviour, not just in retrospect.",
+          "reflectionTemplate": "What were your two or three catches? What was the situation, what was the snap judgement, which bias was operating, and what did you do differently because you noticed?",
+          "minReflectionLength": 120,
+          "repeatable": true
+        }
+      ]
+    },
+    "II": {
+      "summary": "High proficiency: metacognition — thinking about your own thinking. Testing your beliefs. Intellectual humility as a practice, not just a concept.",
+      "pieces": 2,
+      "attemptsPerPiece": 10,
+      "sequential": true,
+      "sessions": [
+        {
+          "id": "ii1",
+          "type": "read",
+          "title": "Thinking about your own thinking",
+          "resourceId": "metacognition",
+          "estimatedMinutes": 6,
+          "repeatable": true
+        },
+        {
+          "id": "ii2",
+          "type": "quiz",
+          "title": "Metacognition — check",
+          "questions": [
+            {
+              "id": "q1",
+              "prompt": "Which of the three metacognition questions is most useful for identifying beliefs held as identity rather than conclusion?",
+              "kind": "mc",
+              "options": [
+                "What evidence convinced me of this?",
+                "When did I last seriously examine this?",
+                "What would it take to change my mind?",
+                "How long have I held this belief?"
+              ],
+              "correct": "What would it take to change my mind?"
+            },
+            {
+              "id": "q2",
+              "prompt": "Intellectual humility means you should not hold any belief with strong confidence.",
+              "kind": "tf",
+              "correct": "False"
+            },
+            {
+              "id": "q3",
+              "prompt": "Choose one belief you hold strongly. Apply the three metacognition questions to it in writing. Be honest — especially about question 3.",
+              "kind": "open"
+            }
+          ],
+          "passThreshold": 1,
+          "repeatable": true
+        },
+        {
+          "id": "ii3",
+          "type": "practice",
+          "title": "Steel-man a position you oppose",
+          "prompt": "Steel-manning means writing the strongest possible version of a position you disagree with — not the weakest, not a straw man, but the actual best argument its most intelligent proponents would make.\n\n1. Choose a position you currently disagree with.\n2. Write your own position in one paragraph.\n3. Write the steel-manned version of the opposing position. Aim to write it so well that someone who holds that position would say 'yes, that's a fair representation.'\n4. Identify any points in the opposing argument that are genuinely valid.\n5. What would it take to move you toward their position?\n\nNote: this is not asking you to change your mind. It is asking you to demonstrate that you have actually understood the other side.",
+          "reflectionTemplate": "What was the position you chose? Write both positions. Did you find any genuinely valid points in the opposing view? What would it take to move you?",
+          "minReflectionLength": 200,
+          "repeatable": true
+        },
+        {
+          "id": "ii4",
+          "type": "practice",
+          "title": "Map your blind spots",
+          "prompt": "This exercise requires real honesty.\n\n1. Make a list of five topics or domains where you hold strong opinions.\n2. For each, ask: have I actually read the strongest opposing arguments? Have I sought out primary sources, or only read commentary aligned with my view?\n3. Identify one topic where you suspect your knowledge is thinner than your confidence — where you might be experiencing Dunning-Kruger.\n4. Spend 30 minutes reading the strongest opposing view on that topic — a serious piece, not a straw man version.",
+          "reflectionTemplate": "Which topic did you identify as a potential blind spot? What did you read? What did you find? Did it change your view, even slightly?",
+          "minReflectionLength": 150,
+          "repeatable": true
+        },
+        {
+          "id": "ii5",
+          "type": "solve",
+          "title": "What kind of claim is this?",
+          "problem": "A politician says: 'Our economic policy has created 300,000 new jobs.' A critic responds: 'Those jobs would have been created anyway — the economy was already recovering.' The critic is making which type of argument?",
+          "accepted": [
+            "counterfactual",
+            "counterfactual argument",
+            "alternative causation",
+            "correlation not causation",
+            "correlation vs causation"
+          ],
+          "hint": "The critic is not denying the jobs exist. What are they questioning?",
+          "solution": "A counterfactual argument — challenging whether the cause claimed actually produced the effect. The jobs exist, but were they caused by the policy, or by a pre-existing trend? This is the fifth question: what alternative explanation fits the same facts?",
+          "repeatable": false
+        }
+      ]
+    },
+    "I": {
+      "summary": "Mastery: applying critical thinking consistently in real decisions, conversations, and writing. Teaching it to others. Demonstrating it under pressure, not just in controlled exercises.",
+      "pieces": 1,
+      "attemptsPerPiece": 10,
+      "sequential": true,
+      "sessions": [
+        {
+          "id": "i1",
+          "type": "read",
+          "title": "Applying critical thinking in daily life",
+          "body": "Critical thinking is not a subject you study — it is a habit you build. By this point in the pyramid you have the framework, the vocabulary, and the practice. Mastery means none of it requires effort. It operates automatically.\n\nHere is what mastery looks like in practice:\n\nIN CONVERSATIONS\nYou no longer argue by instinct. When someone makes a claim, you notice the structure of the argument before you react to its conclusion. You ask genuine questions — 'What evidence is that based on?' — not to be difficult, but because you want to understand before you respond.\n\nIN READING AND MEDIA\nYou read differently. You notice who published something and what their interests are before you read the content. You track the difference between what an article says and what its headline claims. You notice when statistics are presented without context.\n\nIN YOUR OWN DECISIONS\nFor important decisions, you write out what you know, what you're assuming, what you don't know, and what the strongest counterargument is. You do this not because you were trained to but because you've seen how often vague intuition leads you wrong.\n\nIN TEACHING AND CONVERSATION\nWhen someone you respect makes a bad argument, you can tell them — calmly, specifically — without it becoming an attack. You can say 'that's a slippery slope argument' and explain why without the other person feeling dismissed.\n\nTHE HONEST RECKONING\nMastery of critical thinking does not make you immune to bias. It makes you faster at catching yourself. The difference between a Level V and a Level I practitioner is not that one has biases and the other doesn't. It is that the Level I practitioner notices sooner, recovers faster, and builds systems to compensate for what they know they're vulnerable to.",
+          "estimatedMinutes": 6,
+          "repeatable": true
+        },
+        {
+          "id": "i2",
+          "type": "practice",
+          "title": "Apply it to a real current decision",
+          "prompt": "Choose one real decision you are currently facing — something that actually matters to you, not a hypothetical.\n\nWrite a structured analysis:\n1. What is the decision?\n2. What do I know for certain?\n3. What am I assuming without evidence?\n4. What do I not know that I should find out?\n5. What is the strongest argument against my current inclination?\n6. What cognitive biases might be affecting my thinking here?\n7. What would a critical thinker with no personal stake in this outcome conclude?\n\nThen: what is your actual decision, and how did this analysis change (or confirm) your initial instinct?",
+          "reflectionTemplate": "Walk through all seven questions. What was your initial instinct? What did the analysis reveal? What did you decide, and how did the process affect it?",
+          "minReflectionLength": 250,
+          "repeatable": true
+        },
+        {
+          "id": "i3",
+          "type": "practice",
+          "title": "Teach it — explain a fallacy to someone",
+          "prompt": "The deepest test of understanding is whether you can explain something clearly to someone who doesn't know it.\n\nChoose one logical fallacy. Find a real-world example of it in recent news or public discourse. Explain it to someone — a friend, a family member, a colleague — without using jargon. Don't say 'that's an ad hominem.' Instead, describe what's happening in plain language: 'They're attacking the person making the argument rather than the argument itself — and that doesn't actually address whether the argument is right or wrong.'\n\nThe goal is that the other person understands, not that they are impressed.",
+          "reflectionTemplate": "Which fallacy did you choose? What was your real-world example? How did you explain it? Did the other person understand? What was hard about explaining it simply?",
+          "minReflectionLength": 120,
+          "repeatable": true
+        },
+        {
+          "id": "i4",
+          "type": "practice",
+          "title": "Change your mind in writing",
+          "prompt": "Identify a belief you have held for a long time that critical thinking has caused you to update — even partially.\n\nWrite about it:\n1. What was the belief?\n2. What did you believe before, and why?\n3. What evidence or argument shifted your view?\n4. What do you believe now?\n5. What made you willing to update?\n\nThis is not about finding a dramatic conversion. It can be a small update: 'I now hold this with less certainty than I did.' Intellectual honesty about genuine change is the mark of a mature critical thinker.",
+          "reflectionTemplate": "Walk through all five questions. Be honest — a small genuine update is more valuable than a claimed dramatic transformation.",
+          "minReflectionLength": 200,
+          "repeatable": true
+        },
+        {
+          "id": "i5",
+          "type": "practice",
+          "title": "Evaluate your own reasoning under pressure",
+          "prompt": "Critical thinking under pressure is harder than critical thinking in a quiet moment.\n\nThink of a recent situation where you were under pressure — time pressure, emotional pressure, social pressure, or any combination — and you had to reason or decide quickly.\n\n1. Describe the situation.\n2. What shortcuts did you take in your reasoning?\n3. Which biases or fallacies were operating?\n4. What was the cost, if any?\n5. What structures or habits could help you think more clearly in similar situations?\n\nThis is not a failure exercise. Every critical thinker, including the best ones, reasons worse under pressure. The mastery goal is to know your specific failure modes so you can build around them.",
+          "reflectionTemplate": "Describe the situation and walk through all five questions. What did you learn about how you reason under pressure?",
+          "minReflectionLength": 200,
+          "repeatable": true
+        }
+      ]
+    }
+  },
+  "progress": {
+    "currentLevel": "X",
+    "foundationAttempts": 0,
+    "piecesAt": {
+      "V": 0,
+      "IV": 0,
+      "III": 0,
+      "II": 0,
+      "I": 0
+    },
+    "attemptsToNextPiece": 0,
+    "solvedSessions": [],
+    "sessionLog": [],
+    "lastActivity": null,
+    "mastered": false
+  }
+}
