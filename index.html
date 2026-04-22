@@ -274,7 +274,10 @@ header{background:var(--surface);border-bottom:1px solid var(--border);height:48
  
 <script>
 // ── CONSTANTS ──────────────────────────────────────────────
-const MANIFEST  = [{id:'critical-thinking',name:'Critical Thinking',description:'Analysing and evaluating information before accepting it or acting on it.',catId:1}];
+const MANIFEST  = [
+  {id:'critical-thinking',name:'Critical Thinking',description:'Analysing and evaluating information before accepting it or acting on it.',catId:1},
+  {id:'algebra-basics',name:'Algebra Basics',description:'Solving equations and inequalities — the foundation of all mathematical reasoning.',catId:4}
+];
 const CATS      = [{id:1,name:'Cognitive',color:'#c88a30'},{id:2,name:'Communication',color:'#5088d8'},{id:3,name:'Emotional',color:'#3aa878'},{id:4,name:'Practical',color:'#c8603c'},{id:5,name:'Custom',color:'#a0a0a0'}];
 const LO        = ['X','V','IV','III','II','I'];
 const MP        = {V:5,IV:4,III:3,II:2,I:1};
@@ -283,7 +286,7 @@ const DC        = {read:Infinity,quiz:5,practice:2,solve:Infinity};
  
 // ── STATE ──────────────────────────────────────────────────
 let SK=null,PR=null,SID=null,TAB='learn',IN_S=false,CUR_S=null;
-let QA={},QS=false,SA=0,SS=false,SH=false;
+let QA={},QS=false,SA=0,SS=false,SH=false,QORD=null;
  
 // ── STORAGE ────────────────────────────────────────────────
 const sk=id=>`25100-progress-${id}`;
@@ -379,7 +382,20 @@ function backToDash(){
   renderDash();
 }
 function switchTab(tab){TAB=tab;IN_S=false;document.querySelectorAll('.skill-tab').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab));renderContent();}
-function openSession(sid){QA={};QS=false;SA=0;SS=false;SH=false;IN_S=true;CUR_S=sid;TAB='learn';document.querySelectorAll('.skill-tab').forEach(b=>b.classList.toggle('on',b.dataset.tab==='learn'));renderContent();}
+function openSession(sid){
+  QA={};QS=false;SA=0;SS=false;SH=false;QORD=null;
+  // Pre-shuffle questions for quiz sessions
+  const lk=PR?PR.currentLevel:null;
+  if(lk&&SK&&SK.levels[lk]){
+    const s=SK.levels[lk].sessions.find(x=>x.id===sid);
+    if(s&&s.type==='quiz'&&s.questions){
+      QORD=shuffle([...Array(s.questions.length).keys()]);
+    }
+  }
+  IN_S=true;CUR_S=sid;TAB='learn';
+  document.querySelectorAll('.skill-tab').forEach(b=>b.classList.toggle('on',b.dataset.tab==='learn'));
+  renderContent();
+}
 function backToList(){IN_S=false;CUR_S=null;renderContent();}
  
 // ── DASHBOARD ──────────────────────────────────────────────
@@ -496,6 +512,8 @@ function renderRead(s){
  
 function renderQuiz(s){
   let h='';
+  // Use shuffled order if available, else natural order
+  const order=QORD||[...Array(s.questions.length).keys()];
   if(QS){
     const aq=(s.questions||[]).filter(q=>q.kind!=='open');
     const correct=aq.filter(q=>QA[q.id]===q.correct).length;const total=aq.length;
@@ -503,16 +521,20 @@ function renderQuiz(s){
     const pass=pct>=thresh;const col=pass?'var(--ok)':'var(--danger)';
     h+=`<div class="quiz-result" style="border-color:${col}"><div class="quiz-score" style="color:${col}">${total>0?pct+'%':'✓'}</div><div class="quiz-score-lbl">${total>0?`${correct} / ${total} auto-scored correct`:''}</div></div>`;
   }
-  (s.questions||[]).forEach((q,qi)=>{
-    h+=`<div class="quiz-q"><div class="quiz-qnum">Q${qi+1} — ${q.kind==='mc'?'Multiple Choice':q.kind==='tf'?'True / False':'Open Reflection'}</div><div class="quiz-prompt">${esc(q.prompt)}</div>`;
+  order.forEach((qi,displayIdx)=>{
+    const q=s.questions[qi];
+    h+=`<div class="quiz-q"><div class="quiz-qnum">Q${displayIdx+1} — ${q.kind==='mc'?'Multiple Choice':q.kind==='tf'?'True / False':'Open Reflection'}</div><div class="quiz-prompt">${esc(q.prompt)}</div>`;
     if(q.kind==='mc'||q.kind==='tf'){
-      const opts=q.kind==='tf'?['True','False']:(q.options||[]);
+      // Shuffle mc options each render (not tf — True/False order is conventional)
+      const rawOpts=q.kind==='tf'?['True','False']:(q.options||[]);
+      const opts=q.kind==='mc'&&!QS?shuffleOpts(rawOpts,q.id):rawOpts;
       h+=`<div class="quiz-opts">`;
       opts.forEach(opt=>{
         let cls='quiz-opt';
         if(QS){if(opt===q.correct)cls+=' correct';else if(opt===QA[q.id]&&opt!==q.correct)cls+=' wrong';}
         else if(opt===QA[q.id])cls+=' sel';
-        h+=`<button class="${cls}" ${QS?'disabled':''} onclick="selQ('${esc(q.id)}','${esc(opt)}')">${esc(opt)}</button>`;
+        // data-qid and data-opt enable in-place update without scroll jump
+        h+=`<button class="${cls}" data-qid="${esc(q.id)}" data-opt="${esc(opt)}" ${QS?'disabled':''} onclick="selQ('${esc(q.id)}','${esc(opt)}')">${esc(opt)}</button>`;
       });
       h+=`</div>`;
     } else {
@@ -527,13 +549,21 @@ function renderQuiz(s){
     const aq=(s.questions||[]).filter(q=>q.kind!=='open');
     const correct=aq.filter(q=>QA[q.id]===q.correct).length;
     const pct=aq.length>0?Math.round(correct/aq.length*100):100;
-    const pass=pct>=(( s.passThreshold??0.6)*100);
+    const pass=pct>=((s.passThreshold??0.6)*100);
     if(pass)h+=`<button class="btn-primary" onclick="backToList()">← Back to sessions</button>`;
     else{h+=`<button class="btn-primary" onclick="retryQ()">Try Again</button><button class="btn-ghost" onclick="backToList()">Back</button>`;}
   }
   h+=`</div>`;return h;
 }
- 
+// Shuffle mc options consistently within a session (seed on session id + question id)
+// Simple deterministic shuffle per quiz attempt using QORD as entropy source
+function shuffleOpts(opts,qid){
+  if(!QORD)return opts;
+  const seed=QORD.reduce((a,b)=>a+b,0)+qid.charCodeAt(0);
+  const arr=[...opts];
+  for(let i=arr.length-1;i>0;i--){const j=(seed*(i+7))%( i+1);[arr[i],arr[j]]=[arr[j],arr[i]];}
+  return arr;
+}
 function renderPractice(s){
   const minLen=s.minReflectionLength||0;
   return `<div class="prac-prompt">${esc(s.prompt)}</div>${s.reflectionTemplate?`<div style="font-size:11px;color:var(--muted);font-family:'Atkinson Hyperlegible',sans-serif;margin-bottom:12px;font-style:italic">${esc(s.reflectionTemplate)}</div>`:''}<textarea class="ref-ta" id="ref-ta" oninput="updRef(${minLen})" placeholder="Write your reflection. Take your time."></textarea><div class="ref-ctr" id="ref-ctr">0${minLen>0?' / '+minLen+' minimum':''} characters</div><div class="sd-actions"><button class="btn-primary" onclick="doPrac(${minLen})">Submit Reflection</button><button class="btn-ghost" onclick="backToList()">Back</button></div>`;
@@ -567,7 +597,14 @@ function completeAtt(sid,data){
  
 function doRead(){completeAtt(CUR_S,{});backToList();}
  
-function selQ(qid,opt){if(QS)return;QA[qid]=opt;renderContent();}
+function selQ(qid,opt){
+  if(QS)return;
+  QA[qid]=opt;
+  // Update button states in-place — no scroll-destroying re-render
+  document.querySelectorAll(`.quiz-opt[data-qid="${qid}"]`).forEach(btn=>{
+    btn.classList.toggle('sel', btn.dataset.opt===opt);
+  });
+}
  
 function doQuiz(){
   const lk=PR.currentLevel;const ld=SK.levels[lk];if(!ld)return;
@@ -579,7 +616,19 @@ function doQuiz(){
   if(pct>=(s.passThreshold??0.6))completeAtt(CUR_S,{score:correct,total:aq.length,passed:true});
   renderContent();
 }
-function retryQ(){QA={};QS=false;renderContent();}
+function retryQ(){
+  QA={};QS=false;
+  // Re-shuffle on retry
+  const lk=PR?PR.currentLevel:null;
+  if(lk&&SK&&SK.levels[lk]&&CUR_S){
+    const s=SK.levels[lk].sessions.find(x=>x.id===CUR_S);
+    if(s&&s.type==='quiz'&&s.questions){
+      QORD=shuffle([...Array(s.questions.length).keys()]);
+    }
+  }
+  renderContent();
+}
+function shuffle(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}return arr;}
  
 function updRef(min){
   const ta=document.getElementById('ref-ta');const ctr=document.getElementById('ref-ctr');if(!ta||!ctr)return;
